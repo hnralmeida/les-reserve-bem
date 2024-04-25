@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/code
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/reserve_bem
+    ports:
+      - "8000:80"
+    networks:
+      - app_network
+  frontend:
+    build: ./frontend
+    ports:
+      - "8081:8081"
+    networks:
+      - app_network
+    depends_on:
+      - backend
+    links:
+      - backend
+    volumes:
+      - ./frontend:/app
+  db:
+    image: postgres:16.2-bullseye
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=reserve_bem
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d reserve_bem'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+networks:
+  app_network:
+    name: "app_network"
+  
