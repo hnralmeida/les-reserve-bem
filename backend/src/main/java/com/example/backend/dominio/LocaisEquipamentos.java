@@ -10,8 +10,8 @@ public class LocaisEquipamentos {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_locais_equipamentos")
-    private Long idLocaisEquipamentos;
+    @Column(name = "id")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "id_local")
