@@ -21,10 +21,17 @@ public class DisciplinaController {
     
     @Autowired
     private DisciplinaService disciplinaService;
+    @Autowired
+
 
     @PostMapping("/cadastro")
-    public Disciplina cadastrarDisciplina(@RequestBody Disciplina disciplina, @RequestBody Coordenadoria coordenadoria){
-        return disciplinaService.cadastrarDisciplina(disciplina, coordenadoria);
+    public Disciplina cadastrarDisciplina(@RequestBody Disciplina disciplina){
+        Coordenadoria coordenadoria = disciplina.getCoordenadoria();
+
+        if(coordenadoria != null)
+            return disciplinaService.cadastrarDisciplina(disciplina, coordenadoria);
+        else
+            return null;
     }
 
     @GetMapping("/listagem")
