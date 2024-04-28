@@ -24,4 +24,14 @@ public class EquipamentoController {
     public List<Equipamento> listarEquipamentos(){
         return equipamentoService.listarEquipamentos();
     }
+
+    @GetMapping("/{id}")
+    public Equipamento editarEquipamento(@PathVariable Long id, @RequestBody Equipamento equipamento){
+        return equipamentoService.editarEquipamento(id, equipamento);
+    }
+
+    @DeleteMapping("/{id}")
+    public void excluirEquipamento(@PathVariable Long id){
+        equipamentoService.excluirEquipamento(id);
+    }
 }

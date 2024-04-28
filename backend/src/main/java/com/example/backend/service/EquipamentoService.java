@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,18 @@ public class EquipamentoService{
 
     public List<Equipamento> listarEquipamentos(){
         return equipamentoRepository.findAll();
+    }
+
+    public Optional<Equipamento> encontrarEquipamentoPorId(Long id){
+        return equipamentoRepository.findById(id);
+    }
+
+    public Equipamento editarEquipamento(Long id, Equipamento equipamento){
+        equipamento.setId(id);
+        return equipamentoRepository.save(equipamento);
+    }
+
+    public void excluirEquipamento(Long id){
+        equipamentoRepository.deleteById(id);
     }
 }
