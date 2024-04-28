@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import java.util.Date;
 
-import org.springframework.cglib.core.Local;
 
 @Entity
 @Table(name = "eventos")
@@ -21,7 +20,7 @@ public class Evento {
 
     @ManyToOne
     @JoinColumn(name = "local_id")
-    private Local local;
+    private Locais local;
 
     @Column(name = "nome")
     private String nome;

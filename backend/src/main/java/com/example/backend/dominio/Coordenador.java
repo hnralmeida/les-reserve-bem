@@ -7,6 +7,6 @@ import lombok.*;
 @Table(name = "coordenador")
 @PrimaryKeyJoinColumn(name = "id")
 @Getter @Setter @AllArgsConstructor
-public class Coordenador {
+public class Coordenador extends Usuario{
     
 }
