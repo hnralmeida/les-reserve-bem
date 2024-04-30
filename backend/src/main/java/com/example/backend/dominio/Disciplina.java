@@ -5,8 +5,10 @@ import lombok.*;
 
 @Entity
 @Table(name = "disciplina")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Disciplina {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,13 +19,16 @@ public class Disciplina {
     private String nome;
 
     @Column(name = "carga_horaria")
-    private int cargaHoraria;
+    private String cargaHoraria;
 
     @Column(name = "tipo_disciplina")
     private String tipoDisciplina;
 
+    @Column(name = "sigla")
+    private String sigla;
+
     @ManyToOne
     @JoinColumn(name = "coordenadoria_id")
     private Coordenadoria coordenadoria;
-    
+
 }

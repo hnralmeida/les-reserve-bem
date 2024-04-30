@@ -16,9 +16,14 @@ import { Picker } from "@react-native-picker/picker";
 import AdicionarDisciplina from "../../components/AdicionarDisciplina";
 import { useForm } from "react-hook-form";
 import ActivateModalButton from "../../components/ButtonActiveteModal";
+import { tipoDisciplinaList } from "../../types";
 
 type FormInputs = {
   nome: string;
+  cargaHoraria: string;
+  tipoDisciplina: string;
+  coordenadoria: any;
+  sigla: string;
 };
 
 export default function ConsultarDisciplinas(options: any) {
@@ -32,26 +37,45 @@ export default function ConsultarDisciplinas(options: any) {
   } = useForm<FormInputs>({
     defaultValues: {
       nome: "",
+      cargaHoraria: "",
+      tipoDisciplina: "",
+      coordenadoria: {},
+      sigla: "",
     },
   });
   const [isVisible, setIsVisible] = useState(false);
 
   const [disciplina_list, set_disciplina_list] = useState<any[]>([]);
+  const [coordenadoria_list, set_coordenadoria_list] = useState<any[]>([]);
 
   const [editing_index, set_editing_index] = useState(null); // Estado para rastrear o índice do item sendo editado
-  const [edited_name, set_edited_name] = useState(""); // Estado para armazenar o nome editado
+  const [edited_nome, set_edited_nome] = useState(""); // Estado para armazenar o nome editado
+  const [edited_sigla, set_edited_sigla] = useState(""); // Estado para armazenar o nome editado
+  const [edited_carga_Horaria, set_edited_carga_Horaria] = useState(""); // Estado para armazenar o nome editado
+  const [edited_tipo_disciplina, set_edited_tipo_disciplina] = useState(""); // Estado para armazenar o nome editado
+  const [edited_coordenadoria, set_edited_coordenadoria] = useState(0); // Estado para armazenar o nome editado
 
   useFocusEffect(
     React.useCallback(() => {
-      API.get("/disciplinas").then((response) => {
-        set_disciplina_list(response.data);
-      });
+      API.get("/disciplinas")
+        .then((response) => {
+          set_disciplina_list(response.data);
+        })
+        .then(() => {
+          API.get("/coordenadorias").then((response) => {
+            set_coordenadoria_list(response.data);
+          });
+        });
     }, [])
   );
 
   const handleEdit = (index: any) => {
     set_editing_index(index); // Atualiza o índice do item sendo editado
-    set_edited_name(disciplina_list[index].nome); // Preenche o campo de edição com o nome atual do item
+    set_edited_nome(disciplina_list[index].nome); // Preenche o campo de edição com o nome atual do item
+    set_edited_sigla(disciplina_list[index].sigla); // Preenche o campo de edição com o nome atual do item
+    set_edited_carga_Horaria(disciplina_list[index].cargaHoraria); // Preenche o campo de edição com o nome atual do item
+    set_edited_tipo_disciplina(disciplina_list[index].tipoDisciplina); // Preenche o campo de edição com o nome atual do item)
+    set_edited_coordenadoria(disciplina_list[index].coordenadoria.id); // Preenche o campo de edição com o nome atual do item
   };
 
   const handleDelete = (id: any) => {
@@ -61,15 +85,31 @@ export default function ConsultarDisciplinas(options: any) {
   };
 
   const handleSaveEdit = (index: any) => {
-    if (edited_name.trim() !== "") {
+    if (edited_nome.trim() !== "") {
       API.put("/disciplinas/" + disciplina_list[index].id, {
-        nome: edited_name,
+        nome: edited_nome,
+        sigla: edited_sigla,
+        cargaHoraria: edited_carga_Horaria,
+        tipoDisciplina: edited_tipo_disciplina,
+        coordenadoria: coordenadoria_list.filter(
+          (item) => item.id == edited_coordenadoria
+        )[0],
       }).then(() => {
-        setValue("nome", "");
-        disciplina_list[index].nome = edited_name; // Atualiza o nome do item na lista
+        // Atualiza o item na lista
+        disciplina_list[index].nome = edited_nome;
+        disciplina_list[index].sigla = edited_sigla;
+        disciplina_list[index].cargaHoraria = edited_carga_Horaria;
+        disciplina_list[index].tipoDisciplina = edited_tipo_disciplina;
+        disciplina_list[index].coordenadoria = coordenadoria_list.filter(
+          (item) => item.id == edited_coordenadoria
+        )[0];
 
         set_editing_index(null); // Limpa o índice do item sendo editado
-        set_edited_name(""); // Limpa o nome editado
+        set_edited_nome("");
+        set_edited_sigla("");
+        set_edited_carga_Horaria("");
+        set_edited_tipo_disciplina("");
+        set_edited_coordenadoria(0);
       });
     } else {
       // Handle empty equipment name
@@ -108,13 +148,67 @@ export default function ConsultarDisciplinas(options: any) {
                 />
 
                 {editing_index === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={edited_name}
-                    onChangeText={set_edited_name}
-                  />
+                  [
+                    <TextInput
+                      style={[styles.input, styles.row6]}
+                      value={edited_nome}
+                      onChangeText={set_edited_nome}
+                    />,
+                    <TextInput
+                      style={[styles.input, styles.row6]}
+                      value={edited_carga_Horaria}
+                      onChangeText={set_edited_carga_Horaria}
+                    />,
+                  ]
                 ) : (
-                  <Text style={styles.textLabel}>{item.nome}</Text>
+                  <Text style={styles.textLabel}>
+                    {item.nome} ({item.cargaHoraria}H)
+                  </Text>
+                )}
+
+                {editing_index === index ? (
+                  <Picker
+                    style={[styles.input, styles.row6]}
+                    selectedValue={edited_tipo_disciplina}
+                    onValueChange={(itemValue) =>
+                      set_edited_tipo_disciplina(itemValue)
+                    }
+                  >
+                    {tipoDisciplinaList.map((item, index) => (
+                      <Picker.Item key={index} label={item} value={item} />
+                    ))}
+                  </Picker>
+                ) : (
+                  <Text style={styles.textLabel}>{item.tipoDisciplina}</Text>
+                )}
+
+                {editing_index === index ? (
+                  <Picker
+                    style={[styles.input, styles.row6]}
+                    placeholder="Coordenadoria"
+                    selectedValue={edited_coordenadoria}
+                    onValueChange={(itemValue) =>
+                      set_edited_coordenadoria(itemValue)
+                    }
+                  >
+                    <Picker.Item
+                      key={"unselectable"}
+                      style={styles.boxBorder}
+                      label={"Selecione um tipo"}
+                      value={0}
+                    />
+                    {coordenadoria_list.map((item, index) => (
+                      <Picker.Item
+                        key={index}
+                        label={item.nome}
+                        value={item.id}
+                      />
+                    ))}
+                  </Picker>
+                ) : (
+                  <Text style={styles.textLabel}>
+                    {item.coordenadoria.sigla}
+                  </Text>
                 )}
 
                 {editing_index === index ? (

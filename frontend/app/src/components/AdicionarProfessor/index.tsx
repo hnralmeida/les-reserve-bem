@@ -46,6 +46,7 @@ const AdicionarProfessor = ({
     if (control._formValues.nome.trim() !== "") {
       API.post("/coordenadorTurnos", {
         nome: control._formValues.nome,
+        // matricula: control._formValues.matricula,
       }).then((response: any) => {
         setValue('nome', '');
         console.log(response.data);

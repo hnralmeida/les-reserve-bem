@@ -21,7 +21,9 @@ type Props = {
   setIsVisible: Dispatch<SetStateAction<boolean>>;
   onClose: () => void;
   cordenadoriaNome: string;
-  setCordenadoriaNome: React.Dispatch<React.SetStateAction<string>>; 
+  setCordenadoriaNome: React.Dispatch<React.SetStateAction<string>>;
+  cordenadoriaSigla: string;
+  setCordenadoriaSigla: React.Dispatch<React.SetStateAction<string>>;
   cordenadoriaList: any[];
   setCordenadoriaList: React.Dispatch<React.SetStateAction<any[]>>;
 };
@@ -31,20 +33,23 @@ const AdicionarCoordenadoria = ({
   setIsVisible,
   onClose,
   cordenadoriaNome,
-  setCordenadoriaNome, 
+  setCordenadoriaNome,
+  cordenadoriaSigla,
+  setCordenadoriaSigla,
   cordenadoriaList,
-  setCordenadoriaList
+  setCordenadoriaList,
 }: Props) => {
-
   const handleRegister = () => {
     // Check if the equipment name is not empty before registering
     if (cordenadoriaNome.trim() !== "") {
       API.post("/coordenadorias", {
         nome: cordenadoriaNome,
+        sigla: cordenadoriaSigla
       }).then((response: any) => {
         setCordenadoriaNome("");
+        setCordenadoriaSigla("");
         console.log(response.data);
-        cordenadoriaList.push(response.data[0]);
+        cordenadoriaList.push(response.data);
       });
     } else {
       // Handle empty equipment name
@@ -53,21 +58,33 @@ const AdicionarCoordenadoria = ({
   };
 
   return (
-    <ModalComponent isVisible={isVisible} setIsVisible={setIsVisible} onClose={onClose}>
+    <ModalComponent
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
+      onClose={onClose}
+    >
       <>
-          <Text style={styles.title}>Nome da Coordenadoria</Text>
-          <TextInput
-            style={styles.boxBorder}
-            placeholder="Nome da Coordenadoria"
-            value={cordenadoriaNome}
-            onChangeText={(text) => setCordenadoriaNome(text)}
-          />
+        <Text style={styles.title}>Nome da Coordenadoria</Text>
+        <TextInput
+          style={styles.boxBorder}
+          placeholder="Nome da Coordenadoria"
+          value={cordenadoriaNome}
+          onChangeText={(text) => setCordenadoriaNome(text)}
+        />
 
-          <View style={styles.rowCenter}>
-            <TouchableOpacity style={styles.button} onPress={handleRegister}>
-              <Text style={styles.buttonText}>Salvar</Text>
-            </TouchableOpacity>
-          </View>
+        <Text style={styles.title}>Sigla da Coordenadoria</Text>
+        <TextInput
+          style={styles.boxBorder}
+          placeholder="Sigla da Coordenadoria"
+          value={cordenadoriaSigla}
+          onChangeText={(text) => setCordenadoriaSigla(text)}
+        />
+
+        <View style={styles.rowCenter}>
+          <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <Text style={styles.buttonText}>Salvar</Text>
+          </TouchableOpacity>
+        </View>
       </>
     </ModalComponent>
   );

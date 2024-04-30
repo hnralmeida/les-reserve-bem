@@ -22,8 +22,8 @@ public class DisciplinaService {
     @Autowired
     private DisciplinaRepository disciplinaRepository;
 
-    public Disciplina cadastrarDisciplina(Disciplina disciplina,Coordenadoria coordenadoria){
-        disciplina.setCoordenadoria(coordenadoria);
+    public Disciplina cadastrarDisciplina(Disciplina disciplina){
+
         return disciplinaRepository.save(disciplina);
     }
 

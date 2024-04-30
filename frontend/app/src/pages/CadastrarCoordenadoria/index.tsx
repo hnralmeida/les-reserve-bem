@@ -1,11 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { Text, View, TextInput, TouchableOpacity, Image } from "react-native";
 import styles from "../../styles";
 import React, { useEffect, useState } from "react";
 import API from "../../services/API";
@@ -18,11 +12,13 @@ import ButtonText from "../../components/ButtonText";
 
 export default function CadastrarCoordenadoria(options: any) {
   const [cordenadoriaNome, setCordenadoriaNome] = useState("");
+  const [cordenadoriaSigla, setCordenadoriaSigla] = useState("");
   const [modal_visible, set_modal_visible] = useState(false);
   const [cordenadoriaList, setCordenadoriaList] = useState<any[]>([]);
 
   const [editingIndex, setEditingIndex] = useState(null); // Estado para rastrear o índice do item sendo editado
   const [editedName, setEditedName] = useState(""); // Estado para armazenar o nome editado
+  const [editedSigla, setEditedSigla] = useState(""); // Estado para armazenar a sigla editada
 
   useFocusEffect(
     React.useCallback(() => {
@@ -35,6 +31,7 @@ export default function CadastrarCoordenadoria(options: any) {
   const handleEdit = (index: any) => {
     setEditingIndex(index); // Atualiza o índice do item sendo editado
     setEditedName(cordenadoriaList[index].nome); // Preenche o campo de edição com o nome atual do item
+    setEditedSigla(cordenadoriaList[index].sigla); // Preenche o campo de edição com o nome atual do item
   };
 
   const handleDelete = (id: any) => {
@@ -47,6 +44,7 @@ export default function CadastrarCoordenadoria(options: any) {
     if (editedName.trim() !== "") {
       API.put("/coordenadorias/" + cordenadoriaList[index].id, {
         nome: editedName,
+        sigla: editedSigla,
       }).then(() => {
         cordenadoriaList[index].nome = editedName; // Atualiza o nome do item na lista
 
@@ -70,6 +68,8 @@ export default function CadastrarCoordenadoria(options: any) {
             onClose={() => set_modal_visible(!modal_visible)}
             cordenadoriaNome={cordenadoriaNome}
             setCordenadoriaNome={setCordenadoriaNome}
+            cordenadoriaSigla={cordenadoriaSigla}
+            setCordenadoriaSigla={setCordenadoriaSigla}
             cordenadoriaList={cordenadoriaList}
             setCordenadoriaList={setCordenadoriaList}
           />
@@ -99,7 +99,20 @@ export default function CadastrarCoordenadoria(options: any) {
                 )}
 
                 {editingIndex === index ? (
-                  <ButtonText handle={() => handleSaveEdit(index)} text="Importar"/>
+                  <TextInput
+                    style={styles.input}
+                    value={editedSigla}
+                    onChangeText={(edited_text) => setEditedSigla(edited_text)}
+                  />
+                ) : (
+                  <Text style={styles.textLabel}>{item.sigla}</Text>
+                )}
+
+                {editingIndex === index ? (
+                  <ButtonText
+                    handle={() => handleSaveEdit(index)}
+                    text="Importar"
+                  />
                 ) : (
                   <>
                     <TouchableOpacity

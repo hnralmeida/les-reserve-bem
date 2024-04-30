@@ -130,6 +130,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
   },
+  row6: {
+    width: "15%",
+  },
   input: {
     height: 40,
     borderColor: colors.primaryColor,

@@ -15,21 +15,25 @@ public class EquipamentoController {
     @Autowired
     private EquipamentoService equipamentoService;
 
-    @PostMapping("/cadastro")
+    @CrossOrigin(origins="*", allowedHeaders = "*")
+    @PostMapping
     public Equipamento cadastrarEquipamento(@RequestBody Equipamento equipamento){
         return equipamentoService.cadastrarEquipamento(equipamento);
     }
 
-    @GetMapping("/listagem")
+    @CrossOrigin(origins="*", allowedHeaders = "*")
+    @GetMapping
     public List<Equipamento> listarEquipamentos(){
         return equipamentoService.listarEquipamentos();
     }
 
-    @GetMapping("/{id}")
+    @CrossOrigin(origins="*", allowedHeaders = "*")
+    @PutMapping("/{id}")
     public Equipamento editarEquipamento(@PathVariable Long id, @RequestBody Equipamento equipamento){
         return equipamentoService.editarEquipamento(id, equipamento);
     }
 
+    @CrossOrigin(origins="*", allowedHeaders = "*")
     @DeleteMapping("/{id}")
     public void excluirEquipamento(@PathVariable Long id){
         equipamentoService.excluirEquipamento(id);
