@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, View, TextInput, TouchableOpacity, Image } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 import styles from "../../styles";
 import React, { useEffect, useState } from "react";
 import API from "../../services/API";
@@ -35,8 +42,11 @@ export default function CadastrarCoordenadoria(options: any) {
   };
 
   const handleDelete = (id: any) => {
-    API.delete("/coordenadorias/" + id);
-    setCordenadoriaList(cordenadoriaList.filter((item) => item.id !== id));
+    API.delete("/coordenadorias/" + id).catch((error) => {
+      alert(
+        "Erro ao deletar coordenadoria, provavelmente há disciplinas associadas a ela."
+      );
+    });
   };
 
   const handleSaveEdit = (index: any) => {
@@ -47,9 +57,11 @@ export default function CadastrarCoordenadoria(options: any) {
         sigla: editedSigla,
       }).then(() => {
         cordenadoriaList[index].nome = editedName; // Atualiza o nome do item na lista
+        cordenadoriaList[index].sigla = editedSigla;
 
         setEditingIndex(null); // Limpa o índice do item sendo editado
         setEditedName(""); // Limpa o nome editado
+        setEditedSigla(""); // Limpa a sigla editada
       });
       setCordenadoriaNome("");
     } else {
@@ -109,10 +121,12 @@ export default function CadastrarCoordenadoria(options: any) {
                 )}
 
                 {editingIndex === index ? (
-                  <ButtonText
-                    handle={() => handleSaveEdit(index)}
-                    text="Importar"
-                  />
+                  <TouchableOpacity
+                    style={styles.textFocus}
+                    onPress={() => handleSaveEdit(index)}
+                  >
+                    <Text>Salvar</Text>
+                  </TouchableOpacity>
                 ) : (
                   <>
                     <TouchableOpacity

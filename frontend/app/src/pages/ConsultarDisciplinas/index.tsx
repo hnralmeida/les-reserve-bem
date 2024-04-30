@@ -79,9 +79,13 @@ export default function ConsultarDisciplinas(options: any) {
   };
 
   const handleDelete = (id: any) => {
-    API.delete("/disciplinas/" + id).then(() => {
-      set_disciplina_list(disciplina_list.filter((item) => item.id !== id));
-    });
+    API.delete("/disciplinas/" + id)
+      .then(() => {
+        set_disciplina_list(disciplina_list.filter((item) => item.id !== id));
+      })
+      .catch((error) => {
+        alert("Não é possível deletar disciplina com aulas");
+      });
   };
 
   const handleSaveEdit = (index: any) => {
