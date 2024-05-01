@@ -26,7 +26,7 @@ public class CoordenadoriaController {
     }
 
     @PutMapping("/{id}")
-    public Coordenadoria editCoordenadoria(@PathVariable Long id, @RequestBody Coordenadoria coordenadoria){
+    public Coordenadoria editarCoordenadoria(@PathVariable Long id, @RequestBody Coordenadoria coordenadoria){
         return coordenadoriaService.editarCoordenadoria(id, coordenadoria);
     }
 
