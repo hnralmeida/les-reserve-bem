@@ -16,7 +16,6 @@ public class DisciplinaController {
     @Autowired
     private DisciplinaService disciplinaService;
 
-    @CrossOrigin(origins="*", allowedHeaders = "*")
     @PostMapping
     public Disciplina cadastrarDisciplina(@RequestBody Disciplina disciplina){
         Coordenadoria coordenadoria = disciplina.getCoordenadoria();
@@ -27,19 +26,16 @@ public class DisciplinaController {
             return null;
     }
 
-    @CrossOrigin(origins="*", allowedHeaders = "*")
     @GetMapping
     public List<Disciplina> listarDisciplinas(){
         return disciplinaService.listarDisciplinas();
     }
 
-    @CrossOrigin(origins="*", allowedHeaders = "*")
     @PutMapping("/{id}")
     public Disciplina buscarDisciplinaPorId(@PathVariable Long id, @RequestBody Disciplina disciplina){
         return disciplinaService.editarDisciplina(id, disciplina);
     }
 
-    @CrossOrigin(origins="*", allowedHeaders = "*")
     @DeleteMapping("/{id}")
     public void excluirDisciplina(@PathVariable Long id){
         disciplinaService.excluirDisciplina(id);
