@@ -14,7 +14,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import API from "../../services/API";
 import { Picker } from "@react-native-picker/picker";
 import AdicionarDisciplina from "../../components/AdicionarDisciplina";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import ActivateModalButton from "../../components/ButtonActiveteModal";
 import { tipoDisciplinaList } from "../../types";
 
@@ -123,7 +123,7 @@ export default function ConsultarDisciplinas(options: any) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
+      <View style={styles.contentBigger}>
         <View style={[styles.rowFlexEnd, styles.marginTop]}>
           <AdicionarDisciplina
             isVisible={isVisible}
@@ -153,16 +153,22 @@ export default function ConsultarDisciplinas(options: any) {
 
                 {editing_index === index ? (
                   [
-                    <TextInput
-                      style={[styles.input, styles.row6]}
-                      value={edited_nome}
-                      onChangeText={set_edited_nome}
-                    />,
-                    <TextInput
-                      style={[styles.input, styles.row6]}
-                      value={edited_carga_Horaria}
-                      onChangeText={set_edited_carga_Horaria}
-                    />,
+                    <View style={[styles.column, styles.row6]}>
+                      <Text>Disciplina</Text>
+                      <TextInput
+                        style={[styles.input]}
+                        value={edited_nome}
+                        onChangeText={set_edited_nome}
+                      />
+                    </View>,
+                    <View style={[styles.column, styles.row6]}>
+                      <Text>Horário</Text>
+                      <TextInput
+                        style={[styles.input]}
+                        value={edited_carga_Horaria}
+                        onChangeText={set_edited_carga_Horaria}
+                      />
+                    </View>,
                   ]
                 ) : (
                   <Text style={styles.textLabel}>
@@ -171,44 +177,50 @@ export default function ConsultarDisciplinas(options: any) {
                 )}
 
                 {editing_index === index ? (
-                  <Picker
-                    style={[styles.input, styles.row6]}
-                    selectedValue={edited_tipo_disciplina}
-                    onValueChange={(itemValue) =>
-                      set_edited_tipo_disciplina(itemValue)
-                    }
-                  >
-                    {tipoDisciplinaList.map((item, index) => (
-                      <Picker.Item key={index} label={item} value={item} />
-                    ))}
-                  </Picker>
+                  <View style={[styles.column, styles.row6]}>
+                    <Text>Tipo de disciplina</Text>
+                    <Picker
+                      style={[styles.input]}
+                      selectedValue={edited_tipo_disciplina}
+                      onValueChange={(itemValue) =>
+                        set_edited_tipo_disciplina(itemValue)
+                      }
+                    >
+                      {tipoDisciplinaList.map((item, index) => (
+                        <Picker.Item key={index} label={item} value={item} />
+                      ))}
+                    </Picker>
+                  </View>
                 ) : (
                   <Text style={styles.textLabel}>{item.tipoDisciplina}</Text>
                 )}
 
                 {editing_index === index ? (
-                  <Picker
-                    style={[styles.input, styles.row6]}
-                    placeholder="Coordenadoria"
-                    selectedValue={edited_coordenadoria}
-                    onValueChange={(itemValue) =>
-                      set_edited_coordenadoria(itemValue)
-                    }
-                  >
-                    <Picker.Item
-                      key={"unselectable"}
-                      style={styles.boxBorder}
-                      label={"Selecione um tipo"}
-                      value={0}
-                    />
-                    {coordenadoria_list.map((item, index) => (
+                  <View style={[styles.column, styles.row6]}>
+                    <Text>Coordenadoria</Text>
+                    <Picker
+                      style={[styles.input]}
+                      placeholder="Coordenadoria"
+                      selectedValue={edited_coordenadoria}
+                      onValueChange={(itemValue) =>
+                        set_edited_coordenadoria(itemValue)
+                      }
+                    >
                       <Picker.Item
-                        key={index}
-                        label={item.nome}
-                        value={item.id}
+                        key={"unselectable"}
+                        style={styles.boxBorder}
+                        label={"Selecione um tipo"}
+                        value={0}
                       />
-                    ))}
-                  </Picker>
+                      {coordenadoria_list.map((item, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={item.nome}
+                          value={item.id}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
                 ) : (
                   <Text style={styles.textLabel}>
                     {item.coordenadoria.sigla}
@@ -216,12 +228,25 @@ export default function ConsultarDisciplinas(options: any) {
                 )}
 
                 {editing_index === index ? (
-                  <TouchableOpacity
-                    style={styles.textFocus}
-                    onPress={() => handleSaveEdit(index)}
-                  >
-                    <Text>Salvar</Text>
-                  </TouchableOpacity>
+                  <View style={styles.row}>
+                    <TouchableOpacity
+                      style={styles.textActions}
+                      onPress={() => set_editing_index(null)}
+                    >
+                      <Image
+                        source={require("../../../assets/cancel.png")}
+                        style={styles.iconElement}
+                      />
+                    </TouchableOpacity>
+                    ,
+                    <TouchableOpacity
+                      style={styles.textFocus}
+                      onPress={() => handleSaveEdit(index)}
+                    >
+                      <Text>Salvar</Text>
+                    </TouchableOpacity>
+                    ,
+                  </View>
                 ) : (
                   <>
                     <TouchableOpacity

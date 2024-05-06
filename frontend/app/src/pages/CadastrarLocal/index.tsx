@@ -77,10 +77,10 @@ const CadastrarLocal = () => {
   const onSubmit = () => {
     if (numeroLocal.trim() !== "") {
       API.post("/locais", {
-        nome: numeroLocal,
+        nomeLocal: numeroLocal,
         capacidade: capacidade,
         observacao: observacoes,
-        equipamentos: equipamentos_local,
+        locaisEquipamentos: equipamentos_local,
       }).then((response: any) => {
         setCapacidade("");
         setObservacoes("");

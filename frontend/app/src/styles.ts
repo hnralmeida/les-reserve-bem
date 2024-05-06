@@ -44,6 +44,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "flex-start",
   },
+  contentBigger: {
+    width: "75%",
+    alignSelf: "center",
+    justifyContent: "flex-start",
+  },
   spaced: {
     width: "100%",
     justifyContent: "space-between",
@@ -122,7 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     padding: 20,
     borderRadius: 10,
-    width: "25%",
+    width: "35%",
   },
   modalTitle: {
     fontSize: 18,
@@ -169,6 +174,7 @@ const styles = StyleSheet.create({
   edgeButton: {
     flexDirection: "row",
     justifyContent: "flex-end",
+    marginLeft: 8
   },
   rowCenter: {
     flexDirection: "row",

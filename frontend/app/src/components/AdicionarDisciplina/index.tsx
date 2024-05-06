@@ -62,7 +62,7 @@ const AdicionarDisciplina = ({
       API.post("/disciplinas", {
         nome: control._formValues.nome,
         sigla: control._formValues.sigla,
-        cargaHorario: control._formValues.cargaHorario,
+        cargaHoraria: control._formValues.cargaHorario,
         tipoDisciplina: control._formValues.tipoDisciplina,
         coordenadoria: cordenadoriaList.filter(
           (item) => item.id == control._formValues.coordenadoria
