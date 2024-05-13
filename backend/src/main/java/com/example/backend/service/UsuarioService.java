@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.backend.dominio.Usuario;
 import com.example.backend.repository.UsuariosRepository;
 
+@Service
 public class UsuarioService {
     @Autowired
     private UsuariosRepository usuarioRepository;

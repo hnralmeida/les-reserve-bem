@@ -18,7 +18,7 @@ public class LocaisController {
     @Autowired
     private LocaisService turmaService;
     private LocaisEquipamentosService locaisEquipamentosService;
-    private Equipamento equipamento;
+    private EquipamentoService equipamentoService;
 
     @PostMapping
     public Locais cadastrarLocais(@RequestBody Locais local, @RequestBody List<LocaisEquipamentos> locaisEquipamentos) {
