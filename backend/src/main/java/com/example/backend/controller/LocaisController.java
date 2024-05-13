@@ -17,7 +17,9 @@ public class LocaisController {
 
     @Autowired
     private LocaisService turmaService;
+    @Autowired
     private LocaisEquipamentosService locaisEquipamentosService;
+    @Autowired
     private EquipamentoService equipamentoService;
 
     @PostMapping
@@ -30,7 +32,7 @@ public class LocaisController {
 
     @GetMapping
     public List<Locais> listarLocais() {
-        return turmaService.listarLocais();
+        return turmaService.listarLocaisComEquipamentos();
     }
 
     @PutMapping("/{id}")

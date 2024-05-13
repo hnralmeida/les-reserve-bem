@@ -1,11 +1,14 @@
 package com.example.backend.dominio;
+
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
 @Table(name = "locais_equipamentos")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocaisEquipamentos {
 
     @Id
@@ -26,5 +29,5 @@ public class LocaisEquipamentos {
 
     @Column(name = "observacao")
     private String observacao;
-    
+
 }
