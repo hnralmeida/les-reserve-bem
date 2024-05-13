@@ -34,9 +34,9 @@ public class LocaisController {
     }
 
     @PutMapping("/{id}")
-    public Locais editarLocais(@PathVariable Long id, @RequestBody Locais turma,
+    public Locais editarLocais(@PathVariable Long id, @RequestBody Locais local,
             @RequestBody List<LocaisEquipamentos> locaisEquipamento, @RequestBody Equipamento equipamento) {
-        return turmaService.editarLocais(id, turma);
+        return turmaService.editarLocais(id, local);
     }
 
     @DeleteMapping("/{id}")
