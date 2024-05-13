@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleSheet, View, Button, Dimensions } from 'react-native';
+import React from "react";
+import { StyleSheet, View, Button, Dimensions } from "react-native";
 
-const { width: screenWidth } = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get("window");
 
 export const colors = {
   primaryColor: "#2F9E41",
@@ -40,11 +40,6 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   content: {
-    width: "50%",
-    alignSelf: "center",
-    justifyContent: "flex-start",
-  },
-  contentBigger: {
     width: "75%",
     alignSelf: "center",
     justifyContent: "flex-start",
@@ -63,7 +58,18 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   title: {},
-  text: {},
+  padmargin:{
+    padding: 8,
+    marginTop: 16,
+  },
+  text: {
+    textDecorationStyle: "double",
+    flexDirection: "row",
+    alignContent: "center",
+    textAlign: "center",
+    justifyContent: "space-between",
+    width: "100%",
+  },
   buttonRow: {
     flexDirection: "row",
     alignSelf: "center",
@@ -73,7 +79,7 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     display: "flex",
-    width: screenWidth > 300 ? 256 : 64, 
+    width: screenWidth > 300 ? 256 : 64,
     height: 48,
     aspectRatio: 1,
     backgroundColor: "green",
@@ -85,7 +91,7 @@ const styles = StyleSheet.create({
   },
   button: {
     display: "flex",
-    width: "50%", 
+    width: "50%",
     height: 48,
     aspectRatio: 1,
     backgroundColor: "green",
@@ -98,7 +104,6 @@ const styles = StyleSheet.create({
   iconElement: {
     width: 32,
     height: 32,
-    marginRight: 8,
   },
   buttonText: {
     width: "100%",
@@ -156,12 +161,14 @@ const styles = StyleSheet.create({
   listBox: {
     flexDirection: "column",
     alignContent: "center",
-    marginVertical: 32,
     padding: 8,
     width: "100%",
     height: "30%",
     borderTopWidth: 2,
     borderTopColor: colors.primaryColor,
+  },
+  marginVertical32: {
+    marginTop: 8,
   },
   listLine: {
     flexDirection: "row",
@@ -174,14 +181,16 @@ const styles = StyleSheet.create({
   edgeButton: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginLeft: 8
+    marginLeft: 8,
   },
   rowCenter: {
+    display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
   centerText: {
+    display: "flex",
     alignContent: "center",
     justifyContent: "center",
     textAlign: "center",
@@ -192,10 +201,18 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   label: {
+    display: "flex",
+    width: "100%",
     marginBottom: 5,
     fontSize: 16,
     fontFamily: "Open Sans",
     opacity: 0.5,
+  },
+  box: {
+    flex: 1,
+    textAlignVertical: "center",
+    height: 48,
+    fontSize: 16,
   },
   boxBorder: {
     borderWidth: 2,
@@ -239,7 +256,7 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   line: {
     borderBottomColor: colors.primaryColor,

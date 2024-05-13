@@ -42,11 +42,15 @@ export default function CadastrarCoordenadoria(options: any) {
   };
 
   const handleDelete = (id: any) => {
-    API.delete("/coordenadorias/" + id).catch((error) => {
-      alert(
-        "Erro ao deletar coordenadoria, provavelmente há disciplinas associadas a ela."
-      );
-    });
+    API.delete("/coordenadorias/" + id)
+      .then(() => {
+        setCordenadoriaList(cordenadoriaList.filter((item) => item.id !== id));
+      })
+      .catch((error) => {
+        alert(
+          "Erro ao deletar coordenadoria, provavelmente há professores e/ou disciplinas associadas a ela."
+        );
+      });
   };
 
   const handleSaveEdit = (index: any) => {
@@ -91,6 +95,16 @@ export default function CadastrarCoordenadoria(options: any) {
             text={"Coordenadoria"}
           />
         </View>
+        <View style={[styles.listLine, styles.padmargin]}>
+          <Image
+            source={require("../../../assets/coordenadorias.png")}
+            style={[styles.iconElement]}
+          />
+          <Text style={[styles.text, styles.row6]}>Coordenadoria</Text>
+          <Text style={[styles.text, styles.row6]}>Sigla</Text>
+          <Text style={[styles.text, styles.row6]}>Ações</Text>
+        </View>
+
         <ScrollView style={styles.listBox}>
           {cordenadoriaList.length > 0 ? (
             cordenadoriaList.map((item: any, index) => (

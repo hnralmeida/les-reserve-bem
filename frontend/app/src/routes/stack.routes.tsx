@@ -12,7 +12,7 @@ import Consultar from "../pages/Consultar";
 import Reservar from "../pages/Reservar";
 
 //ConsultarPages
-import ConsultarLocais from "../pages/ConsultarLocais";
+import ConsultarTurmas from "../pages/ConsultarTurmas";
 import ConsultarProxAula from "../pages/ConsultarProxAula";
 import ConsultarDisciplinas from "../pages/ConsultarDisciplinas";
 import ConsultarAlunos from "../pages/ConsultarAlunos";
@@ -42,7 +42,7 @@ export type RootStackParamList = {
   ConsultarHorarios: undefined;
   ConsultarDisciplinas: undefined;
   ConsultarProxAula: undefined;
-  ConsultarSalas: undefined;
+  ConsultarTurmas: undefined;
   ConsultarAlunos: undefined;
   CadastrarLocal: undefined;
   CadastrarAlunos: undefined;
@@ -69,59 +69,103 @@ export default function RootStack() {
       }}
     >
       <Stack.Screen
-        name="Home"
         component={Home}
+        name="Home"
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Cadastrar"
         component={Cadastrar}
+        name="Cadastrar"
         options={{ headerTitle: "" }}
       />
       <Stack.Screen
-        name="Consultar"
         component={Consultar}
+        name="Consultar"
         options={{ headerTitle: "" }}
       />
       <Stack.Screen
-        name="Reservar"
         component={Reservar}
+        name="Reservar"
         options={{ headerTitle: "" }}
       />
 
       <Stack.Screen
         name="ConsultarAlteracoes"
         component={ConsultarAlteracoes}
+        options={() => ({ title: "Consultar Alteracoes" })}
       />
-      <Stack.Screen name="ConsultarHorarios" component={ConsultarHorarios} />
+      <Stack.Screen
+        name="ConsultarHorarios"
+        component={ConsultarHorarios}
+        options={() => ({ title: "Consultar Horarios" })}
+      />
       <Stack.Screen
         name="ConsultarDisciplinas"
         component={ConsultarDisciplinas}
+        options={() => ({ title: "Consultar Disciplina" })}
       />
-      <Stack.Screen name="ConsultarProxAula" component={ConsultarProxAula} />
-      <Stack.Screen name="ConsultarLocais" component={ConsultarLocais} />
-      <Stack.Screen name="ConsultarAlunos" component={ConsultarAlunos} />
+      <Stack.Screen
+        name="ConsultarProxAula"
+        component={ConsultarProxAula}
+        options={() => ({ title: "Consultar ProxAula" })}
+      />
+      <Stack.Screen
+        name="ConsultarTurmas"
+        component={ConsultarTurmas}
+        options={() => ({ title: "Consultar Turmas" })}
+      />
+      <Stack.Screen
+        name="ConsultarAlunos"
+        component={ConsultarAlunos}
+        options={() => ({ title: "Consultar Alunos" })}
+      />
 
-      <Stack.Screen name="CadastrarLocal" component={CadastrarLocal} />
-      <Stack.Screen name="CadastrarAlunos" component={CadastrarAlunos} />
+      <Stack.Screen
+        name="CadastrarLocal"
+        component={CadastrarLocal}
+        options={() => ({ title: "Cadastrar Local" })}
+      />
+      <Stack.Screen
+        name="CadastrarAlunos"
+        component={CadastrarAlunos}
+        options={() => ({ title: "Cadastrar Alunos" })}
+      />
       <Stack.Screen
         name="CadastrarCoordenadoria"
         component={CadastrarCoordenadoria}
+        options={() => ({ title: "Cadastrar Coordenadoria" })}
       />
       <Stack.Screen
         name="CadastrarCoordenadorTurno"
         component={CadastrarCoordenadorTurno}
+        options={() => ({ title: "Cadastrar Coordenador de Turno" })}
       />
-      <Stack.Screen name="CadastrarPeriodo" component={CadastrarPeriodo} />
+      <Stack.Screen
+        name="CadastrarPeriodo"
+        component={CadastrarPeriodo}
+        options={() => ({ title: "Cadastrar Periodo" })}
+      />
       <Stack.Screen
         name="CadastrarProfessor"
         component={CadastrarProfessor}
-        options={( ) => ({ title: "Cadastrar Professor" })}
+        options={() => ({ title: "Cadastrar Professor" })}
       />
 
-      <Stack.Screen name="ReservarAulas" component={ReservarAulas} />
-      <Stack.Screen name="ReservarEventos" component={ReservarEventos} />
-      <Stack.Screen name="ImportarAulas" component={ImportarAulas} />
+      <Stack.Screen
+        name="ReservarAulas"
+        component={ReservarAulas}
+        options={() => ({ title: "Reservar Aulas" })}
+      />
+      <Stack.Screen
+        name="ReservarEventos"
+        component={ReservarEventos}
+        options={() => ({ title: "Reservar Eventos" })}
+      />
+      <Stack.Screen
+        name="ImportarAulas"
+        component={ImportarAulas}
+        options={() => ({ title: "Importar Aulas" })}
+      />
     </Stack.Navigator>
   );
 }

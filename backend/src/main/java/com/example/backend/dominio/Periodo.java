@@ -24,8 +24,6 @@ public class Periodo {
     @Column(name = "data_fim")
     private Date dataFim;
 
-    @ManyToOne
-    @JoinColumn(name = "coordenadoria_id")
-    private Coordenadoria coordenadoria;
-
+    @Column(name = "nome")
+    private String nome;
 }

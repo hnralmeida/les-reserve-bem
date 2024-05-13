@@ -17,6 +17,7 @@ import AdicionarDisciplina from "../../components/AdicionarDisciplina";
 import { set, useForm } from "react-hook-form";
 import ActivateModalButton from "../../components/ButtonActiveteModal";
 import { tipoDisciplinaList } from "../../types";
+import SaveEdit from "../../components/SaveEdit";
 
 type FormInputs = {
   nome: string;
@@ -123,7 +124,7 @@ export default function ConsultarDisciplinas(options: any) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.contentBigger}>
+      <View style={styles.content}>
         <View style={[styles.rowFlexEnd, styles.marginTop]}>
           <AdicionarDisciplina
             isVisible={isVisible}
@@ -140,7 +141,17 @@ export default function ConsultarDisciplinas(options: any) {
             text={"Disciplina"}
           />
         </View>
-
+        <View style={[styles.listLine, styles.padmargin]}>
+          <Image
+            source={require("../../../assets/coordenadorias.png")}
+            style={[styles.iconElement]}
+          />
+          <Text style={[styles.text, styles.row6]}>Nome</Text>
+          <Text style={[styles.text, styles.row6]}>Sigla</Text>
+          <Text style={[styles.text, styles.row6]}>Currículo</Text>
+          <Text style={[styles.text, styles.row6]}>Coordenadoria</Text>
+          <Text style={[styles.text, styles.row6]}>Ações</Text>
+        </View>
         {/* Lista de professores */}
         <ScrollView style={styles.listBox}>
           {disciplina_list.length > 0 ? (
@@ -162,7 +173,7 @@ export default function ConsultarDisciplinas(options: any) {
                       />
                     </View>,
                     <View style={[styles.column, styles.row6]}>
-                      <Text>Horário</Text>
+                      <Text>Carga Horária</Text>
                       <TextInput
                         style={[styles.input]}
                         value={edited_carga_Horaria}
@@ -178,7 +189,20 @@ export default function ConsultarDisciplinas(options: any) {
 
                 {editing_index === index ? (
                   <View style={[styles.column, styles.row6]}>
-                    <Text>Tipo de disciplina</Text>
+                    <Text>Sigla</Text>
+                    <TextInput
+                      style={[styles.input]}
+                      value={edited_sigla}
+                      onChangeText={set_edited_sigla}
+                    />
+                  </View>
+                ) : (
+                  <Text style={styles.textLabel}>{item.sigla}</Text>
+                )}
+
+                {editing_index === index ? (
+                  <View style={[styles.column, styles.row6]}>
+                    <Text>Tipo</Text>
                     <Picker
                       style={[styles.input]}
                       selectedValue={edited_tipo_disciplina}
@@ -228,25 +252,10 @@ export default function ConsultarDisciplinas(options: any) {
                 )}
 
                 {editing_index === index ? (
-                  <View style={styles.row}>
-                    <TouchableOpacity
-                      style={styles.textActions}
-                      onPress={() => set_editing_index(null)}
-                    >
-                      <Image
-                        source={require("../../../assets/cancel.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableOpacity>
-                    ,
-                    <TouchableOpacity
-                      style={styles.textFocus}
-                      onPress={() => handleSaveEdit(index)}
-                    >
-                      <Text>Salvar</Text>
-                    </TouchableOpacity>
-                    ,
-                  </View>
+                  <SaveEdit
+                    onCancel={() => set_editing_index(null)}
+                    onSave={() => handleSaveEdit(index)}
+                  />
                 ) : (
                   <>
                     <TouchableOpacity

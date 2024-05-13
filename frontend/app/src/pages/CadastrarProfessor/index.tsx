@@ -16,6 +16,7 @@ import { Picker } from "@react-native-picker/picker";
 import { useForm } from "react-hook-form";
 import AdicionarProfessor from "../../components/AdicionarProfessor";
 import ActivateModalButton from "../../components/ButtonActiveteModal";
+import SaveEdit from "../../components/SaveEdit";
 
 type FormInputs = {
   nome: string;
@@ -50,6 +51,7 @@ export default function CadastrarProfessor(options: any) {
 
   useFocusEffect(
     React.useCallback(() => {
+      // Função para carregar os dados iniciais da tela
       API.get("/professores")
         .then((response) => {
           setProfessorList(response.data);
@@ -144,6 +146,16 @@ export default function CadastrarProfessor(options: any) {
             text={"Professor"}
           />
         </View>
+        <View style={[styles.listLine, styles.padmargin]}>
+          <Image
+            source={require("../../../assets/professores.png")}
+            style={[styles.iconElement]}
+          />
+          <Text style={[styles.text, styles.row6]}>Nome</Text>
+          <Text style={[styles.text, styles.row6]}>Matricula</Text>
+          <Text style={[styles.text, styles.row6]}>Email</Text>
+          <Text style={[styles.text, styles.row6]}>Ações</Text>
+        </View>
 
         {/* Lista de professores */}
         <ScrollView style={styles.listBox}>
@@ -195,12 +207,10 @@ export default function CadastrarProfessor(options: any) {
                 )}
 
                 {editingIndex === index ? (
-                  <TouchableOpacity
-                    style={styles.textFocus}
-                    onPress={() => handleSaveEdit(index)}
-                  >
-                    <Text>Salvar</Text>
-                  </TouchableOpacity>
+                  <SaveEdit
+                    onCancel={() => setEditingIndex(null)}
+                    onSave={() => handleSaveEdit(index)}
+                  />
                 ) : (
                   <>
                     <TouchableOpacity

@@ -15,6 +15,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import AdicionarCoordenador from "../../components/AdicionarCoordenadorTurno";
 import ActivateModalButton from "../../components/ButtonActiveteModal";
 import ButtonText from "../../components/ButtonText";
+import SaveEdit from "../../components/SaveEdit";
 
 export default function cadastrarCoordenadorTurno(options: any) {
   const [coordenador_nome, set_coordenador_nome] = useState("");
@@ -95,6 +96,16 @@ export default function cadastrarCoordenadorTurno(options: any) {
             text={"Coordenador"}
           />
         </View>
+        <View style={[styles.listLine, styles.padmargin]}>
+          <Image
+            source={require("../../../assets/turno.png")}
+            style={[styles.iconElement]}
+          />
+          <Text style={[styles.text, styles.row6]}>Nome</Text>
+          <Text style={[styles.text, styles.row6]}>Matricula</Text>
+          <Text style={[styles.text, styles.row6]}>Email</Text>
+          <Text style={[styles.text, styles.row6]}>Ações</Text>
+        </View>
 
         <ScrollView style={styles.listBox}>
           {coordenador_list.length > 0 ? (
@@ -130,9 +141,9 @@ export default function cadastrarCoordenadorTurno(options: any) {
                 )}
 
                 {editing_index === index ? (
-                  <ButtonText
-                    handle={() => handleSaveEdit(index)}
-                    text="Salvar"
+                  <SaveEdit
+                    onCancel={() => set_editing_index(null)}
+                    onSave={() => handleSaveEdit(index)}
                   />
                 ) : (
                   <>

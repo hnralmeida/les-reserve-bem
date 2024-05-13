@@ -4,14 +4,15 @@ class functionLib {
 
     // converte data gerada por Datejs para data em formato legível
     toDate(data: any) {
+        console.log(data);
         // Obtenha os componentes de data (dia, mês, ano) da data
-        const dia = data.date();
-        const mes = data.month() + 1; // Os meses são indexados a partir de 0
-        const ano = data.year();
+        const dia = data.getDate();
+        const mes = data.getMonth() + 1; // Os meses são indexados a partir de 0
+        const ano = data.getFullYear();
 
         // Formate a data e o tempo em um formato legível
         const dataLegivel = `${dia}/${mes}/${ano}`;
-
+        console.log(dataLegivel);
         return dataLegivel;
     }
 

@@ -5,11 +5,12 @@ import styles from "../../styles";
 import { Dayjs } from 'dayjs';
 import DateTimePicker from 'react-native-ui-datepicker';
 import functionLib from '../../services/functions';
+import { UseFormSetValue } from 'react-hook-form';
 
 type Props = {
-    data_evento: Dayjs;
-    set_data_evento: any;
-    label_value?: string;
+    data_evento: Date;
+    set_data_evento: UseFormSetValue<any>;
+    label_value: string;
 }
 
 const InputDate = ({ data_evento, set_data_evento, label_value }: Props) => {
@@ -21,7 +22,7 @@ const InputDate = ({ data_evento, set_data_evento, label_value }: Props) => {
     const handleDateChange = (date: any) => {
         setDatePickerVisibility(false)
         const data = date.date;
-        label_value ? set_data_evento(label_value, data) : set_data_evento(data);
+        set_data_evento(label_value, data)
     };
 
     return (
@@ -34,7 +35,7 @@ const InputDate = ({ data_evento, set_data_evento, label_value }: Props) => {
             >
                 <DateTimePicker
                     mode="single"
-                    date={data_evento}
+                    date={new Date(data_evento)}
                     onChange={handleDateChange}
                 />
             </Modal>
@@ -45,7 +46,7 @@ const InputDate = ({ data_evento, set_data_evento, label_value }: Props) => {
                 <Text
                     style={styles.textLabel}
                 >
-                    {utils.toDate(data_evento)}
+                    {utils.toReadableDate(data_evento)}
                 </Text>
             </TouchableHighlight>
         </>

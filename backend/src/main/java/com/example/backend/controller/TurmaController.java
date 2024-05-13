@@ -16,7 +16,7 @@ import com.example.backend.dominio.Turma;
 import com.example.backend.service.TurmaService;
 
 @RestController
-@RequestMapping("/Turmas")
+@RequestMapping("/turmas")
 public class TurmaController {
     
     @Autowired

@@ -59,15 +59,15 @@ export default function Consultar({ navigation }: Props) {
             <View style={styles.buttonRow}>
                 <TouchableHighlight
                     style={[styles.buttonHome, styles.squareButton]}
-                    onPress={() => navigation.navigate("ConsultarLocais")}
+                    onPress={() => navigation.navigate("ConsultarTurmas")}
                     underlayColor="#2F9E41"
                 >
                     <>
                         <Image
-                            source={require('../../../assets/salas.png')}
+                            source={require('../../../assets/turmas.png')}
                             style={styles.buttonImageHome}
                         />
-                        <Text style={styles.buttonText}>Locais</Text>
+                        <Text style={styles.buttonText}>Turmas</Text>
                     </>
                 </TouchableHighlight>
 
