@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.backend.dominio.Coordenador;
 
 @Repository
-public interface CoordenadoresRepository extends JpaRepository<Coordenador, Long> {
+public interface CoordenadorRepository extends JpaRepository<Coordenador, Long> {
 
 }

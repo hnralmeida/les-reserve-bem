@@ -6,30 +6,32 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.backend.dominio.Coordenador;
-import com.example.backend.repository.CoordenadoresRepository;
+import com.example.backend.repository.CoordenadorRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CoordenadorService {
     @Autowired
-    private CoordenadoresRepository coordenadoresRepository;
+    private CoordenadorRepository coordenadorRepository;
 
     public Coordenador cadastrarCoordenador(Coordenador coordenador) {
-        return coordenadoresRepository.save(coordenador);
+        return coordenadorRepository.save(coordenador);
     }
 
     public List<Coordenador> listarCoordenador() {
-        return coordenadoresRepository.findAll();
+        return coordenadorRepository.findAll();
     }
 
     public Optional<Coordenador> encontrarCoordenadoresPorId(Long id) {
-        return coordenadoresRepository.findById(id);
+        return coordenadorRepository.findById(id);
     }
 
     public Coordenador editarCoordenador(Long id, Coordenador coordenador) {
         coordenador.setId(id);
-        return coordenadoresRepository.save(coordenador);
+        return coordenadorRepository.save(coordenador);
     }
 
     public void excluirCoordenadores(Long id) {
-        coordenadoresRepository.deleteById(id);
+        coordenadorRepository.deleteById(id);
     }
 }
