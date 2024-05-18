@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.backend.dominio.Coordenador;
 import com.example.backend.repository.CoordenadorRepository;
-import org.springframework.stereotype.Service;
 
 @Service
 public class CoordenadorService {
