@@ -6,7 +6,10 @@ import java.util.*;
 
 @Entity
 @Table(name = "locais")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class Locais {
 
@@ -24,9 +27,7 @@ public class Locais {
     @Column(name = "observacao")
     private String observacao;
 
-    @OneToMany(mappedBy = "local")
-    private Set<LocaisEquipamentos> locaisEquipamentos;
-
-
+    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<LocaisEquipamentos> locaisEquipamentos = new HashSet<>();
 
 }
