@@ -13,7 +13,7 @@ import API from "../../services/API";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import AdicionarProfessor from "../../components/AdicionarProfessor";
 import ActivateModalButton from "../../components/ButtonActiveteModal";
 import SaveEdit from "../../components/SaveEdit";
@@ -22,6 +22,7 @@ type FormInputs = {
   nome: string;
   matricula: string;
   coordenadoria: string;
+  email: string;
 };
 
 export default function CadastrarProfessor(options: any) {
@@ -37,6 +38,7 @@ export default function CadastrarProfessor(options: any) {
       nome: "",
       matricula: "",
       coordenadoria: "",
+      email: "",
     },
   });
   const [isVisible, setIsVisible] = useState(false);
@@ -47,6 +49,7 @@ export default function CadastrarProfessor(options: any) {
   const [editingIndex, setEditingIndex] = useState(null); // Estado para rastrear o índice do item sendo editado
   const [editedName, setEditedName] = useState(""); // Estado para armazenar o nome editado
   const [editedMatricula, setEditedMatricula] = useState("");
+  const [editedEmail, setEditedEmail] = useState("");
   const [editedCoordenadoria, setEditedCoordenadoria] = useState(0); // Estado para armazenar o nome editado
 
   useFocusEffect(
@@ -64,36 +67,12 @@ export default function CadastrarProfessor(options: any) {
     }, [])
   );
 
-  const handleRegister = () => {
-    if (
-      control._formValues.nome.trim() !== "" &&
-      control._formValues.matricula.trim() !== ""
-    ) {
-      API.post("/professores", {
-        nome: control._formValues.nome,
-        coordenadoria_id: Number(control._formValues.coordenadoria),
-        matricula: control._formValues.matricula,
-      }).then((response: any) => {
-        setValue("nome", "");
-        setValue("matricula", "");
-        console.log(response.data);
-        professorList.push(response.data[0]);
-      });
-    }
-    if (control._formValues.matricula.trim() == "") {
-      Alert.alert(
-        "Campo vazio",
-        "Matricula do professor não pode estar vazia."
-      );
-    }
-    if (control._formValues.nome.trim() == "") {
-      Alert.alert("Campo vazio", "Nome do professor não pode estar vazio.");
-    }
-  };
-
   const handleEdit = (index: any) => {
     setEditingIndex(index); // Atualiza o índice do item sendo editado
-    setEditedName(professorList[index].nome); // Preenche o campo de edição com o nome atual do item
+    setValue("nome", professorList[index].nome); // Preenche o campo de edição com o nome atual do item
+    setValue("matricula", professorList[index].matricula);
+    setValue("email", professorList[index].email);
+    setValue("coordenadoria", professorList[index].coordenadoria?professorList[index].coordenadoria.id:null);
   };
 
   const handleDelete = (id: any) => {
@@ -108,17 +87,30 @@ export default function CadastrarProfessor(options: any) {
       ? setEditedCoordenadoria(professorList[index].coordenadoria_id)
       : true;
 
-    if (editedName.trim() !== "") {
+    if (control._formValues.nome.trim() !== "") {
       API.put("/professores/" + professorList[index].id, {
-        nome: editedName,
-        coordenadoria_id: editedCoordenadoria,
+        nome: control._formValues.nome,
+        matricula: control._formValues.matricula,
+        coordenadoria: coordenadoriaList.filter(
+          (item) =>
+            Number(item.id) === Number(control._formValues.coordenadoria)
+        )[0],
+        email: control._formValues.email,
       }).then(() => {
-        setValue("nome", "");
-        professorList[index].nome = editedName; // Atualiza o nome do item na lista
-        professorList[index].coordenadoria_id = editedCoordenadoria; // Atualiza o nome do item na lista
+        professorList[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
+        professorList[index].coordenadoria = coordenadoriaList.filter(
+          (item) =>
+            Number(item.id) === Number(control._formValues.coordenadoria)
+        )[0]; // Atualiza o nome do item na lista
+        professorList[index].matricula = control._formValues.matricula;
+        professorList[index].email = control._formValues.email;
 
+        setValue("nome", "");
+        setValue("matricula", "");
+        setValue("email", "");
+        setValue("coordenadoria", "");
+        
         setEditingIndex(null); // Limpa o índice do item sendo editado
-        setEditedName(""); // Limpa o nome editado
       });
     } else {
       // Handle empty equipment name
@@ -154,6 +146,7 @@ export default function CadastrarProfessor(options: any) {
           <Text style={[styles.text, styles.row6]}>Nome</Text>
           <Text style={[styles.text, styles.row6]}>Matricula</Text>
           <Text style={[styles.text, styles.row6]}>Email</Text>
+          <Text style={[styles.text, styles.row6]}>Coordenadoria</Text>
           <Text style={[styles.text, styles.row6]}>Ações</Text>
         </View>
 
@@ -170,17 +163,40 @@ export default function CadastrarProfessor(options: any) {
                 {editingIndex === index ? (
                   <TextInput
                     style={styles.input}
-                    value={editedName}
-                    onChangeText={setEditedName}
+                    value={watch("nome")}
+                    onChangeText={(text) => setValue("nome", text)}
                   />
                 ) : (
                   <Text style={styles.textLabel}>{item.nome}</Text>
                 )}
+
+                {editingIndex === index ? (
+                  <TextInput
+                    style={styles.input}
+                    value={watch("matricula")}
+                    onChangeText={(text) => setValue("matricula", text)}
+                  />
+                ) : (
+                  <Text style={styles.textLabel}>{item.matricula}</Text>
+                )}
+
+                {editingIndex === index ? (
+                  <TextInput
+                    style={styles.input}
+                    value={watch("email")}
+                    onChangeText={(text) => setValue("email", text)}
+                  />
+                ) : (
+                  <Text style={styles.textLabel}>{item.email}</Text>
+                )}
+
                 {editingIndex === index ? (
                   <Picker
                     placeholder="Coordenadoria"
+                    style={styles.input}
+                    selectedValue={watch("coordenadoria")}
                     onValueChange={(itemValue: string) => {
-                      setEditedCoordenadoria(Number(itemValue));
+                      setValue("coordenadoria", itemValue);
                     }}
                   >
                     <Picker.Item
@@ -198,11 +214,9 @@ export default function CadastrarProfessor(options: any) {
                   </Picker>
                 ) : (
                   <Text style={styles.textLabel}>
-                    {
-                      coordenadoriaList.find(
-                        (obj) => Number(obj.id) == Number(item.coordenadoria_id)
-                      )?.nome
-                    }
+                    {item.coordenadoria
+                      ? item.coordenadoria.nome
+                      : "Sem coordenadoria"}
                   </Text>
                 )}
 

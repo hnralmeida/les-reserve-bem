@@ -12,7 +12,7 @@ public class Locais {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id_locais")
     private long id;
 
     @Column(name = "nome_Local")
@@ -24,9 +24,8 @@ public class Locais {
     @Column(name = "observacao")
     private String observacao;
 
-    @OneToMany(mappedBy = "local")
+    @OneToMany
+    @JoinColumn(name="id_locais")
     private Set<LocaisEquipamentos> locaisEquipamentos;
-
-
 
 }
