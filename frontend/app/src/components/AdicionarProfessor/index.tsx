@@ -57,6 +57,7 @@ const AdicionarProfessor = ({
         setValue("nome", "");
         console.log(response.data);
         professorList.push(response.data);
+        onClose();
       });
     } else {
       // Handle empty equipment name

@@ -30,10 +30,10 @@ public class Aula {
     private Turma turma;
 
     @Column(name = "hora_inicio")
-    private Date horaInicio;
+    private String horaInicio;
 
     @Column(name = "hora_fim")
-    private Date horaFim;
+    private String horaFim;
 
     @OneToMany(mappedBy = "aula")
     private List<AulaAluno> alunos;

@@ -15,7 +15,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 import { set, useForm } from "react-hook-form";
 import AdicionarProfessor from "../../components/AdicionarProfessor";
-import ActivateModalButton from "../../components/ButtonActiveteModal";
+import ActivateModalButton from "../../components/ButtonAddModal";
 import SaveEdit from "../../components/SaveEdit";
 
 type FormInputs = {
@@ -47,10 +47,6 @@ export default function CadastrarProfessor(options: any) {
   const [professorList, setProfessorList] = useState<any[]>([]);
 
   const [editingIndex, setEditingIndex] = useState(null); // Estado para rastrear o índice do item sendo editado
-  const [editedName, setEditedName] = useState(""); // Estado para armazenar o nome editado
-  const [editedMatricula, setEditedMatricula] = useState("");
-  const [editedEmail, setEditedEmail] = useState("");
-  const [editedCoordenadoria, setEditedCoordenadoria] = useState(0); // Estado para armazenar o nome editado
 
   useFocusEffect(
     React.useCallback(() => {
@@ -82,10 +78,6 @@ export default function CadastrarProfessor(options: any) {
   };
 
   const handleSaveEdit = (index: any) => {
-    // Aqui você pode adicionar lógica para salvar as alterações feitas no nome da coorde
-    !editedCoordenadoria
-      ? setEditedCoordenadoria(professorList[index].coordenadoria_id)
-      : true;
 
     if (control._formValues.nome.trim() !== "") {
       API.put("/professores/" + professorList[index].id, {

@@ -49,8 +49,8 @@ const AdicionarCoordenador = ({
         // matricula: control._formValues.matricula,
       }).then((response: any) => {
         setValue("nome", "");
-        console.log(response.data);
         coordenadorList.push(response.data);
+        onClose();
       });
     } else {
       // Handle empty equipment name

@@ -16,19 +16,6 @@ class functionLib {
         return dataLegivel;
     }
 
-    // Converte data do formado DD/MM/YYYY para Dayjs
-    toDayjs(data:any) {
-        // Divide a string da data em dia, mês e ano
-        const [dia, mes, ano] = data.split('/');
-    
-        // Formata a data para o formato ISO YYYY-MM-DD e cria um objeto Day.js
-        const dataFormatada = `${ano}-${mes}-${dia}`;
-        const dataDayjs = dayjs(dataFormatada);
-    
-        return dataDayjs;
-    }
-
-
     // converte data de ISO string para data em formato DD/MM/YYYY
     toReadableDate(data: any) {
         const date = new Date(data);
@@ -37,6 +24,11 @@ class functionLib {
 
     toHours(obj: any) {
         return `${obj.h}:${obj.m}`
+    }
+    //recebe data no formato DATE e hora e minutos e retorna data e hora concatenadas
+    concatenaDataHora(data: any, hora: any) {
+        data = data.toISOString().split('T')[0];
+        return `${data}T${hora}:00`;
     }
 
     arrayAulas() {

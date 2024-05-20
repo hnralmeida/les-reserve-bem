@@ -73,8 +73,8 @@ const AdicionarDisciplina = ({
         setValue("cargaHorario", "");
         setValue("tipoDisciplina", "");
         setValue("coordenadoria", "");
-        console.log(response.data);
         disciplinaList.push(response.data);
+        onClose();
       });
     } else {
       // Handle empty equipment name

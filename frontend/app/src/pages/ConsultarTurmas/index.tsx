@@ -13,7 +13,7 @@ import React from "react";
 import API from "../../services/API";
 import { set, useForm } from "react-hook-form";
 import AdicionarTurma from "../../components/AdicionarTurma";
-import ActivateModalButton from "../../components/ButtonActiveteModal";
+import ActivateModalButton from "../../components/ButtonAddModal";
 import SaveEdit from "../../components/SaveEdit";
 
 type FormInputs = {

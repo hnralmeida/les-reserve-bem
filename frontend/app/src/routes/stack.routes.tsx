@@ -15,7 +15,7 @@ import Reservar from "../pages/Reservar";
 import ConsultarTurmas from "../pages/ConsultarTurmas";
 import ConsultarProxAula from "../pages/ConsultarProxAula";
 import ConsultarDisciplinas from "../pages/ConsultarDisciplinas";
-import ConsultarAlunos from "../pages/ConsultarAlunos";
+import ConsultarEventos from "../pages/ConsultarEventos";
 import ConsultarAlteracoes from "../pages/ConsultarAlteracoes";
 import ConsultarHorarios from "../pages/ConsultarHorarios";
 
@@ -43,7 +43,7 @@ export type RootStackParamList = {
   ConsultarDisciplinas: undefined;
   ConsultarProxAula: undefined;
   ConsultarTurmas: undefined;
-  ConsultarAlunos: undefined;
+  ConsultarEventos: undefined;
   CadastrarLocal: undefined;
   CadastrarAlunos: undefined;
   CadastrarCoordenadoria: undefined;
@@ -115,9 +115,9 @@ export default function RootStack() {
         options={() => ({ title: "Consultar Turmas" })}
       />
       <Stack.Screen
-        name="ConsultarAlunos"
-        component={ConsultarAlunos}
-        options={() => ({ title: "Consultar Alunos" })}
+        name="ConsultarEventos"
+        component={ConsultarEventos}
+        options={() => ({ title: "Consultar Eventos" })}
       />
 
       <Stack.Screen

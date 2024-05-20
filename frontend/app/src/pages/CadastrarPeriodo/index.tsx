@@ -17,7 +17,7 @@ import functionLib from "../../services/functions";
 import ButtonText from "../../components/ButtonText";
 import SaveEdit from "../../components/SaveEdit";
 import { useForm } from "react-hook-form";
-import ActivateModalButton from "../../components/ButtonActiveteModal";
+import ActivateModalButton from "../../components/ButtonAddModal";
 import AdicionarCoordenadoria from "../../components/AdicionarCoordenadoria";
 import AdicionarPeriodo from "../../components/AdicionarPeriodo";
 

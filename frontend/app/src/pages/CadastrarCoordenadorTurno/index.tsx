@@ -15,7 +15,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 import { set, useForm } from "react-hook-form";
 import AdicionarCoordenador from "../../components/AdicionarCoordenador";
-import ActivateModalButton from "../../components/ButtonActiveteModal";
+import ActivateModalButton from "../../components/ButtonAddModal";
 import SaveEdit from "../../components/SaveEdit";
 
 type FormInputs = {

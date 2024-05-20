@@ -113,6 +113,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  buttonText_hover: {
+    width: "100%",
+    alignSelf: "center",
+    textAlign: "center",
+    color: "white",
+    backgroundColor: "blue",
+    fontSize: 18,
+    fontWeight: "900",
+  },
   Page: {
     width: 58,
     height: 58,

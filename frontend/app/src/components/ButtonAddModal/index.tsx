@@ -20,7 +20,7 @@ export default function ActivateModalButton({
       <View style={[styles.row, {margin: 0}]}>
         <Image
           source={require("../../../assets/plus.png")}
-          style={styles.iconElement}
+          style={[styles.iconElement, {marginRight: 16}]}
         />
         <Text style={styles.buttonText}>{text}</Text>
       </View>
