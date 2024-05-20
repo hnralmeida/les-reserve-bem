@@ -1,6 +1,5 @@
 package com.example.backend.dominio;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 

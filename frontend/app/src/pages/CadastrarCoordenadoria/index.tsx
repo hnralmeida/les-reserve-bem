@@ -14,7 +14,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
 import AdicionarCoordenadoria from "../../components/AdicionarCoordenadoria";
 import { set } from "react-hook-form";
-import ActivateModalButton from "../../components/ButtonActiveteModal";
+import ActivateModalButton from "../../components/ButtonAddModal";
 import ButtonText from "../../components/ButtonText";
 
 export default function CadastrarCoordenadoria(options: any) {

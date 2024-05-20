@@ -17,6 +17,9 @@ import functionLib from "../../services/functions";
 import ButtonText from "../../components/ButtonText";
 import SaveEdit from "../../components/SaveEdit";
 import { useForm } from "react-hook-form";
+import ActivateModalButton from "../../components/ButtonAddModal";
+import AdicionarCoordenadoria from "../../components/AdicionarCoordenadoria";
+import AdicionarPeriodo from "../../components/AdicionarPeriodo";
 
 type FormInputs = {
   id: string;
@@ -28,6 +31,8 @@ type FormInputs = {
 export default function CadastrarPeriodo(options: any) {
   const [periodo_list, set_periodo_list] = useState<any[]>([]);
   const [editing_index, set_editing_index] = useState(null); // Estado para rastrear o índice do item sendo editado
+  const [modal_visible, set_modal_visible] = useState(false);
+
   // input
   const {
     register,
@@ -81,13 +86,13 @@ export default function CadastrarPeriodo(options: any) {
         dataFim: control._formValues.dataFim,
       }).then(() => {
         periodo_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
-        periodo_list[index].dataInicio = control._formValues.dataInicio; 
-        periodo_list[index].dataFim = control._formValues.dataFim; 
+        periodo_list[index].dataInicio = control._formValues.dataInicio;
+        periodo_list[index].dataFim = control._formValues.dataFim;
 
         set_editing_index(null); // Limpa o índice do item sendo editado
-        setValue("nome", "")
-        setValue("dataInicio", new Date())
-        setValue("dataFim", new Date())
+        setValue("nome", "");
+        setValue("dataInicio", new Date());
+        setValue("dataFim", new Date());
       });
     } else {
       // Handle empty equipment name
@@ -98,7 +103,23 @@ export default function CadastrarPeriodo(options: any) {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        
+        <View style={[styles.rowFlexEnd, styles.marginTop]}>
+          <AdicionarPeriodo
+            isVisible={modal_visible}
+            setIsVisible={set_modal_visible}
+            onClose={() => set_modal_visible(!modal_visible)}
+            control={control}
+            watch={watch}
+            setValue={setValue}
+            periodoList={periodo_list}
+          />
+          <ActivateModalButton
+            modal_visible={modal_visible}
+            set_modal_visible={set_modal_visible}
+            text={"Periodo"}
+          />
+        </View>
+
         <View style={[styles.listLine, styles.padmargin]}>
           <Image
             source={require("../../../assets/professores.png")}
@@ -124,7 +145,7 @@ export default function CadastrarPeriodo(options: any) {
                       <TextInput
                         style={styles.boxBorder}
                         value={watch("nome")}
-                        onChangeText={text => setValue("nome", text)}
+                        onChangeText={(text) => setValue("nome", text)}
                       />,
                       <InputDate
                         data_evento={watch("dataInicio")}

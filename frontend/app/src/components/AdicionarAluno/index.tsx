@@ -15,36 +15,46 @@ import {
 import styles from "../../styles";
 import API from "../../services/API";
 import ModalComponent from "../modal";
+import { Control, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { Picker } from "@react-native-picker/picker";
 
 type Props = {
   isVisible: boolean;
   setIsVisible: Dispatch<SetStateAction<boolean>>;
   onClose: () => void;
-  alunoNome: string;
-  setalunoNome: React.Dispatch<React.SetStateAction<string>>; 
+  watch: UseFormWatch<any>;
+  control: Control<any>;
+  setValue: UseFormSetValue<any>;
+  coordenadoriaList: any[];
   alunoList: any[];
-  setAlunoList: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 const AdicionarAluno = ({
   isVisible,
   setIsVisible,
   onClose,
-  alunoNome,
-  setalunoNome, 
+  watch,
+  control,
+  setValue,
+  coordenadoriaList,
   alunoList,
-  setAlunoList
 }: Props) => {
-
   const handleRegister = () => {
     // Check if the equipment name is not empty before registering
-    if (alunoNome.trim() !== "") {
+    console.log(control._formValues)
+    if (control._formValues.nome.trim() !== "") {
       API.post("/alunos", {
-        nome: alunoNome,
+        nome: control._formValues.nome,
+        matricula: control._formValues.matricula,
+        email: control._formValues.email,
+        coordenadoria: coordenadoriaList.filter(
+          (item) =>
+            Number(item.id) === Number(control._formValues.coordenadoria)
+        )[0],
       }).then((response: any) => {
-        setalunoNome("");
-        console.log(response.data);
-        alunoList.push(response.data[0]);
+        alunoList.push(response.data);
+        setValue("nome", "");
+        onClose();
       });
     } else {
       // Handle empty equipment name
@@ -53,21 +63,59 @@ const AdicionarAluno = ({
   };
 
   return (
-    <ModalComponent isVisible={isVisible} setIsVisible={setIsVisible} onClose={onClose}>
+    <ModalComponent
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
+      onClose={onClose}
+    >
       <>
-          <Text style={styles.title}>Nome da aluno</Text>
-          <TextInput
-            style={styles.boxBorder}
-            placeholder="Nome da aluno"
-            value={alunoNome}
-            onChangeText={(text) => setalunoNome(text)}
-          />
+        <Text style={styles.title}>Nome do Aluno</Text>
+        <TextInput
+          style={styles.boxBorder}
+          placeholder="Nome do Aluno"
+          value={watch("nome")}
+          onChangeText={(text) => setValue("nome", text)}
+        />
 
-          <View style={styles.rowCenter}>
-            <TouchableOpacity style={styles.button} onPress={handleRegister}>
-              <Text style={styles.buttonText}>Salvar</Text>
-            </TouchableOpacity>
-          </View>
+        <Text style={styles.title}>Matricula do Aluno</Text>
+        <TextInput
+          style={styles.boxBorder}
+          placeholder="Matricula do Aluno"
+          value={watch("matricula")}
+          onChangeText={(text) => setValue("matricula", text)}
+        />
+
+        <Text style={styles.title}>Email</Text>
+        <TextInput
+          style={styles.boxBorder}
+          placeholder="Email"
+          value={watch("email")}
+          onChangeText={(text) => setValue("email", text)}
+        />
+        <Text style={styles.title}>Curso</Text>
+        <Picker
+          style={styles.boxBorder}
+          placeholder="Coordenadoria"
+          onValueChange={(itemValue: string) => {
+            setValue("coordenadoria", itemValue);
+          }}
+        >
+          <Picker.Item
+            key={"unselectable"}
+            style={styles.boxBorder}
+            label={"Selecione uma coordenadoria"}
+            value={0}
+          />
+          {coordenadoriaList.map((item, index) => (
+            <Picker.Item key={index} label={item.nome} value={item.id} />
+          ))}
+        </Picker>
+
+        <View style={styles.rowCenter}>
+          <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <Text style={styles.buttonText}>Salvar</Text>
+          </TouchableOpacity>
+        </View>
       </>
     </ModalComponent>
   );

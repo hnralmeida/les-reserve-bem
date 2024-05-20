@@ -8,92 +8,114 @@ import {
   Image,
 } from "react-native";
 import styles from "../../styles";
-import React, { useState } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import API from "../../services/API";
 import { ScrollView } from "react-native-gesture-handler";
-import AdicionarCoordenador from "../../components/AdicionarCoordenadorTurno";
-import ActivateModalButton from "../../components/ButtonActiveteModal";
-import ButtonText from "../../components/ButtonText";
+import { useFocusEffect } from "@react-navigation/native";
+import { Picker } from "@react-native-picker/picker";
+import { set, useForm } from "react-hook-form";
+import AdicionarCoordenador from "../../components/AdicionarCoordenador";
+import ActivateModalButton from "../../components/ButtonAddModal";
 import SaveEdit from "../../components/SaveEdit";
 
-export default function cadastrarCoordenadorTurno(options: any) {
-  const [coordenador_nome, set_coordenador_nome] = useState("");
-  const [coordenador_matricula, set_coordeandor_matricula] = useState("");
-  const [modal_visible, set_modal_visible] = useState(false);
+type FormInputs = {
+  nome: string;
+  matricula: string;
+  coordenadoria: string;
+  email: string;
+};
 
-  const msgAlert = "";
+export default function Cadastrarcoordenador(options: any) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: {
+      nome: "",
+      matricula: "",
+      coordenadoria: "",
+      email: "",
+    },
+  });
+  const [isVisible, setIsVisible] = useState(false);
 
-  const [coordenador_list, set_coordenador_list] = useState<any[]>([]);
+  const [coordenadorList, setcoordenadorList] = useState<any[]>([]);
 
-  const [editing_index, set_editing_index] = useState(null);
-  const [edited_nome, set_edited_nome] = useState<string>("");
-  const [edited_matricula, set_edited_matricula] = useState();
+  const [editingIndex, setEditingIndex] = useState(null); // Estado para rastrear o índice do item sendo editado
+  const [editedName, setEditedName] = useState(""); // Estado para armazenar o nome editado
+  const [editedMatricula, setEditedMatricula] = useState("");
+  const [editedEmail, setEditedEmail] = useState("");
+  const [editedCoordenadoria, setEditedCoordenadoria] = useState(0); // Estado para armazenar o nome editado
 
   useFocusEffect(
     React.useCallback(() => {
-      API.get("/coordenadorTurno").then((response) => {
-        set_coordenador_list(response.data);
-      });
+      // Função para carregar os dados iniciais da tela
+      API.get("/coordenadores")
+        .then((response) => {
+          setcoordenadorList(response.data);
+        })
     }, [])
   );
 
-  const handleRegister = () => {
-    if (coordenador_nome.trim() !== "") {
-      API.post("/coordenadorTurno", {
-        nome: coordenador_nome,
-        matricula: coordenador_matricula,
-      }).then((response: any) => {
-        set_coordenador_nome("");
-        set_coordeandor_matricula("");
-        console.log(response.data);
-        coordenador_list.push(response.data[0]);
-      });
-    }
-    if (coordenador_matricula.trim() == "") {
-      const msgAlert = "Matricula não pode ser vazia ";
-    }
-    if (coordenador_nome.trim() == "") {
-      const msgAlert = "Nome não pode ser vazio ";
-    }
-    if (msgAlert.trim() !== "") {
-      Alert.alert("campo Vazio", msgAlert);
-    }
-  };
-
   const handleEdit = (index: any) => {
-    set_editing_index(index);
-    set_edited_nome(coordenador_list[index].nome);
-    set_edited_matricula(coordenador_list[index].matricula);
+    setEditingIndex(index); // Atualiza o índice do item sendo editado
+    setValue("nome", coordenadorList[index].nome); // Preenche o campo de edição com o nome atual do item
+    setValue("matricula", coordenadorList[index].matricula);
+    setValue("email", coordenadorList[index].email);
   };
 
   const handleDelete = (id: any) => {
-    API.delete("/coordenadorTurno" + id).then(() => {
-      set_coordenador_list(coordenador_list.filter((item) => item.id !== id));
+    API.delete("/coordenadores/" + id).then(() => {
+      setcoordenadorList(coordenadorList.filter((item) => item.id !== id));
     });
   };
 
-  const handleSaveEdit = (index: any) => {};
+  const handleSaveEdit = (index: any) => {
+    // Aqui você pode adicionar lógica para salvar as alterações feitas no nome da coordenador
+
+    if (control._formValues.nome.trim() !== "") {
+      API.put("/coordenadores/" + coordenadorList[index].id, {
+        nome: control._formValues.nome,
+        matricula: control._formValues.matricula,
+        email: control._formValues.email,
+      }).then(() => {
+        coordenadorList[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
+        coordenadorList[index].matricula = control._formValues.matricula;
+        coordenadorList[index].email = control._formValues.email;
+
+        setValue("nome", "");
+        setValue("matricula", "");
+        setValue("email", "");
+
+        setEditingIndex(null); // Limpa o índice do item sendo editado
+      });
+    } else {
+      // Handle empty equipment name
+      console.error("coordenador não pode ser vazio.");
+    }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={[styles.rowFlexEnd, styles.marginTop]}>
           <AdicionarCoordenador
-            isVisible={modal_visible}
-            setIsVisible={set_modal_visible}
-            onClose={() => set_modal_visible(!modal_visible)}
-            cordenadorTurnoNome={coordenador_nome}
-            setCordenadorTurnoNome={set_coordenador_nome}
-            cordenadorTurnoList={coordenador_list}
-            setCordenadorTurnoList={set_coordenador_list}
-            coordenadorMatricula={coordenador_matricula}
-            setCoordeandorMatricula={set_coordeandor_matricula}
+            isVisible={isVisible}
+            setIsVisible={setIsVisible}
+            onClose={() => setIsVisible(!isVisible)}
+            watch={watch}
+            control={control}
+            setValue={setValue}
+            coordenadorList={coordenadorList}
           />
           <ActivateModalButton
-            set_modal_visible={set_modal_visible}
-            modal_visible={modal_visible}
-            text={"Coordenador"}
+            set_modal_visible={setIsVisible}
+            modal_visible={isVisible}
+            text={"coordenador"}
           />
         </View>
         <View style={[styles.listLine, styles.padmargin]}>
@@ -107,42 +129,49 @@ export default function cadastrarCoordenadorTurno(options: any) {
           <Text style={[styles.text, styles.row6]}>Ações</Text>
         </View>
 
+        {/* Lista de coordenadores */}
         <ScrollView style={styles.listBox}>
-          {coordenador_list.length > 0 ? (
-            coordenador_list.map((item: any, index) => (
+          {coordenadorList.length > 0 ? (
+            coordenadorList.map((item: any, index) => (
               <View style={styles.listLine} key={index}>
                 <Image
                   source={require("../../../assets/turno.png")}
                   style={styles.iconElement}
                 />
 
-                {editing_index === index ? (
-                  <>
-                    <TextInput
-                      style={styles.input}
-                      value={edited_nome}
-                      onChangeText={(edited_text) =>
-                        set_edited_nome(edited_text)
-                      }
-                    />
-                    <TextInput
-                      style={styles.input}
-                      value={edited_nome}
-                      onChangeText={(edited_text) =>
-                        set_edited_nome(edited_text)
-                      }
-                    />
-                  </>
+                {editingIndex === index ? (
+                  <TextInput
+                    style={styles.input}
+                    value={watch("nome")}
+                    onChangeText={(text) => setValue("nome", text)}
+                  />
                 ) : (
-                  <>
-                    <Text style={styles.textLabel}>{item.nome}</Text>
-                    <Text style={styles.textLabel}>{item.matricula}</Text>
-                  </>
+                  <Text style={styles.textLabel}>{item.nome}</Text>
                 )}
 
-                {editing_index === index ? (
+                {editingIndex === index ? (
+                  <TextInput
+                    style={styles.input}
+                    value={watch("matricula")}
+                    onChangeText={(text) => setValue("matricula", text)}
+                  />
+                ) : (
+                  <Text style={styles.textLabel}>{item.matricula}</Text>
+                )}
+
+                {editingIndex === index ? (
+                  <TextInput
+                    style={styles.input}
+                    value={watch("email")}
+                    onChangeText={(text) => setValue("email", text)}
+                  />
+                ) : (
+                  <Text style={styles.textLabel}>{item.email}</Text>
+                )}
+
+                {editingIndex === index ? (
                   <SaveEdit
-                    onCancel={() => set_editing_index(null)}
+                    onCancel={() => setEditingIndex(null)}
                     onSave={() => handleSaveEdit(index)}
                   />
                 ) : (
@@ -173,7 +202,7 @@ export default function cadastrarCoordenadorTurno(options: any) {
           ) : (
             <View>
               <Text style={styles.centerText}>
-                Nenhuma coordenador de turno cadastrado.
+                Nenhum coordenador cadastrado.
               </Text>
             </View>
           )}

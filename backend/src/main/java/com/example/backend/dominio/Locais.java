@@ -17,7 +17,7 @@ public class Locais {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id_locais")
     private long id;
 
     @Column(name = "nome_Local")

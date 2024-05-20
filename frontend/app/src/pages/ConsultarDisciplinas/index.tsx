@@ -15,7 +15,7 @@ import API from "../../services/API";
 import { Picker } from "@react-native-picker/picker";
 import AdicionarDisciplina from "../../components/AdicionarDisciplina";
 import { set, useForm } from "react-hook-form";
-import ActivateModalButton from "../../components/ButtonActiveteModal";
+import ActivateModalButton from "../../components/ButtonAddModal";
 import { tipoDisciplinaList } from "../../types";
 import SaveEdit from "../../components/SaveEdit";
 

@@ -18,8 +18,10 @@ import API from "../../services/API";
 import ButtonText from "../../components/ButtonText";
 import { useForm } from "react-hook-form";
 import AdicionarLocal from "../../components/AdicionarLocal";
-import ActivateModalButton from "../../components/ButtonActiveteModal";
+import ActivateModalButton from "../../components/ButtonAddModal";
 import SaveEdit from "../../components/SaveEdit";
+import ButtonVisibleModal from "../../components/ButtonVisibleModal";
+import ControleEquipamentos from "../../components/ControleEquipamentos";
 
 interface Equipamento {
   quantidade: string;
@@ -55,6 +57,8 @@ const CadastrarLocal = () => {
   });
 
   const [isVisible, setIsVisible] = useState(false);
+  const [is_equipamentos_visible, set_is_equipamentos_visible] =
+    useState(false);
 
   const [local_list, set_local_list] = useState<any[]>([]);
 
@@ -147,6 +151,7 @@ const CadastrarLocal = () => {
           <Text style={[styles.text, styles.row6]}>Nome</Text>
           <Text style={[styles.text, styles.row6]}>Capacidade</Text>
           <Text style={[styles.text, styles.row6]}>Obsercação</Text>
+          <Text style={[styles.text, styles.row6]}>Equipamentos</Text>
           <Text style={[styles.text, styles.row6]}>Ações</Text>
         </View>
 
@@ -181,6 +186,21 @@ const CadastrarLocal = () => {
                       <Text style={styles.textLabel}>{item.nomeLocal}</Text>,
                       <Text style={styles.textLabel}>{item.capacidade}</Text>,
                       <Text style={styles.textLabel}>{item.observacao}</Text>,
+                      <>
+                        <ButtonVisibleModal
+                          modal_visible={is_equipamentos_visible}
+                          set_modal_visible={set_is_equipamentos_visible}
+                        />
+                        <ControleEquipamentos
+                          isVisible={is_equipamentos_visible}
+                          setIsVisible={set_is_equipamentos_visible}
+                          onClose={() =>
+                            set_is_equipamentos_visible(
+                              !is_equipamentos_visible
+                            )
+                          }
+                        />
+                      </>,
                     ]}
 
                 {editing_index === index ? (
