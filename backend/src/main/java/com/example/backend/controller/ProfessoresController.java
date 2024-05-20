@@ -32,12 +32,12 @@ public class ProfessoresController {
         return professorService.listarProfessor();
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public Professor editarProfessor(@PathVariable Long id, @RequestBody Professor professor) {
         return professorService.editarProfessor(id, professor);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void excluirProfessor(@PathVariable Long id) {
         professorService.excluirProfessor(id);
     }

@@ -48,7 +48,9 @@ const AdicionarCoordenadoria = ({
       }).then((response: any) => {
         setCordenadoriaNome("");
         setCordenadoriaSigla("");
-        console.log(response.data);
+        
+        setIsVisible(false);
+
         cordenadoriaList.push(response.data);
       });
     } else {

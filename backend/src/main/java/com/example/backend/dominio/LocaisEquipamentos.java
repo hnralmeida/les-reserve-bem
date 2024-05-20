@@ -17,7 +17,7 @@ public class LocaisEquipamentos {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_local")
+    @JoinColumn(name = "id_locais")
     private Locais local;
 
     @ManyToOne

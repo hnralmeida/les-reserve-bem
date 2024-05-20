@@ -75,20 +75,20 @@ const AdicionarLocal = ({
         capacidade: control._formValues.capacidade,
         observacao: control._formValues.observacao,
         locaisEquipamentos: equipamentos_local,
-      }).then((response: any) => {
-        setValue("capacidade", "");
-        setValue("observacao", "");
-        setValue("nomeLocal", "");
-        set_equipamentos_local([]);
-
-        // controle de interface
-        localList.push(response.data);  
-        setIsVisible(false);
-      }).catch((error) => {
-        alert(
-          "Erro ao não identificado, contate o suporte."
-        );
       })
+        .then((response: any) => {
+          setValue("capacidade", "");
+          setValue("observacao", "");
+          setValue("nomeLocal", "");
+          set_equipamentos_local([]);
+
+          // controle de interface
+          localList.push(response.data);
+          setIsVisible(false);
+        })
+        .catch((error) => {
+          alert("Erro ao não identificado, contate o suporte.");
+        });
     } else {
       // Handle empty equipment name
       alert("Campos de local não podem estar vazios.");
@@ -96,7 +96,7 @@ const AdicionarLocal = ({
   };
 
   const delete_equip = (index: any) => {
-    console.log(index)
+    console.log(index);
     add_equip
       ? set_add_equip(false)
       : set_equipamentos_local(
@@ -127,7 +127,7 @@ const AdicionarLocal = ({
     }
   };
 
-  const Adicionar_Equipamento = () => {
+  const Label_adicionar_equipamento = () => {
     return (
       <View style={[styles.buttonRowHome, styles.modalInput]}>
         <View style={[styles.marginRight]}>
@@ -153,78 +153,74 @@ const AdicionarLocal = ({
 
   const ViewEquipament_editting = () => {
     return (
-      <>
-        <View style={styles.row}>
-          <View style={[styles.column, styles.numberInput]}>
-            <>
-              <TextInput
-                style={styles.boxBorder}
-                placeholder="Quantidade"
-                value={String(quantidadeEquipamentos)}
-                onChangeText={(target) =>
-                  setQuantidadeEquipamentos(handleInputNumberChange(target))
-                }
-                keyboardType="numeric"
-                maxLength={3}
-              />
-            </>
-          </View>
-          <View style={styles.column}>
-            <Picker
-              selectedValue={equipamentoSelecionado}
-              style={styles.boxBorder}
-              onValueChange={(itemValue: any | null) =>
-                setEquipamentoSelecionado(itemValue)
-              }
-            >
-              <Picker.Item
-                key={"unselectable"}
-                label={"Selecione um Equipamento"}
-                value={0}
-              />
-              {equipamentos_list.map((equipamento) => (
-                <Picker.Item
-                  key={equipamento.id}
-                  label={equipamento.nomeEquipamento}
-                  value={equipamento.id}
-                />
-              ))}
-            </Picker>
-          </View>
-          <View style={styles.column}>
-            <TextInput
-              style={styles.boxBorder}
-              placeholder="Observação"
-              value={observacao}
-              onChangeText={(text) => set_observacao(text)}
-            />
-          </View>
-          <EquipmentModal
-            isVisible={modalVisible}
-            setIsVisible={setModalVisible}
-            onClose={closeModal}
+      <View style={styles.row}>
+        <View style={[styles.column, styles.numberInput]}>
+          <TextInput
+            style={styles.boxBorder}
+            placeholder="Quantidade"
+            value={String(quantidadeEquipamentos)}
+            onChangeText={(target) =>
+              setQuantidadeEquipamentos(handleInputNumberChange(target))
+            }
+            keyboardType="numeric"
+            maxLength={3}
           />
-          <TouchableHighlight onFocus={() => setModalVisible(!modalVisible)}>
-            <Image
-              source={require("../../../assets/settings.png")}
-              style={styles.iconElement}
-            />
-          </TouchableHighlight>
-
-          <TouchableHighlight onPress={delete_equip}>
-            <Image
-              source={require("../../../assets/delete.png")}
-              style={styles.iconElement}
-            />
-          </TouchableHighlight>
-          <TouchableHighlight onPress={adicionarEquipamento}>
-            <Image
-              source={require("../../../assets/save.png")}
-              style={styles.iconElement}
-            />
-          </TouchableHighlight>
         </View>
-      </>
+        <View style={styles.column}>
+          <Picker
+            selectedValue={equipamentoSelecionado}
+            style={styles.boxBorder}
+            onValueChange={(itemValue: any | null) =>
+              setEquipamentoSelecionado(itemValue)
+            }
+          >
+            <Picker.Item
+              key={"unselectable"}
+              label={"Selecione um Equipamento"}
+              value={0}
+            />
+            {equipamentos_list.map((equipamento) => (
+              <Picker.Item
+                key={equipamento.id}
+                label={equipamento.nomeEquipamento}
+                value={equipamento.id}
+              />
+            ))}
+          </Picker>
+        </View>
+        <View style={styles.column}>
+          <TextInput
+            style={styles.boxBorder}
+            placeholder="Observação"
+            value={observacao}
+            onChangeText={(text) => set_observacao(text)}
+          />
+        </View>
+        <EquipmentModal
+          isVisible={modalVisible}
+          setIsVisible={setModalVisible}
+          onClose={closeModal}
+        />
+        <TouchableHighlight onFocus={() => setModalVisible(!modalVisible)}>
+          <Image
+            source={require("../../../assets/settings.png")}
+            style={styles.iconElement}
+          />
+        </TouchableHighlight>
+
+        <TouchableHighlight onPress={delete_equip}>
+          <Image
+            source={require("../../../assets/delete.png")}
+            style={styles.iconElement}
+          />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={adicionarEquipamento}>
+          <Image
+            source={require("../../../assets/save.png")}
+            style={styles.iconElement}
+          />
+        </TouchableHighlight>
+      </View>
     );
   };
 
@@ -310,7 +306,7 @@ const AdicionarLocal = ({
         ) : (
           <>
             <TouchableHighlight onPress={() => set_add_equip(true)}>
-              <Adicionar_Equipamento />
+              <Label_adicionar_equipamento />
             </TouchableHighlight>
           </>
         )}
