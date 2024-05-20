@@ -73,7 +73,12 @@ const CadastrarLocal = () => {
   useFocusEffect(
     React.useCallback(() => {
       API.get("/locais").then((response) => {
-        set_local_list(response.data);
+        const data = response.data;
+        // sort in alphabetical order
+        data.sort((a: any, b: any) => {
+          return a.nomeLocal.localeCompare(b.nomeLocal);
+        });
+        set_local_list(data);
       });
     }, [])
   );
@@ -156,7 +161,7 @@ const CadastrarLocal = () => {
         </View>
 
         <ScrollView style={styles.listBox}>
-          {set_local_list.length > 0 ? (
+          {local_list.length > 0 ? (
             local_list.map((item: any, index) => (
               <View style={styles.listLine} key={index}>
                 <Image
@@ -235,7 +240,7 @@ const CadastrarLocal = () => {
             ))
           ) : (
             <View>
-              <Text style={styles.centerText}>Nenhum Período cadastrado.</Text>
+              <Text style={styles.centerText}>Nenhum local cadastrado.</Text>
             </View>
           )}
         </ScrollView>

@@ -56,7 +56,12 @@ export default function ConsultarEventos(options: any) {
       // Função para carregar os dados iniciais da tela
       API.get("/eventos")
         .then((response) => {
-          set_evento_list(response.data);
+          const data = response.data;
+          // sort in alphabetical order
+          data.sort((a: any, b: any) => {
+            return a.nome.localeCompare(b.nome);
+          });
+          set_evento_list(data);
         })
         .then(() => {
           API.get("/locais").then((response) => {
@@ -150,7 +155,9 @@ export default function ConsultarEventos(options: any) {
                       onChangeText={(text) => setValue("nome", text)}
                     />
                   ) : (
-                    <Text style={[styles.textLabel, styles.row6]}>{item.nome}</Text>
+                    <Text style={[styles.textLabel, styles.row6]}>
+                      {item.nome}
+                    </Text>
                   )}
 
                   {editingIndex === index ? (

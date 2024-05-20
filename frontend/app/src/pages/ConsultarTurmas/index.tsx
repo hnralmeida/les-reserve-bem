@@ -44,7 +44,12 @@ export default function ConsultarTurmas(options: any) {
   useFocusEffect(
     React.useCallback(() => {
       API.get("/turmas").then((response) => {
-        set_turmas_list(response.data);
+        const data = response.data;
+        // sort in alphabetical order
+        data.sort((a: any, b: any) => {
+          return a.nome.localeCompare(b.nome);
+        });
+        set_turmas_list(data);
       });
     }, [])
   );

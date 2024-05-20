@@ -41,7 +41,7 @@ const AdicionarAluno = ({
 }: Props) => {
   const handleRegister = () => {
     // Check if the equipment name is not empty before registering
-    console.log(control._formValues)
+    console.log(control._formValues);
     if (control._formValues.nome.trim() !== "") {
       API.post("/alunos", {
         nome: control._formValues.nome,
@@ -53,7 +53,12 @@ const AdicionarAluno = ({
         )[0],
       }).then((response: any) => {
         alunoList.push(response.data);
+
         setValue("nome", "");
+        setValue("matricula", "");
+        setValue("email", "");
+        setValue("coordenadoria", "");
+
         onClose();
       });
     } else {

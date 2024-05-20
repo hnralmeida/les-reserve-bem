@@ -53,7 +53,12 @@ export default function CadastrarProfessor(options: any) {
       // Função para carregar os dados iniciais da tela
       API.get("/professores")
         .then((response) => {
-          setProfessorList(response.data);
+          const data = response.data;
+          // sort in alphabetical order
+          data.sort((a: any, b: any) => {
+            return a.nome.localeCompare(b.nome);
+          });
+          setProfessorList(data);
         })
         .then(() => {
           API.get("/coordenadorias").then((response) => {
@@ -68,7 +73,12 @@ export default function CadastrarProfessor(options: any) {
     setValue("nome", professorList[index].nome); // Preenche o campo de edição com o nome atual do item
     setValue("matricula", professorList[index].matricula);
     setValue("email", professorList[index].email);
-    setValue("coordenadoria", professorList[index].coordenadoria?professorList[index].coordenadoria.id:null);
+    setValue(
+      "coordenadoria",
+      professorList[index].coordenadoria
+        ? professorList[index].coordenadoria.id
+        : null
+    );
   };
 
   const handleDelete = (id: any) => {
@@ -78,7 +88,6 @@ export default function CadastrarProfessor(options: any) {
   };
 
   const handleSaveEdit = (index: any) => {
-
     if (control._formValues.nome.trim() !== "") {
       API.put("/professores/" + professorList[index].id, {
         nome: control._formValues.nome,
@@ -101,7 +110,7 @@ export default function CadastrarProfessor(options: any) {
         setValue("matricula", "");
         setValue("email", "");
         setValue("coordenadoria", "");
-        
+
         setEditingIndex(null); // Limpa o índice do item sendo editado
       });
     } else {

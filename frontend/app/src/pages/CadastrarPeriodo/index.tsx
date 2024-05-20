@@ -56,7 +56,12 @@ export default function CadastrarPeriodo(options: any) {
     React.useCallback(() => {
       API.get("/periodos")
         .then((response) => {
-          set_periodo_list(response.data);
+          const data = response.data;
+          // sort in alphabetical order
+          data.sort((a: any, b: any) => {
+            return a.nome.localeCompare(b.nome);
+          });
+          set_periodo_list(data);
         })
         .catch((error) => {
           alert("Erro ao carregar os dados. " + error);
@@ -78,7 +83,6 @@ export default function CadastrarPeriodo(options: any) {
   };
 
   const handleSaveEdit = (index: any) => {
-    console.log(control._formValues.dataFim.toISOString());
     if (control._formValues.nome.trim() !== "") {
       API.put("/periodos/" + periodo_list[index].id, {
         nome: control._formValues.nome,

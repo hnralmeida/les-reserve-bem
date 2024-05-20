@@ -54,10 +54,14 @@ export default function Cadastrarcoordenador(options: any) {
   useFocusEffect(
     React.useCallback(() => {
       // Função para carregar os dados iniciais da tela
-      API.get("/coordenadores")
-        .then((response) => {
-          setcoordenadorList(response.data);
-        })
+      API.get("/coordenadores").then((response) => {
+        const data = response.data;
+        // sort in alphabetical order
+        data.sort((a: any, b: any) => {
+          return a.nome.localeCompare(b.nome);
+        });
+        setcoordenadorList(data);
+      });
     }, [])
   );
 

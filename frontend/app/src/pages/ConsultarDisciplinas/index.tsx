@@ -60,7 +60,12 @@ export default function ConsultarDisciplinas(options: any) {
     React.useCallback(() => {
       API.get("/disciplinas")
         .then((response) => {
-          set_disciplina_list(response.data);
+          const data = response.data;
+          // sort in alphabetical order
+          data.sort((a: any, b: any) => {
+            return a.nome.localeCompare(b.nome);
+          });
+          set_disciplina_list(data);
         })
         .then(() => {
           API.get("/coordenadorias").then((response) => {

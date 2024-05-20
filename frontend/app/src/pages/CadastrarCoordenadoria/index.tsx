@@ -30,7 +30,12 @@ export default function CadastrarCoordenadoria(options: any) {
   useFocusEffect(
     React.useCallback(() => {
       API.get("/coordenadorias").then((response) => {
-        setCordenadoriaList(response.data);
+        const data = response.data;
+        // sort in alphabetical order
+        data.sort((a: any, b: any) => {
+          return a.nome.localeCompare(b.nome);
+        });
+        setCordenadoriaList(data);
       });
     }, [])
   );

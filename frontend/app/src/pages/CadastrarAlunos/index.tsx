@@ -52,11 +52,21 @@ export default function CadastrarAluno(options: any) {
       // Função para carregar os dados iniciais da tela
       API.get("/alunos")
         .then((response) => {
-          set_aluno_list(response.data);
+          const data = response.data;
+          // sort in alphabetical order
+          data.sort((a: any, b: any) => {
+            return a.nome.localeCompare(b.nome);
+          });
+          set_aluno_list(data);
         })
         .then(() => {
           API.get("/coordenadorias").then((response) => {
-            set_coordenadoria_list(response.data);
+            const data = response.data;
+            // sort in alphabetical order
+            data.sort((a: any, b: any) => {
+              return a.nome.localeCompare(b.nome);
+            });
+            set_coordenadoria_list(data);
           });
         });
     }, [])
@@ -255,9 +265,7 @@ export default function CadastrarAluno(options: any) {
             ))
           ) : (
             <View>
-              <Text style={styles.centerText}>
-                Nenhum aluno cadastrado.
-              </Text>
+              <Text style={styles.centerText}>Nenhum aluno cadastrado.</Text>
             </View>
           )}
         </ScrollView>
