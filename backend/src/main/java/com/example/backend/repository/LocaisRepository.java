@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LocaisRepository extends JpaRepository<Locais, Long> {
 
-    @Query("SELECT l FROM Locais l JOIN FETCH l.locaisEquipamentos")
+    @Query("SELECT l FROM Locais l JOIN FETCH l.locaisEquipamentos le JOIN FETCH le.equipamento")
 
     List<Locais> findAllWithEquipamentos();
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "locais")
 @Getter
@@ -28,6 +30,7 @@ public class Locais {
     private String observacao;
 
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<LocaisEquipamentos> locaisEquipamentos = new HashSet<>();
 
 }

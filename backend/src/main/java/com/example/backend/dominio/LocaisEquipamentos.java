@@ -1,5 +1,7 @@
 package com.example.backend.dominio;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +20,7 @@ public class LocaisEquipamentos {
 
     @ManyToOne
     @JoinColumn(name = "id_local")
+    @JsonBackReference
     private Locais local;
 
     @ManyToOne
