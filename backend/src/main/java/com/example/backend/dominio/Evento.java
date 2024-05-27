@@ -1,5 +1,7 @@
 package com.example.backend.dominio;
 import jakarta.persistence.*;
+import lombok.*;
+import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +17,11 @@ import java.util.Date;
 public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "evento_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "local_id")
+    @JoinColumn(name = "locais_id")
     private Locais local;
 
     @Column(name = "nome")

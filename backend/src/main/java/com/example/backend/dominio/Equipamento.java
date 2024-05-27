@@ -7,7 +7,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "equipamento")
+@Table(name = "equipamentos")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +23,7 @@ public class Equipamento {
     @Column(name = "nome_equipamento")
     private String nomeEquipamento;
 
-    @OneToMany(mappedBy = "equipamento")
-    private Set<LocaisEquipamentos> locaisEquipamentos;
+//    @OneToMany(mappedBy = "equipamento", fetch = FetchType.LAZY)
+//    private Set<LocaisEquipamentos> locaisEquipamentos;
 
 }

@@ -104,6 +104,8 @@ const AdicionarLocal = ({
             (item, position) => Number(position) !== Number(index)
           )
         );
+        set_observacao("");
+        setEquipamentoSelecionado(null);
   };
 
   const adicionarEquipamento = () => {
@@ -115,13 +117,14 @@ const AdicionarLocal = ({
           observacao: observacao,
           equipamento: equipamentos_list.filter(
             (item) => item.id == equipamentoSelecionado
-          ),
+          )[0],
         },
       ]);
 
       // Resetar o valor selecionado após adicionar o equipamento
       setQuantidadeEquipamentos("0");
       setEquipamentoSelecionado(null);
+      set_observacao("");
       // Fecha o estado de edição
       set_add_equip(false);
     }

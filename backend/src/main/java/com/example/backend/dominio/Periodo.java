@@ -15,7 +15,7 @@ import java.util.Date;
 public class Periodo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "periodo_id")
     private Long id;
 
     @Column(name = "data_inicio")

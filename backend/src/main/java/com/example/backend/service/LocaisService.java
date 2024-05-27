@@ -7,10 +7,7 @@ import com.example.backend.repository.LocaisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class LocaisService {
@@ -21,19 +18,20 @@ public class LocaisService {
     @Autowired
     private EquipamentoService equipamentoService;
 
+    @Autowired
+    private LocaisEquipamentosService locaisEquipamentoService;
+
     public Locais cadastrarLocais(Locais locais) {
-        Set<LocaisEquipamentos> locaisEquipamentos = new HashSet<>();
+        Locais novoLocal = locaisRepository.save(locais);
         for (LocaisEquipamentos le : locais.getLocaisEquipamentos()) {
             Optional<Equipamento> equipamentoOpt = equipamentoService
                     .encontrarEquipamentoPorId(le.getEquipamento().getId());
             if (equipamentoOpt.isPresent()) {
-                le.setLocal(locais);
-                le.setEquipamento(equipamentoOpt.get());
-                locaisEquipamentos.add(le);
+                le.setLocais(novoLocal);
+                locaisEquipamentoService.cadastrarLocaisEquipamentos(le);
             }
         }
-        locais.setLocaisEquipamentos(locaisEquipamentos);
-        return locaisRepository.save(locais);
+        return novoLocal;
     }
 
     public List<Locais> listarLocais() {
@@ -52,12 +50,11 @@ public class LocaisService {
             localExistente.setCapacidade(locais.getCapacidade());
             localExistente.setObservacao(locais.getObservacao());
 
-            Set<LocaisEquipamentos> locaisEquipamentos = new HashSet<>();
+            List<LocaisEquipamentos> locaisEquipamentos = new ArrayList<>();
             for (LocaisEquipamentos le : locais.getLocaisEquipamentos()) {
                 Optional<Equipamento> equipamentoOpt = equipamentoService
                         .encontrarEquipamentoPorId(le.getEquipamento().getId());
                 if (equipamentoOpt.isPresent()) {
-                    le.setLocal(localExistente);
                     le.setEquipamento(equipamentoOpt.get());
                     locaisEquipamentos.add(le);
                 }
@@ -73,6 +70,13 @@ public class LocaisService {
     }
 
     public List<Locais> listarLocaisComEquipamentos() {
-        return locaisRepository.findAllWithEquipamentos();
+        List<Locais> locais = locaisRepository.findAll();
+
+        for (Locais local : locais) {
+            for (LocaisEquipamentos locaisEquipamentos : local.getLocaisEquipamentos()) {
+                Equipamento equipamento = locaisEquipamentos.getEquipamento();
+            }
+        }
+        return locais;
     }
 }

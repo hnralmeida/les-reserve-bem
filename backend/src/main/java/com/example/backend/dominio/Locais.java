@@ -17,7 +17,7 @@ public class Locais {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_locais")
+    @Column(name = "locais_id")
     private long id;
 
     @Column(name = "nome_Local")
@@ -29,8 +29,7 @@ public class Locais {
     @Column(name = "observacao")
     private String observacao;
 
-    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private Set<LocaisEquipamentos> locaisEquipamentos = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy="locais")
+    private List<LocaisEquipamentos> locaisEquipamentos = new ArrayList<>();
 
 }

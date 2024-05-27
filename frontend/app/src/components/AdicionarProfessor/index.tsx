@@ -55,7 +55,10 @@ const AdicionarProfessor = ({
         // matricula: control._formValues.matricula,
       }).then((response: any) => {
         setValue("nome", "");
-        console.log(response.data);
+        setValue("matricula", "");
+        setValue("email", "");
+        setValue("coordenadoria", 0);
+
         professorList.push(response.data);
         onClose();
       });

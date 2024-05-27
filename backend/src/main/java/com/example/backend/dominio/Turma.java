@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "turma")
+@Table(name = "turmas")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 
 public class Turma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "turmas_id")
     private Long id;
 
     @Column(name = "nome")

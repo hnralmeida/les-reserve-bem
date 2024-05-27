@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "professor")
+@Table(name = "professores")
 @PrimaryKeyJoinColumn(name = "id")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Professor extends Usuario{

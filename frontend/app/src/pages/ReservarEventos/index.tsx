@@ -76,11 +76,14 @@ export default function ReservarEventos(options: any) {
     );
 
     API.post("/eventos", {
-      id_local: control._formValues.local,
       nome: control._formValues.nome,
-      descricao: control._formValues.descricao,
+      local: control._formValues.local ? local_list.filter(
+        (item) =>
+          Number(item.id) === Number(control._formValues.local)
+      )[0] : null,
       dataInicio: data_inicio,
       dataFim: data_fim,
+      descricao: control._formValues.descricao,
     }).then(() => {
       control._reset();
     });

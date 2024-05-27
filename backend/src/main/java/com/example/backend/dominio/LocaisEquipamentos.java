@@ -2,6 +2,7 @@ package com.example.backend.dominio;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,14 +19,14 @@ public class LocaisEquipamentos {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_local")
-    @JsonBackReference
-    private Locais local;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_equipamento")
     private Equipamento equipamento;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "locais_id")
+    @JsonProperty(access= JsonProperty.Access.WRITE_ONLY)
+    private Locais locais;
 
     @Column(name = "quantidade")
     private int quantidade;

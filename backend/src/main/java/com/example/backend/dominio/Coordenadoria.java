@@ -5,7 +5,7 @@ import lombok.*;
 
 
 @Entity
-@Table(name = "coordenadoria")
+@Table(name = "coordenadorias")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 
 public class Coordenadoria {

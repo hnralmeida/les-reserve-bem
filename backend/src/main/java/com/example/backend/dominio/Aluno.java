@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "aluno")
+@Table(name = "alunos")
 @PrimaryKeyJoinColumn(name = "id")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Aluno extends Usuario {
