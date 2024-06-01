@@ -44,6 +44,9 @@ public class Aula {
     @Column(name = "hora_fim")
     private String horaFim;
 
+    @Column(name = "dia_semana")
+    private String diaDaSemana;
+
     @OneToMany(mappedBy = "aula")
     private List<AulaAluno> alunos;
     

@@ -201,7 +201,7 @@ export default function ConsultarEventos(options: any) {
                       {locais_list.map((item, index) => (
                         <Picker.Item
                           key={index}
-                          label={item.nome}
+                          label={item.nomeLocal}
                           value={item.id}
                         />
                       ))}
@@ -276,6 +276,7 @@ export default function ConsultarEventos(options: any) {
             </View>
           )}
         </ScrollView>
+        
       </View>
     </View>
   );

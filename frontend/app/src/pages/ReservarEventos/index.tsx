@@ -75,14 +75,25 @@ export default function ReservarEventos(options: any) {
       control._formValues.fim
     );
 
+    console.log(data_inicio, {
+      nome: control._formValues.nome,
+      local: control._formValues.local ? local_list.filter(
+        (item) =>
+          Number(item.id) === Number(control._formValues.local)
+      )[0] : null,
+      dataInicio: new Date(data_inicio),
+      dataFim: new Date(data_fim),
+      descricao: control._formValues.descricao,
+    })
+
     API.post("/eventos", {
       nome: control._formValues.nome,
       local: control._formValues.local ? local_list.filter(
         (item) =>
           Number(item.id) === Number(control._formValues.local)
       )[0] : null,
-      dataInicio: data_inicio,
-      dataFim: data_fim,
+      dataInicio: new Date(data_inicio),
+      dataFim: new Date(data_fim),
       descricao: control._formValues.descricao,
     }).then(() => {
       control._reset();
@@ -121,7 +132,7 @@ export default function ReservarEventos(options: any) {
                   {local_list.map((item, index) => (
                     <Picker.Item
                       key={index}
-                      label={item.nome}
+                      label={item.nomeLocal}
                       value={item.id}
                     />
                   ))}
@@ -142,7 +153,7 @@ export default function ReservarEventos(options: any) {
               <View style={styles.column}>
                 <Text style={styles.label}>Início: </Text>
                 <Picker
-                  onValueChange={(target: any) => setValue("inicio", target)}
+                  onValueChange={(target: any) => [setValue("inicio", target)]}
                   selectedValue={watch("inicio")}
                   style={[styles.boxBorder]}
                 >
@@ -151,9 +162,9 @@ export default function ReservarEventos(options: any) {
                     label={"Selecione um Horário"}
                     value={0}
                   />
-                  {utils.arrayAulas().map((item) => (
+                  {utils.arrayAulas().map((item, key) => (
                     <Picker.Item
-                      key={item.h + item.m}
+                      key={key}
                       label={utils.toHours(item)}
                       value={utils.toHours(item)}
                     />
@@ -164,9 +175,9 @@ export default function ReservarEventos(options: any) {
               <View style={styles.column}>
                 <Text style={styles.label}>Fim: </Text>
                 <Picker
-                  style={[styles.boxBorder]}
-                  selectedValue={watch("fim")}
                   onValueChange={(target: any) => [setValue("fim", target)]}
+                  selectedValue={watch("fim")}
+                  style={[styles.boxBorder]}
                 >
                   <Picker.Item
                     key={"unselectable"}

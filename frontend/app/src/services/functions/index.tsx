@@ -22,6 +22,13 @@ class functionLib {
         return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     }
 
+    // converte data de Iso String para horário
+    toReadableHour(data: any) {
+        const date = new Date(data);
+        console.log(date);
+        return `${date.getHours()}:${date.getMinutes()}`;
+    }
+
     toHours(obj: any) {
         return `${obj.h}:${obj.m}`
     }
@@ -31,18 +38,29 @@ class functionLib {
         return `${data}T${hora}:00`;
     }
 
+    arrayDiasDaSemana () {
+        return [
+            "Segunda-Feira",
+            "Terça-Feira",
+            "Quarta-Feira",
+            "Quinta-Feira",
+            "Sexta-Feira",
+            "Sábado"
+        ]
+    }
+
     arrayAulas() {
         return [
             {
-                h: '7',
+                h: '07',
                 m: '00'
             },
             {
-                h: '7',
+                h: '07',
                 m: '55'
             },
             {
-                h: '8',
+                h: '08',
                 m: '50'
             },
             {

@@ -152,6 +152,9 @@ const styles = StyleSheet.create({
   row6: {
     width: "15%",
   },
+  row128: {
+    width: 128,
+  },
   input: {
     height: 40,
     borderColor: colors.primaryColor,

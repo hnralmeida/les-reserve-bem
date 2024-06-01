@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.alocacao</OriginalElement>
+  <nodes>
+    <node x="776.5" y="1256.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.disciplina_aud</node>
+    <node x="2096.5" y="4444.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.alocacao</node>
+    <node x="1628.5" y="460.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo</node>
+    <node x="1576.5" y="3640.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.disciplina</node>
+    <node x="191.0" y="4408.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.oferta_aud</node>
+    <node x="1416.5" y="5140.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.aula_aud</node>
+    <node x="1176.5" y="1280.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.label_aud</node>
+    <node x="-103.5" y="-248.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.papel</node>
+    <node x="1596.5" y="2144.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.professor_aud</node>
+    <node x="2285.5" y="2096.5">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.databasechangelog</node>
+    <node x="1193.0" y="4916.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.databasechangeloglock</node>
+    <node x="1011.5" y="736.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.restricao_professor_aud</node>
+    <node x="1716.5" y="1292.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.servidor_aud</node>
+    <node x="20.0" y="2228.5">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_aud_papeis</node>
+    <node x="2076.5" y="400.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.coordenadoria</node>
+    <node x="2323.0" y="1376.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.professor</node>
+    <node x="1343.0" y="2892.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.matriz_curricular_aud</node>
+    <node x="2316.5" y="376.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.servidor</node>
+    <node x="1456.5" y="3292.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.turma</node>
+    <node x="1756.5" y="1732.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.curso</node>
+    <node x="1536.5" y="2596.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.matriz_curricular</node>
+    <node x="536.5" y="1328.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.papel_aud</node>
+    <node x="1416.5" y="1328.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.eixo_aud</node>
+    <node x="16.5" y="868.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_papeis_aud</node>
+    <node x="1532.5" y="856.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.coordenadoria_aud</node>
+    <node x="1076.5" y="5164.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.label</node>
+    <node x="1716.5" y="52.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.eixo</node>
+    <node x="1276.5" y="4420.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.alocacao_aud</node>
+    <node x="2036.5" y="28.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.usuario</node>
+    <node x="256.5" y="1328.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_aud</node>
+    <node x="-23.5" y="412.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu</node>
+    <node x="1876.5" y="844.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.usuario_aud</node>
+    <node x="1991.0" y="2060.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.restricao_professor</node>
+    <node x="2036.5" y="1268.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.curso_aud</node>
+    <node x="-120.5" y="1400.5">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_papeis</node>
+    <node x="1451.0" y="4072.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.oferta</node>
+    <node x="696.5" y="3628.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.turma_aud</node>
+    <node x="2056.5" y="4844.0">49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.aula</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.professor_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.servidor_aud" relationship="REFERENCES">
+      <point x="-47.75" y="-140.0" />
+      <point x="1644.25" y="1644.0" />
+      <point x="1812.0" y="1644.0" />
+      <point x="0.0" y="152.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.label_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="0.0" y="-164.0" />
+      <point x="1272.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.servidor_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.usuario" relationship="REFERENCES">
+      <point x="47.75" y="-152.0" />
+      <point x="1859.75" y="684.0" />
+      <point x="1852.0" y="684.0" />
+      <point x="1852.0" y="344.0" />
+      <point x="2132.0" y="344.0" />
+      <point x="0.0" y="116.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.curso_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="-47.75" y="-176.0" />
+      <point x="2084.25" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.turma" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.matriz_curricular" relationship="REFERENCES">
+      <point x="0.0" y="-152.0" />
+      <point x="1552.0" y="3224.0" />
+      <point x="1584.25" y="3224.0" />
+      <point x="-47.75" y="128.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.restricao_professor_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="0.0" y="-248.0" />
+      <point x="1132.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.oferta" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.turma" relationship="REFERENCES">
+      <point x="0.0" y="-152.0" />
+      <point x="0.0" y="152.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.coordenadoria_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.eixo" relationship="REFERENCES">
+      <point x="49.75" y="-128.0" />
+      <point x="1681.75" y="684.0" />
+      <point x="1812.0" y="684.0" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.oferta_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.turma" relationship="REFERENCES">
+      <point x="50.5" y="-176.0" />
+      <point x="342.5" y="4024.0" />
+      <point x="1552.0" y="4024.0" />
+      <point x="0.0" y="152.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.matriz_curricular" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.curso" relationship="REFERENCES">
+      <point x="0.0" y="-128.0" />
+      <point x="1632.0" y="2444.0" />
+      <point x="1852.0" y="2444.0" />
+      <point x="0.0" y="152.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.alocacao_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="-47.75" y="-164.0" />
+      <point x="1324.25" y="4384.0" />
+      <point x="472.0" y="4384.0" />
+      <point x="472.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.matriz_curricular_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.curso" relationship="REFERENCES">
+      <point x="54.5" y="-152.0" />
+      <point x="1506.5" y="2584.0" />
+      <point x="1632.0" y="2584.0" />
+      <point x="1632.0" y="2444.0" />
+      <point x="1852.0" y="2444.0" />
+      <point x="0.0" y="152.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_papeis" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.papel" relationship="REFERENCES">
+      <point x="-36.25" y="-43.5" />
+      <point x="-84.25" y="1364.0" />
+      <point x="-88.0" y="1364.0" />
+      <point x="-88.0" y="124.0" />
+      <point x="-48.0" y="124.0" />
+      <point x="-48.0" y="-36.0" />
+      <point x="-55.75" y="-36.0" />
+      <point x="-47.75" y="92.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.oferta_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="-50.5" y="-176.0" />
+      <point x="241.5" y="4384.0" />
+      <point x="232.0" y="4384.0" />
+      <point x="232.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.alocacao_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.disciplina" relationship="REFERENCES">
+      <point x="47.75" y="-164.0" />
+      <point x="1419.75" y="4044.0" />
+      <point x="1672.0" y="4044.0" />
+      <point x="0.0" y="164.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.alocacao" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.professor" relationship="REFERENCES">
+      <point x="63.66666666666667" y="-140.0" />
+      <point x="2255.6666666666665" y="4424.0" />
+      <point x="2252.0" y="4424.0" />
+      <point x="2252.0" y="2084.0" />
+      <point x="2471.3333333333335" y="2084.0" />
+      <point x="59.333333333333314" y="68.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_papeis" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu" relationship="REFERENCES">
+      <point x="36.25" y="-43.5" />
+      <point x="-11.75" y="844.0" />
+      <point x="72.0" y="844.0" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.professor" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.servidor" relationship="REFERENCES">
+      <point x="44.5" y="-68.0" />
+      <point x="2456.5" y="1344.0" />
+      <point x="2412.0" y="1344.0" />
+      <point x="0.0" y="128.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.curso_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.coordenadoria" relationship="REFERENCES">
+      <point x="47.75" y="-176.0" />
+      <point x="2179.75" y="1244.0" />
+      <point x="2252.0" y="1244.0" />
+      <point x="2252.0" y="644.0" />
+      <point x="2172.0" y="644.0" />
+      <point x="0.0" y="104.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.servidor_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="-47.75" y="-152.0" />
+      <point x="1764.25" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.coordenadoria" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.eixo" relationship="REFERENCES">
+      <point x="0.0" y="-104.0" />
+      <point x="2172.0" y="324.0" />
+      <point x="1812.0" y="324.0" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.curso" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.professor" relationship="REFERENCES">
+      <point x="47.75" y="-152.0" />
+      <point x="1899.75" y="1704.0" />
+      <point x="2332.0" y="1704.0" />
+      <point x="2332.0" y="1544.0" />
+      <point x="2352.6666666666665" y="1544.0" />
+      <point x="-59.33333333333333" y="68.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.disciplina_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="0.0" y="-188.0" />
+      <point x="872.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_aud_papeis" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_aud" relationship="REFERENCES">
+      <point x="46.0" y="-55.5" />
+      <point x="158.0" y="2204.0" />
+      <point x="352.0" y="2204.0" />
+      <point x="0.0" y="116.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.aula_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.alocacao" relationship="REFERENCES">
+      <point x="63.66666666666667" y="-164.0" />
+      <point x="1575.6666666666667" y="4804.0" />
+      <point x="2192.0" y="4804.0" />
+      <point x="0.0" y="140.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.alocacao" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.disciplina" relationship="REFERENCES">
+      <point x="-63.666666666666686" y="-140.0" />
+      <point x="2128.3333333333335" y="4044.0" />
+      <point x="1672.0" y="4044.0" />
+      <point x="0.0" y="164.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.restricao_professor" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.professor" relationship="REFERENCES">
+      <point x="0.0" y="-224.0" />
+      <point x="2092.0" y="1704.0" />
+      <point x="2332.0" y="1704.0" />
+      <point x="2332.0" y="1544.0" />
+      <point x="2352.6666666666665" y="1544.0" />
+      <point x="-59.33333333333333" y="68.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.aula" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.alocacao" relationship="REFERENCES">
+      <point x="47.75" y="-140.0" />
+      <point x="2199.75" y="4804.0" />
+      <point x="2192.0" y="4804.0" />
+      <point x="0.0" y="140.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.turma_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="-47.75" y="-176.0" />
+      <point x="744.25" y="3604.0" />
+      <point x="752.0" y="3604.0" />
+      <point x="752.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.professor_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.coordenadoria" relationship="REFERENCES">
+      <point x="47.75" y="-140.0" />
+      <point x="1739.75" y="1664.0" />
+      <point x="2252.0" y="1664.0" />
+      <point x="2252.0" y="644.0" />
+      <point x="2172.0" y="644.0" />
+      <point x="0.0" y="104.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.aula" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.oferta" relationship="REFERENCES">
+      <point x="-47.75" y="-140.0" />
+      <point x="2104.25" y="4824.0" />
+      <point x="1552.0" y="4824.0" />
+      <point x="0.0" y="152.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.usuario_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.papel" relationship="REFERENCES">
+      <point x="47.75" y="-140.0" />
+      <point x="2019.75" y="684.0" />
+      <point x="2012.0" y="684.0" />
+      <point x="2012.0" y="-36.0" />
+      <point x="39.75" y="-36.0" />
+      <point x="47.75" y="92.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.curso" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.coordenadoria" relationship="REFERENCES">
+      <point x="-47.75" y="-152.0" />
+      <point x="1804.25" y="1684.0" />
+      <point x="2292.0" y="1684.0" />
+      <point x="2292.0" y="1244.0" />
+      <point x="2252.0" y="1244.0" />
+      <point x="2252.0" y="644.0" />
+      <point x="2172.0" y="644.0" />
+      <point x="0.0" y="104.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.aula_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.oferta" relationship="REFERENCES">
+      <point x="0.0" y="-164.0" />
+      <point x="1512.0" y="4824.0" />
+      <point x="1552.0" y="4824.0" />
+      <point x="0.0" y="152.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.matriz_curricular_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="-54.5" y="-152.0" />
+      <point x="1397.5" y="2864.0" />
+      <point x="1392.0" y="2864.0" />
+      <point x="1392.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.coordenadoria_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="-49.75" y="-128.0" />
+      <point x="1582.25" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.turma_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.matriz_curricular" relationship="REFERENCES">
+      <point x="47.75" y="-176.0" />
+      <point x="839.75" y="3264.0" />
+      <point x="1552.0" y="3264.0" />
+      <point x="1552.0" y="3224.0" />
+      <point x="1584.25" y="3224.0" />
+      <point x="-47.75" y="128.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_papeis_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="47.75" y="-116.0" />
+      <point x="159.75" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_papeis_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu" relationship="REFERENCES">
+      <point x="-47.75" y="-116.0" />
+      <point x="64.25" y="844.0" />
+      <point x="72.0" y="844.0" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.disciplina" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.matriz_curricular" relationship="REFERENCES">
+      <point x="0.0" y="-164.0" />
+      <point x="1672.0" y="3604.0" />
+      <point x="1679.75" y="3604.0" />
+      <point x="47.75" y="128.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.usuario" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.papel" relationship="REFERENCES">
+      <point x="0.0" y="-116.0" />
+      <point x="2132.0" y="4.0" />
+      <point x="2012.0" y="4.0" />
+      <point x="2012.0" y="-36.0" />
+      <point x="39.75" y="-36.0" />
+      <point x="47.75" y="92.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.aula_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="-63.666666666666686" y="-164.0" />
+      <point x="1448.3333333333333" y="4904.0" />
+      <point x="1252.0" y="4904.0" />
+      <point x="1252.0" y="4364.0" />
+      <point x="512.0" y="4364.0" />
+      <point x="512.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="0.0" y="-116.0" />
+      <point x="352.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.eixo_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="0.0" y="-116.0" />
+      <point x="1512.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.menu_aud_papeis" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.papel" relationship="REFERENCES">
+      <point x="-46.0" y="-55.5" />
+      <point x="66.0" y="2204.0" />
+      <point x="-148.0" y="2204.0" />
+      <point x="-148.0" y="1384.0" />
+      <point x="-48.0" y="1384.0" />
+      <point x="-48.0" y="-36.0" />
+      <point x="-55.75" y="-36.0" />
+      <point x="-47.75" y="92.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.professor" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.coordenadoria" relationship="REFERENCES">
+      <point x="-44.5" y="-68.0" />
+      <point x="2367.5" y="1244.0" />
+      <point x="2252.0" y="1244.0" />
+      <point x="2252.0" y="644.0" />
+      <point x="2172.0" y="644.0" />
+      <point x="0.0" y="104.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.papel_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="0.0" y="-116.0" />
+      <point x="632.0" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.usuario_aud" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.revinfo" relationship="REFERENCES">
+      <point x="-47.75" y="-140.0" />
+      <point x="1924.25" y="704.0" />
+      <point x="1692.0" y="704.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.servidor" target="49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.usuario" relationship="REFERENCES">
+      <point x="0.0" y="-128.0" />
+      <point x="2412.0" y="344.0" />
+      <point x="2132.0" y="344.0" />
+      <point x="0.0" y="116.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.475108041590394" showDependencies="false" x="1243.1691714221724" y="1545.78624" />
+  <SelectedNodes>
+    <node>49677e8b-3df6-41e7-bb51-6ce4fa9c641e.TABLE:samha.alocacao</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

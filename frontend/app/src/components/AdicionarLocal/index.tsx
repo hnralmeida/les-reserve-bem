@@ -238,7 +238,7 @@ const AdicionarLocal = ({
           </View>
           <View style={styles.column}>
             <Text style={styles.box}>
-              {item_equip.equipamento[0].nomeEquipamento}
+              {item_equip.equipamento.nomeEquipamento}
             </Text>
           </View>
           <View style={styles.column}>

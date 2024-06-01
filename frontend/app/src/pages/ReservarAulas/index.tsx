@@ -31,6 +31,7 @@ type FormInputs = {
   local: any;
   horaInicio: string;
   horaFim: string;
+  diaDaSemana: string;
 };
 
 export default function ReservarEventos(options: any) {
@@ -56,6 +57,7 @@ export default function ReservarEventos(options: any) {
       local: null,
       horaInicio: "",
       horaFim: "",
+      diaDaSemana: "",
     },
   });
 
@@ -96,7 +98,7 @@ export default function ReservarEventos(options: any) {
   );
 
   const onSubmit = () => {
-    console.log({
+    API.post("/aulas", {
       disciplina: disciplina_list.filter(
         (item) => Number(item.id) === Number(control._formValues.disciplina)
       )[0],
@@ -109,27 +111,20 @@ export default function ReservarEventos(options: any) {
       local: local_list.filter(
         (item) => Number(item.id) === Number(control._formValues.local)
       )[0],
+      diaDaSemana: control._formValues.diaDaSemana,
       horaInicio: control._formValues.horaInicio,
       horaFim: control._formValues.horaFim,
+    }).then(() => {
+      control._reset();
+      setValue("disciplina", null);
+      setValue("turma", null);
+      setValue("professor", null);
+      setValue("local", null);
+      setValue("horaInicio", "");
+      setValue("horaFim", "");
+      setValue("diaDaSemana", "");
+      
     });
-    // API.post("/aulas", {
-    //   disciplina: disciplina_list.filter(
-    //     (item) => Number(item.id) === Number(control._formValues.disciplina)
-    //   )[0],
-    //   turma: turma_list.filter(
-    //     (item) => Number(item.id) === Number(control._formValues.turma)
-    //   )[0],
-    //   professor: professor_list.filter(
-    //     (item) => Number(item.id) === Number(control._formValues.professor)
-    //   )[0],
-    //   local: local_list.filter(
-    //     (item) => Number(item.id) === Number(control._formValues.local)
-    //   )[0],
-    //   horaInicio: control._formValues.horaInicio,
-    //   horaFim: control._formValues.horaFim,
-    // }).then(() => {
-    //   control._reset();
-    // });
   };
 
   return (
@@ -150,7 +145,7 @@ export default function ReservarEventos(options: any) {
                 >
                   <Picker.Item
                     key={"unselectable"}
-                    label={"Selecione uma Sala para a aula"}
+                    label={"Selecione uma disciplina"}
                     value={0}
                   />
                   {disciplina_list.map((item, index) => (
@@ -229,6 +224,28 @@ export default function ReservarEventos(options: any) {
                       key={key}
                       label={utils.toHours(item)}
                       value={utils.toHours(item)}
+                    />
+                  ))}
+                </Picker>
+              </View>
+
+              <View style={styles.column}>
+                <Text style={styles.label}>Dia de Semana: </Text>
+                <Picker
+                  style={[styles.boxBorder]}
+                  selectedValue={watch("diaDaSemana")}
+                  onValueChange={(target: any) => [setValue("diaDaSemana", target)]}
+                >
+                  <Picker.Item
+                    key={"unselectable"}
+                    label={"Selecione um Horário"}
+                    value={0}
+                  />
+                  {utils.arrayDiasDaSemana().map((item, key) => (
+                    <Picker.Item
+                      key={key}
+                      label={item}
+                      value={item}
                     />
                   ))}
                 </Picker>

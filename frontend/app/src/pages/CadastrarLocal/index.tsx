@@ -98,7 +98,7 @@ const CadastrarLocal = () => {
       })
       .catch((error) => {
         alert(
-          "Erro ao deletar local, provavelmente há eventos e/ou aulas associadas a ele."
+          "Erro ao deletar local, provavelmente há equipamentos associadas a ele."
         );
       });
   };
