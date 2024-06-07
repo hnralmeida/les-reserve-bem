@@ -124,7 +124,7 @@ export default function CadastrarPeriodo(options: any) {
           />
         </View>
 
-        <View style={[styles.listLine, styles.padmargin]}>
+        <View style={[styles.listLine]}>
           <Image
             source={require("../../../assets/professores.png")}
             style={[styles.iconElement]}

@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   title: {},
   padmargin:{
     padding: 8,
-    marginTop: 16,
+    marginTop: 32,
   },
   text: {
     textDecorationStyle: "double",
@@ -364,7 +364,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   marginTop: {
-    marginTop: 32,
+    marginTop: 64,
+    marginBottom: 8
   },
 });
 export default styles;

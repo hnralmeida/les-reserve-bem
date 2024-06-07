@@ -80,7 +80,7 @@ const CadastrarLocal = () => {
         });
         set_local_list(data);
       });
-    }, [])
+    }, [is_equipamentos_visible, ])
   );
 
   const handleEdit = (index: any) => {

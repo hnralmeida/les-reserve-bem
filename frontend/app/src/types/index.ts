@@ -15,3 +15,8 @@ export const tipoDisciplinaList = [
   "Projeto de Conclusão de Curso",
   "Outro",
 ];
+
+export default interface IFile {
+  url: string;
+  name: string;
+}

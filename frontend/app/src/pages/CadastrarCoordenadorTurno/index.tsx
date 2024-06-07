@@ -122,7 +122,7 @@ export default function Cadastrarcoordenador(options: any) {
             text={"coordenador"}
           />
         </View>
-        <View style={[styles.listLine, styles.padmargin]}>
+        <View style={[styles.listLine]}>
           <Image
             source={require("../../../assets/turno.png")}
             style={[styles.iconElement]}

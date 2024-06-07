@@ -151,7 +151,7 @@ export default function CadastrarAluno(options: any) {
             text={"Aluno"}
           />
         </View>
-        <View style={[styles.listLine, styles.padmargin]}>
+        <View style={[styles.listLine]}>
           <Image
             source={require("../../../assets/alunos.png")}
             style={[styles.iconElement]}

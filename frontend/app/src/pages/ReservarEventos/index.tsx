@@ -22,7 +22,7 @@ import API from "../../services/API";
 import styles from "../../styles";
 
 // Firmulario
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 type FormInputs = {
   local: string;
@@ -77,21 +77,23 @@ export default function ReservarEventos(options: any) {
 
     console.log(data_inicio, {
       nome: control._formValues.nome,
-      local: control._formValues.local ? local_list.filter(
-        (item) =>
-          Number(item.id) === Number(control._formValues.local)
-      )[0] : null,
+      local: control._formValues.local
+        ? local_list.filter(
+            (item) => Number(item.id) === Number(control._formValues.local)
+          )[0]
+        : null,
       dataInicio: new Date(data_inicio),
       dataFim: new Date(data_fim),
       descricao: control._formValues.descricao,
-    })
+    });
 
     API.post("/eventos", {
       nome: control._formValues.nome,
-      local: control._formValues.local ? local_list.filter(
-        (item) =>
-          Number(item.id) === Number(control._formValues.local)
-      )[0] : null,
+      local: control._formValues.local
+        ? local_list.filter(
+            (item) => Number(item.id) === Number(control._formValues.local)
+          )[0]
+        : null,
       dataInicio: new Date(data_inicio),
       dataFim: new Date(data_fim),
       descricao: control._formValues.descricao,
@@ -102,118 +104,122 @@ export default function ReservarEventos(options: any) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.expand}>
-        <View style={styles.contentReservar}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <View style={styles.row}>
-              <View style={styles.column}>
-                <Text style={styles.label}>Nome: </Text>
-                <TextInput
-                  style={[styles.boxBorder]}
-                  value={watch("nome")}
-                  onChangeText={(text) => setValue("nome", text)}
-                />
-              </View>
-              <View style={styles.column}>
-                <Text style={styles.label}>Local: </Text>
-                <Picker
-                  selectedValue={watch("local")}
-                  style={styles.boxBorder}
-                  placeholder="Local"
-                  onValueChange={(itemValue: string) => {
-                    setValue("local", itemValue);
-                  }}
-                >
-                  <Picker.Item
-                    key={"unselectable"}
-                    label={"Selecione um local para o evento"}
-                    value={0}
+      <View style={styles.content}>
+        <ScrollView style={styles.expand}>
+          <View style={[styles.contentReservar, styles.listBox]}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <View style={styles.row}>
+                <View style={styles.column}>
+                  <Text style={styles.label}>Nome: </Text>
+                  <TextInput
+                    style={[styles.boxBorder]}
+                    value={watch("nome")}
+                    onChangeText={(text) => setValue("nome", text)}
                   />
-                  {local_list.map((item, index) => (
+                </View>
+                <View style={styles.column}>
+                  <Text style={styles.label}>Local: </Text>
+                  <Picker
+                    selectedValue={watch("local")}
+                    style={styles.boxBorder}
+                    placeholder="Local"
+                    onValueChange={(itemValue: string) => {
+                      setValue("local", itemValue);
+                    }}
+                  >
                     <Picker.Item
-                      key={index}
-                      label={item.nomeLocal}
-                      value={item.id}
+                      key={"unselectable"}
+                      label={"Selecione um local para o evento"}
+                      value={0}
                     />
-                  ))}
-                </Picker>
+                    {local_list.map((item, index) => (
+                      <Picker.Item
+                        key={index}
+                        label={item.nomeLocal}
+                        value={item.id}
+                      />
+                    ))}
+                  </Picker>
+                </View>
               </View>
-            </View>
-            <View style={styles.row}>
-              <View style={styles.column}>
-                <Text style={styles.label}>Data: </Text>
+              <View style={styles.row}>
+                <View style={styles.column}>
+                  <Text style={styles.label}>Data: </Text>
 
-                <InputDate
-                  data_evento={watch("data")}
-                  set_data_evento={setValue}
-                  label_value={"data"}
-                />
-              </View>
-
-              <View style={styles.column}>
-                <Text style={styles.label}>Início: </Text>
-                <Picker
-                  onValueChange={(target: any) => [setValue("inicio", target)]}
-                  selectedValue={watch("inicio")}
-                  style={[styles.boxBorder]}
-                >
-                  <Picker.Item
-                    key={"unselectable"}
-                    label={"Selecione um Horário"}
-                    value={0}
+                  <InputDate
+                    data_evento={watch("data")}
+                    set_data_evento={setValue}
+                    label_value={"data"}
                   />
-                  {utils.arrayAulas().map((item, key) => (
-                    <Picker.Item
-                      key={key}
-                      label={utils.toHours(item)}
-                      value={utils.toHours(item)}
-                    />
-                  ))}
-                </Picker>
-              </View>
+                </View>
 
-              <View style={styles.column}>
-                <Text style={styles.label}>Fim: </Text>
-                <Picker
-                  onValueChange={(target: any) => [setValue("fim", target)]}
-                  selectedValue={watch("fim")}
-                  style={[styles.boxBorder]}
-                >
-                  <Picker.Item
-                    key={"unselectable"}
-                    label={"Selecione um Horário"}
-                    value={0}
-                  />
-                  {utils.arrayAulas().map((item, key) => (
+                <View style={styles.column}>
+                  <Text style={styles.label}>Início: </Text>
+                  <Picker
+                    onValueChange={(target: any) => [
+                      setValue("inicio", target),
+                    ]}
+                    selectedValue={watch("inicio")}
+                    style={[styles.boxBorder]}
+                  >
                     <Picker.Item
-                      key={key}
-                      label={utils.toHours(item)}
-                      value={utils.toHours(item)}
+                      key={"unselectable"}
+                      label={"Selecione um Horário"}
+                      value={0}
                     />
-                  ))}
-                </Picker>
+                    {utils.arrayAulas().map((item, key) => (
+                      <Picker.Item
+                        key={key}
+                        label={utils.toHours(item)}
+                        value={utils.toHours(item)}
+                      />
+                    ))}
+                  </Picker>
+                </View>
+
+                <View style={styles.column}>
+                  <Text style={styles.label}>Fim: </Text>
+                  <Picker
+                    onValueChange={(target: any) => [setValue("fim", target)]}
+                    selectedValue={watch("fim")}
+                    style={[styles.boxBorder]}
+                  >
+                    <Picker.Item
+                      key={"unselectable"}
+                      label={"Selecione um Horário"}
+                      value={0}
+                    />
+                    {utils.arrayAulas().map((item, key) => (
+                      <Picker.Item
+                        key={key}
+                        label={utils.toHours(item)}
+                        value={utils.toHours(item)}
+                      />
+                    ))}
+                  </Picker>
+                </View>
               </View>
-            </View>
-            <View style={styles.row}>
-              <View style={styles.column}>
-                <Text style={styles.label}>Observações</Text>
-                <TextInput
-                  style={styles.boxBorder}
-                  multiline={true}
-                  placeholder="Escrever observação..."
-                  value={watch("descricao")}
-                  onChangeText={(target) => setValue("descricao", target)}
-                />
+              <View style={styles.row}>
+                <View style={styles.column}>
+                  <Text style={styles.label}>Observações</Text>
+                  <TextInput
+                    style={styles.boxBorder}
+                    multiline={true}
+                    placeholder="Escrever observação..."
+                    value={watch("descricao")}
+                    onChangeText={(target) => setValue("descricao", target)}
+                  />
+                </View>
               </View>
-            </View>
-            <View style={styles.rowCenter}>
-              <TouchableOpacity style={styles.textFocus} onPress={onSubmit}>
-                <Text>Salvar</Text>
-              </TouchableOpacity>
-            </View>
-          </form>
-        </View>
-      </ScrollView>
+              <View style={styles.rowCenter}>
+                <TouchableOpacity style={styles.textFocus} onPress={onSubmit}>
+                  <Text>Salvar</Text>
+                </TouchableOpacity>
+              </View>
+            </form>
+          </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
