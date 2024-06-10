@@ -9,13 +9,13 @@ import {
   View,
   TouchableHighlight,
 } from "react-native";
-import ImportModal from "../../components/ImportFile";
 import { useForm } from "react-hook-form";
 import API from "../../services/API";
 import AdicionarAluno from "../../components/AdicionarAluno";
 import ActivateModalButton from "../../components/ButtonAddModal";
 import { Picker } from "@react-native-picker/picker";
 import SaveEdit from "../../components/SaveEdit";
+import ImportarArquivo from "../../components/ImportarArquivo";
 
 type FormInputs = {
   nome: string;
@@ -27,6 +27,7 @@ type FormInputs = {
 export default function CadastrarAluno(options: any) {
   const [coordenadoria_list, set_coordenadoria_list] = useState<any[]>([]);
   const [aluno_list, set_aluno_list] = useState<any[]>([]);
+  const [modal_visible, set_modal_visible] = useState(false); // Estado para controlar a visibilidade do modal de importação de arquivo
 
   const [editingIndex, setEditingIndex] = useState(null); // Estado para rastrear o índice do item sendo editado
 
@@ -127,6 +128,20 @@ export default function CadastrarAluno(options: any) {
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={[styles.rowFlexEnd, styles.marginTop]}>
+          <ImportarArquivo
+            isVisible={modal_visible}
+            setIsVisible={set_modal_visible}
+            onClose={() => set_modal_visible(false)}
+            importar={"alunos"}
+          />
+          <View style={styles.marginRight}>
+            <ActivateModalButton
+              modal_visible={modal_visible}
+              set_modal_visible={set_modal_visible}
+              text={"Importar"}
+            />
+          </View>
+
           <AdicionarAluno
             isVisible={isVisible}
             setIsVisible={setIsVisible}
@@ -137,13 +152,6 @@ export default function CadastrarAluno(options: any) {
             alunoList={aluno_list}
             coordenadoriaList={coordenadoria_list}
           />
-
-          <TouchableHighlight
-            style={[styles.iconButton, { marginRight: 16 }]}
-            onPress={() => alert("Função ainda precisa ser revisada.")}
-          >
-            <Text style={[styles.buttonText]}>Importar Arquivo</Text>
-          </TouchableHighlight>
 
           <ActivateModalButton
             set_modal_visible={setIsVisible}

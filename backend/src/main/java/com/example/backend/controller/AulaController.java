@@ -32,6 +32,11 @@ public class AulaController {
         return aulaService.listarAula();
     }
 
+    @GetMapping("/turma/{turmaId}")
+    public List<Aula> listarAulaPorTurma(@PathVariable Long turmaId) {
+        return aulaService.listarAulaPorTurma(turmaId);
+    }
+
     @PutMapping("/{id}")
     public Aula editarAula(@RequestBody Aula aula, @PathVariable Long id) {
         return aulaService.editarAula(id, aula);

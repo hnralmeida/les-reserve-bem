@@ -142,8 +142,7 @@ export default function ReservarAulas(options: any) {
               isVisible={modal_visible}
               setIsVisible={set_modal_visible}
               onClose={() => set_modal_visible(false)}
-              file={file}
-              setFile={setFile}
+              importar={"aulas"}
             />
             <ActivateModalButton
               modal_visible={modal_visible}

@@ -106,7 +106,7 @@ export default function ReservarEventos(options: any) {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <ScrollView style={styles.expand}>
-          <View style={[styles.contentReservar, styles.listBox]}>
+          <View style={[styles.contentReservar, styles.listBox, styles.marginTop]}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <View style={styles.row}>
                 <View style={styles.column}>

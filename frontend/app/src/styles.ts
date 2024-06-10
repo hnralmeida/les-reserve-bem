@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   title: {},
-  padmargin:{
+  padmargin: {
     padding: 8,
     marginTop: 32,
   },
@@ -365,7 +365,39 @@ const styles = StyleSheet.create({
   },
   marginTop: {
     marginTop: 64,
-    marginBottom: 8
+    marginBottom: 8,
+  },
+  cell: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#000",
+    padding: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerText: {
+    fontWeight: "bold",
+  },
+  headerCell: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#000",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 64,
+  },
+  cellText: {
+    textAlign: "center",
+  },
+  paragraphText: {
+    margin: 24,
+    textAlign: "justify",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 export default styles;

@@ -20,6 +20,7 @@ import { Control, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { Picker } from "@react-native-picker/picker";
 import EquipmentModal from "../Equipamento";
 import ButtonText from "../ButtonText";
+import ViewEquipamentEditting from "../EditingEquipamentoLocal";
 
 type Props = {
   isVisible: boolean;
@@ -104,8 +105,8 @@ const AdicionarLocal = ({
             (item, position) => Number(position) !== Number(index)
           )
         );
-        set_observacao("");
-        setEquipamentoSelecionado(null);
+    set_observacao("");
+    setEquipamentoSelecionado(null);
   };
 
   const adicionarEquipamento = () => {
@@ -152,79 +153,6 @@ const AdicionarLocal = ({
       }
     }
     return numbersOnly;
-  };
-
-  const ViewEquipament_editting = () => {
-    return (
-      <View style={styles.row}>
-        <View style={[styles.column, styles.numberInput]}>
-          <TextInput
-            style={styles.boxBorder}
-            placeholder="Quantidade"
-            value={String(quantidadeEquipamentos)}
-            onChangeText={(target) =>
-              setQuantidadeEquipamentos(handleInputNumberChange(target))
-            }
-            keyboardType="numeric"
-            maxLength={3}
-          />
-        </View>
-        <View style={styles.column}>
-          <Picker
-            selectedValue={equipamentoSelecionado}
-            style={styles.boxBorder}
-            onValueChange={(itemValue: any | null) =>
-              setEquipamentoSelecionado(itemValue)
-            }
-          >
-            <Picker.Item
-              key={"unselectable"}
-              label={"Selecione um Equipamento"}
-              value={0}
-            />
-            {equipamentos_list.map((equipamento) => (
-              <Picker.Item
-                key={equipamento.id}
-                label={equipamento.nomeEquipamento}
-                value={equipamento.id}
-              />
-            ))}
-          </Picker>
-        </View>
-        <View style={styles.column}>
-          <TextInput
-            style={styles.boxBorder}
-            placeholder="Observação"
-            value={observacao}
-            onChangeText={(text) => set_observacao(text)}
-          />
-        </View>
-        <EquipmentModal
-          isVisible={modalVisible}
-          setIsVisible={setModalVisible}
-          onClose={closeModal}
-        />
-        <TouchableHighlight onFocus={() => setModalVisible(!modalVisible)}>
-          <Image
-            source={require("../../../assets/settings.png")}
-            style={styles.iconElement}
-          />
-        </TouchableHighlight>
-
-        <TouchableHighlight onPress={delete_equip}>
-          <Image
-            source={require("../../../assets/delete.png")}
-            style={styles.iconElement}
-          />
-        </TouchableHighlight>
-        <TouchableHighlight onPress={adicionarEquipamento}>
-          <Image
-            source={require("../../../assets/save.png")}
-            style={styles.iconElement}
-          />
-        </TouchableHighlight>
-      </View>
-    );
   };
 
   const View_equipament_read = (item: any, index: any) => {
@@ -305,7 +233,19 @@ const AdicionarLocal = ({
         )}
 
         {add_equip ? (
-          <ViewEquipament_editting />
+          <ViewEquipamentEditting
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            quantidadeEquipamentos={quantidadeEquipamentos}
+            setQuantidadeEquipamentos={setQuantidadeEquipamentos}
+            equipamentoSelecionado={equipamentoSelecionado}
+            setEquipamentoSelecionado={setEquipamentoSelecionado}
+            equipamentos_list={equipamentos_list}
+            observacao={observacao}
+            set_observacao={set_observacao}
+            delete_equipamento={delete_equip}
+            adicionar_equipamento={adicionarEquipamento}
+          />
         ) : (
           <>
             <TouchableHighlight onPress={() => set_add_equip(true)}>

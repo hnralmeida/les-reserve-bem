@@ -49,6 +49,28 @@ class functionLib {
         ]
     }
 
+    //retorna um array com os horários das aulas
+    arrayHorarios() {
+        return [
+            "07:00",
+            "07:55",
+            "08:50",
+            "10:00",
+            "10:55",
+            "11:50",
+            "12:50",
+            "13:45",
+            "14:40",
+            "15:50",
+            "16:45",
+            "17:40",
+            "18:50",
+            "19:35",
+            "20:30",
+            "21:15"
+        ]
+    }
+
     arrayAulas() {
         return [
             {
