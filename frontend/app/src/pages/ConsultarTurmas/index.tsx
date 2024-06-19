@@ -2,7 +2,7 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   Image,
   SafeAreaView,
@@ -149,7 +149,7 @@ export default function ConsultarTurmas(options: any) {
                   />
                 ) : (
                   <>
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleEdit(index)}
                     >
@@ -157,9 +157,9 @@ export default function ConsultarTurmas(options: any) {
                         source={require("../../../assets/edit.png")}
                         style={styles.iconElement}
                       />
-                    </TouchableOpacity>
+                    </TouchableHighlight>
 
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleDelete(item.id)}
                     >
@@ -167,7 +167,7 @@ export default function ConsultarTurmas(options: any) {
                         source={require("../../../assets/delete.png")}
                         style={styles.iconElement}
                       />
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                   </>
                 )}
               </View>

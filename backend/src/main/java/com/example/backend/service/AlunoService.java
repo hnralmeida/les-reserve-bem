@@ -19,6 +19,8 @@ public class AlunoService {
         return alunoRepository.save(aluno);
     }
 
+    public Aluno encontrarAlunoPorMatricuka(Long matricula) { return alunoRepository.findByMatricula(matricula); }
+
     public List<Aluno> listarAlunos() {
         return alunoRepository.findAll();
     }

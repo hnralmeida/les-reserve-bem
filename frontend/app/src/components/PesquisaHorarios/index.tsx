@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput } from "react-native";
+import { TextInput, View } from "react-native";
 import styles from "../../styles";
 import { Control, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { Picker } from "@react-native-picker/picker";
@@ -27,23 +27,60 @@ export function PesquisaHorarios({
   switch (modelo) {
     case "Aluno":
       return (
-        <>
+        <View style={[styles.row, { marginBottom: 0 }]}>
           <TextInput
-            style={[styles.boxBorder, { width: "100%" }]}
+            style={[styles.boxBorder, styles.marginRight]}
             value={watch("input")}
             placeholder="Aluno"
             onChangeText={(text) => setValue("input", text)}
           />
-        </>
+          <Picker
+            selectedValue={watch("inputAux1")}
+            style={[styles.boxBorder]}
+            onValueChange={(itemValue: string) => {
+              setValue("inputAux1", itemValue);
+            }}
+          >
+            <Picker.Item
+              key={"unselectable"}
+              style={styles.boxBorder}
+              label={"Selecione um periodo"}
+              value={0}
+            />
+            {list_periodos.map((item, index) => (
+              <Picker.Item key={index} label={item.nome} value={item.id} />
+            ))}
+          </Picker>
+        </View>
       );
     case "Professor":
       return (
-        <TextInput
-          style={[styles.boxBorder, { width: "100%" }]}
-          value={watch("input")}
-          placeholder="Professor"
-          onChangeText={(text) => setValue("input", text)}
-        />
+        <View style={[styles.row, { marginBottom: 0 }]}>
+          <TextInput
+            style={[styles.boxBorder, styles.marginRight]}
+            value={watch("input")}
+            placeholder="Professor"
+            onChangeText={(text) => setValue("input", text)}
+          />
+
+          <Picker
+            selectedValue={watch("inputAux1")}
+            style={[styles.boxBorder]}
+            onValueChange={(itemValue: string) => {
+              setValue("inputAux1", itemValue);
+            }}
+          >
+            <Picker.Item
+              key={"unselectable"}
+              style={styles.boxBorder}
+              label={"Selecione um periodo"}
+              value={0}
+            />
+            {list_periodos.map((item, index) => (
+              <Picker.Item key={index} label={item.nome} value={item.id} />
+            ))}
+          </Picker>
+        </View>
       );
     case "Periodo":
       return (
@@ -61,54 +98,90 @@ export function PesquisaHorarios({
             value={0}
           />
           {list_periodos.map((item, index) => (
-            <Picker.Item
-              key={index}
-              label={item.Periodo}
-              value={item.Periodo}
-            />
+            <Picker.Item key={index} label={item.nome} value={item.id} />
           ))}
         </Picker>
       );
     case "Locais":
       return (
-        <Picker
-          selectedValue={watch("input")}
-          style={[styles.boxBorder]}
-          onValueChange={(itemValue: string) => {
-            setValue("input", itemValue);
-          }}
-        >
-          <Picker.Item
-            key={"unselectable"}
-            style={styles.boxBorder}
-            label={"Selecione um local"}
-            value={0}
-          />
-          {list_locais.map((item, index) => (
-            <Picker.Item key={index} label={item.nomeLocal} value={item.id} />
-          ))}
-        </Picker>
+        <View style={[styles.row, { marginBottom: 0 }]}>
+          <Picker
+            selectedValue={watch("input")}
+            style={[styles.boxBorder, styles.marginRight]}
+            onValueChange={(itemValue: string) => {
+              setValue("input", itemValue);
+            }}
+          >
+            <Picker.Item
+              key={"unselectable"}
+              style={styles.boxBorder}
+              label={"Selecione um local"}
+              value={0}
+            />
+            {list_locais.map((item, index) => (
+              <Picker.Item key={index} label={item.nomeLocal} value={item.id} />
+            ))}
+          </Picker>
+
+          <Picker
+            selectedValue={watch("inputAux1")}
+            style={[styles.boxBorder]}
+            onValueChange={(itemValue: string) => {
+              setValue("inputAux1", itemValue);
+            }}
+          >
+            <Picker.Item
+              key={"unselectable"}
+              style={styles.boxBorder}
+              label={"Selecione um periodo"}
+              value={0}
+            />
+            {list_periodos.map((item, index) => (
+              <Picker.Item key={index} label={item.nome} value={item.id} />
+            ))}
+          </Picker>
+        </View>
       );
     case "Turma":
       return (
-        <Picker
-          selectedValue={watch("input")}
-          style={[styles.boxBorder]}
-          placeholder="turma"
-          onValueChange={(itemValue: string) => {
-            setValue("input", itemValue);
-          }}
-        >
-          <Picker.Item
-            key={"unselectable"}
-            style={styles.boxBorder}
-            label={"Selecione uma turma"}
-            value={0}
-          />
-          {list_turmas.map((item, index) => (
-            <Picker.Item key={index} label={item.nome} value={item.id} />
-          ))}
-        </Picker>
+        <View style={[styles.row, { marginBottom: 0 }]}>
+          <Picker
+            selectedValue={watch("input")}
+            style={[styles.boxBorder, styles.marginRight]}
+            placeholder="turma"
+            onValueChange={(itemValue: string) => {
+              setValue("input", itemValue);
+            }}
+          >
+            <Picker.Item
+              key={"unselectable"}
+              style={styles.boxBorder}
+              label={"Selecione uma turma"}
+              value={0}
+            />
+            {list_turmas.map((item, index) => (
+              <Picker.Item key={index} label={item.nome} value={item.id} />
+            ))}
+          </Picker>
+
+          <Picker
+            selectedValue={watch("inputAux1")}
+            style={[styles.boxBorder]}
+            onValueChange={(itemValue: string) => {
+              setValue("inputAux1", itemValue);
+            }}
+          >
+            <Picker.Item
+              key={"unselectable"}
+              style={styles.boxBorder}
+              label={"Selecione um periodo"}
+              value={0}
+            />
+            {list_periodos.map((item, index) => (
+              <Picker.Item key={index} label={item.nome} value={item.id} />
+            ))}
+          </Picker>
+        </View>
       );
     case "Data":
       return (

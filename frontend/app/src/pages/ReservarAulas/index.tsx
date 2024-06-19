@@ -3,7 +3,6 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
   SafeAreaView,
   ScrollView,
   TouchableHighlight,
@@ -32,8 +31,9 @@ type FormInputs = {
   turma: any;
   professor: any;
   local: any;
-  horaInicio: string;
-  horaFim: string;
+  periodo: any;
+  horaInicio: any;
+  horaFim: any;
   diaDaSemana: string;
 };
 
@@ -42,6 +42,7 @@ export default function ReservarAulas(options: any) {
 
   const [disciplina_list, set_disciplina_list] = useState<any[]>([]);
   const [local_list, set_local_list] = useState<any[]>([]);
+  const [periodo_list, set_periodo_list] = useState<any[]>([]);
   const [professor_list, set_professor_list] = useState<any[]>([]);
   const [turma_list, set_turma_list] = useState<any[]>([]);
   const [modal_visible, set_modal_visible] = useState<boolean>(false);
@@ -60,8 +61,9 @@ export default function ReservarAulas(options: any) {
       turma: null,
       professor: null,
       local: null,
-      horaInicio: "",
-      horaFim: "",
+      periodo: null,
+      horaInicio: null,
+      horaFim: null,
       diaDaSemana: "",
     },
   });
@@ -98,36 +100,68 @@ export default function ReservarAulas(options: any) {
             });
             set_disciplina_list(data);
           });
+          API.get("/periodos").then((response) => {
+            const data = response.data;
+            data.sort((a: any, b: any) => {
+              return a.nome.localeCompare(b.nome);
+            });
+            set_periodo_list(data);
+          });
         });
     }, [])
   );
 
   const onSubmit = () => {
-    API.post("/aulas", {
-      disciplina: disciplina_list.filter(
-        (item) => Number(item.id) === Number(control._formValues.disciplina)
-      )[0],
-      turma: turma_list.filter(
-        (item) => Number(item.id) === Number(control._formValues.turma)
-      )[0],
-      professor: professor_list.filter(
-        (item) => Number(item.id) === Number(control._formValues.professor)
-      )[0],
-      local: local_list.filter(
-        (item) => Number(item.id) === Number(control._formValues.local)
-      )[0],
-      diaDaSemana: control._formValues.diaDaSemana,
-      horaInicio: control._formValues.horaInicio,
-      horaFim: control._formValues.horaFim,
-    }).then(() => {
-      control._reset();
-      setValue("disciplina", null);
-      setValue("turma", null);
-      setValue("professor", null);
-      setValue("local", null);
-      setValue("horaInicio", "");
-      setValue("horaFim", "");
-      setValue("diaDaSemana", "");
+    const aulashorarios = utils.arrayAulas();
+
+    aulashorarios.map((item, index) => {
+      if (
+        utils.comparaHorario(
+          control._formValues.horaInicio,
+          utils.toHours(item)
+        ) <= 0 &&
+        utils.comparaHorario(control._formValues.horaFim, utils.toHours(item)) >
+          0
+      ) {
+        API.post("/aulas", {
+          disciplina: disciplina_list.filter(
+            (item) => Number(item.id) === Number(control._formValues.disciplina)
+          )[0],
+          turma: turma_list.filter(
+            (item) => Number(item.id) === Number(control._formValues.turma)
+          )[0],
+          professor: professor_list.filter(
+            (item) => Number(item.id) === Number(control._formValues.professor)
+          )[0],
+          local: local_list.filter(
+            (item) => Number(item.id) === Number(control._formValues.local)
+          )[0],
+          periodo: periodo_list.filter(
+            (item) => Number(item.id) === Number(control._formValues.periodo)
+          )[0],
+          diaDaSemana: control._formValues.diaDaSemana,
+          horaInicio: utils.toHours(item),
+          horaFim: utils.toHours(utils.arrayAulas()[index + 1]),
+        }).then((data: any) => {
+          console.log(data.data);
+
+          if (
+            utils.comparaHorario(
+              control._formValues.horaFim,
+              utils.toHours(item)
+            ) === 0
+          ) {
+            control._reset();
+            setValue("disciplina", null);
+            setValue("turma", null);
+            setValue("professor", null);
+            setValue("local", null);
+            setValue("horaInicio", "");
+            setValue("horaFim", "");
+            setValue("diaDaSemana", "");
+          }
+        });
+      }
     });
   };
 
@@ -142,7 +176,6 @@ export default function ReservarAulas(options: any) {
               isVisible={modal_visible}
               setIsVisible={set_modal_visible}
               onClose={() => set_modal_visible(false)}
-              importar={"aulas"}
             />
             <ActivateModalButton
               modal_visible={modal_visible}
@@ -183,7 +216,6 @@ export default function ReservarAulas(options: any) {
                   <Picker
                     selectedValue={watch("local")}
                     style={styles.boxBorder}
-                    placeholder="Sala"
                     onValueChange={(itemValue: string) => {
                       setValue("local", itemValue);
                     }}
@@ -278,7 +310,6 @@ export default function ReservarAulas(options: any) {
                   <Picker
                     selectedValue={watch("turma")}
                     style={styles.boxBorder}
-                    placeholder="Sala"
                     onValueChange={(itemValue: string) => {
                       setValue("turma", itemValue);
                     }}
@@ -303,7 +334,6 @@ export default function ReservarAulas(options: any) {
                   <Picker
                     selectedValue={watch("professor")}
                     style={styles.boxBorder}
-                    placeholder="Sala"
                     onValueChange={(itemValue: string) => {
                       setValue("professor", itemValue);
                     }}
@@ -322,12 +352,36 @@ export default function ReservarAulas(options: any) {
                     ))}
                   </Picker>
                 </View>
+
+                <View style={styles.column}>
+                  <Text style={styles.label}>Periodo: </Text>
+                  <Picker
+                    selectedValue={watch("periodo")}
+                    style={styles.boxBorder}
+                    onValueChange={(itemValue: string) => {
+                      setValue("periodo", itemValue);
+                    }}
+                  >
+                    <Picker.Item
+                      key={"unselectable"}
+                      label={"Selecione um periodo"}
+                      value={0}
+                    />
+                    {periodo_list.map((item, index) => (
+                      <Picker.Item
+                        key={index}
+                        label={item.nome}
+                        value={item.id}
+                      />
+                    ))}
+                  </Picker>
+                </View>
               </View>
 
               <View style={styles.rowCenter}>
-                <TouchableOpacity style={styles.textFocus} onPress={onSubmit}>
+                <TouchableHighlight style={styles.textFocus} onPress={onSubmit}>
                   <Text>Salvar</Text>
-                </TouchableOpacity>
+                </TouchableHighlight>
               </View>
             </form>
           </View>

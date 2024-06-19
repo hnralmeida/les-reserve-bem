@@ -20,7 +20,7 @@ type Props = {
   onClose: () => void;
 };
 
-const ImportarArquivo = ({
+const ControleAulaAluno = ({
   isVisible,
   setIsVisible,
   onClose,
@@ -80,4 +80,4 @@ const ImportarArquivo = ({
   );
 };
 
-export default ImportarArquivo;
+export default ControleAulaAluno;

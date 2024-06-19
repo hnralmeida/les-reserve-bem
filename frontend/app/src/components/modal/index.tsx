@@ -12,7 +12,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   RefreshControl,
   Alert,
@@ -34,12 +34,12 @@ const ModalComponent = ({ isVisible, setIsVisible, onClose, children }: Props) =
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <View style={[styles.rowFlexEnd]}>
-            <TouchableOpacity onPress={onClose}>
+            <TouchableHighlight onPress={onClose}>
               <Image
                 source={require("../../../assets/cancel.png")}
                 style={styles.iconElement}
               />
-            </TouchableOpacity>
+            </TouchableHighlight>
           </View>
           {children}
         </View>

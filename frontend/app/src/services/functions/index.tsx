@@ -29,13 +29,28 @@ class functionLib {
         return `${date.getHours()}:${date.getMinutes()}`;
     }
 
+    // converte o objeto hora personalizado para string
     toHours(obj: any) {
         return `${obj.h}:${obj.m}`
+    }
+
+    // função inversa a anterior
+    toTimeObject(timeString: string) {
+        const [h, m] = timeString.split(':').map(Number);
+        return { h, m };
     }
     //recebe data no formato DATE e hora e minutos e retorna data e hora concatenadas
     concatenaDataHora(data: any, hora: any) {
         data = data.toISOString().split('T')[0];
         return `${data}T${hora}:00`;
+    }
+
+    //recebe data no formato DATE e hora e minutos e retorna diferença entre hora1 e hora2 data e hora
+    comparaHorario(hora1: any, hora2: any) {
+        const [h1, m1] = hora1.split(':').map(Number);
+        const [h2, m2] = hora2.split(':').map(Number);
+
+        return (h1 - h2) * 60 + (m1 - m2);
     }
 
     arrayDiasDaSemana () {

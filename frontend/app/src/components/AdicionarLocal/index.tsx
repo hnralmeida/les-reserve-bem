@@ -6,7 +6,6 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   ScrollView,
   RefreshControl,
   Alert,
@@ -111,16 +110,16 @@ const AdicionarLocal = ({
 
   const adicionarEquipamento = () => {
     if (quantidadeEquipamentos) {
-      set_equipamentos_local((prevEquipamentos) => [
-        ...prevEquipamentos,
-        {
-          quantidade: quantidadeEquipamentos,
-          observacao: observacao,
-          equipamento: equipamentos_list.filter(
-            (item) => item.id == equipamentoSelecionado
-          )[0],
-        },
-      ]);
+      const item = {
+        quantidade: quantidadeEquipamentos,
+        equipamento: equipamentos_list.find(
+          (item) => item.id === equipamentoSelecionado
+        ),
+        observacao: observacao,
+      };
+      set_equipamentos_local((prevEquipamentos) => [...prevEquipamentos, item]);
+
+      equipamentos_list.push(item);
 
       // Resetar o valor selecionado após adicionar o equipamento
       setQuantidadeEquipamentos("0");
@@ -189,6 +188,12 @@ const AdicionarLocal = ({
     );
   };
 
+  const refreshPage = () => {
+    API.get("/equipamentos").then((response) => {
+      set_equipamentos_list(response.data);
+    });
+  }
+
   return (
     <ModalComponent
       isVisible={isVisible}
@@ -240,11 +245,13 @@ const AdicionarLocal = ({
             setQuantidadeEquipamentos={setQuantidadeEquipamentos}
             equipamentoSelecionado={equipamentoSelecionado}
             setEquipamentoSelecionado={setEquipamentoSelecionado}
-            equipamentos_list={equipamentos_list}
             observacao={observacao}
             set_observacao={set_observacao}
+            equipamentos_list={equipamentos_list}
+            set_equipamentos_list={set_equipamentos_list}
             delete_equipamento={delete_equip}
             adicionar_equipamento={adicionarEquipamento}
+            refreshPage={refreshPage}
           />
         ) : (
           <>

@@ -6,7 +6,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   RefreshControl,
   Image,
@@ -70,12 +70,20 @@ const EquipmentModal = ({ isVisible, setIsVisible, onClose }: Props) => {
     setEditedName(equipmentList[index].nomeEquipamento); // Preenche o campo de edição com o nome atual do item
   };
 
-  const handleDelete = (id: any) => {
-    API.delete("/equipamentos/" + id);
-    // remove o item no index no valor id de equipmentList
-    setEquipmentList(equipmentList.filter((equipment) => equipment.id !== id));
-
-    onRefresh();
+  const handleDelete = (index: any) => {
+    const id = equipmentList[index].id;
+    API.delete("/equipamentos/" + id)
+      .then(() => {
+        // remove o item no index no valor id de equipmentList
+        setEquipmentList(
+          equipmentList.filter((equipment) => equipment.id !== id)
+        );
+      })
+      .catch((error) => {
+        alert(
+          "Erro ao deletar equipamento, provavelmente há locais associados a ele."
+        );
+      });
   };
 
   const handleSaveEdit = (index: any) => {
@@ -113,9 +121,9 @@ const EquipmentModal = ({ isVisible, setIsVisible, onClose }: Props) => {
           />
 
           <View style={styles.edgeButton}>
-            <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <TouchableHighlight style={styles.button} onPress={handleRegister}>
               <Text style={styles.buttonText}>Salvar</Text>
-            </TouchableOpacity>
+            </TouchableHighlight>
           </View>
 
           <ScrollView
@@ -143,27 +151,27 @@ const EquipmentModal = ({ isVisible, setIsVisible, onClose }: Props) => {
                   )}
 
                   {editingIndex === index ? (
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textFocus}
                       onPress={() => handleSaveEdit(index)}
                     >
                       <Text>Salvar</Text>
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                   ) : (
                     <>
-                      <TouchableOpacity
+                      <TouchableHighlight
                         style={styles.textActions}
                         onPress={() => handleEdit(index)}
                       >
                         <Text>Editar</Text>
-                      </TouchableOpacity>
+                      </TouchableHighlight>
 
-                      <TouchableOpacity
+                      <TouchableHighlight
                         style={styles.textActions}
-                        onPress={() => handleDelete(item.id)}
+                        onPress={() => handleDelete(index)}
                       >
                         <Text>Excluir</Text>
-                      </TouchableOpacity>
+                      </TouchableHighlight>
                     </>
                   )}
                 </View>
@@ -178,9 +186,12 @@ const EquipmentModal = ({ isVisible, setIsVisible, onClose }: Props) => {
           </ScrollView>
 
           <View style={styles.rowCenter}>
-            <TouchableOpacity style={styles.button} onPress={onClose}>
+            <TouchableHighlight
+              style={styles.button}
+              onPress={() => setIsVisible(false)}
+            >
               <Text style={styles.buttonText}>Fechar</Text>
-            </TouchableOpacity>
+            </TouchableHighlight>
           </View>
         </View>
       </View>

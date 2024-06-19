@@ -3,9 +3,8 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
-  Image,
   TouchableHighlight,
+  Image,
   ScrollView,
 } from "react-native";
 import styles from "../../styles";

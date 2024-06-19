@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { StackRouter, useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableHighlight } from "react-native-gesture-handler";
 import RootStack from "./stack.routes";
 
 // Páginas
@@ -62,14 +62,14 @@ export default function DrawStack() {
         }}
       >
         {(props) => (
-          <TouchableOpacity onFocus={() => setModalVisible(!modalVisible)}>
+          <TouchableHighlight onFocus={() => setModalVisible(!modalVisible)}>
             <EquipmentModal
               isVisible={modalVisible}
               setIsVisible={setModalVisible}
               onClose={closeModal}
               {...props}
             />
-          </TouchableOpacity>
+          </TouchableHighlight>
         )}
       </Drawer.Screen>
     </Drawer.Navigator>

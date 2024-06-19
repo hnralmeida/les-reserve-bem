@@ -1,4 +1,4 @@
-import { Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, TouchableHighlight } from 'react-native';
 import styles from '../../styles';
 export default function ImportarAulas(options: any) {
     return (
@@ -8,9 +8,9 @@ export default function ImportarAulas(options: any) {
             <TextInput style={styles.input} placeholder="Nome" />
             <TextInput style={styles.input} placeholder="Email" />
             <TextInput style={styles.input} placeholder="Senha" />
-            <TouchableOpacity style={styles.button} onPress={() => { }}>
+            <TouchableHighlight style={styles.button} onPress={() => { }}>
                 <Text style={styles.buttonText}>Cadastrar</Text>
-            </TouchableOpacity>
+            </TouchableHighlight>
         </View>
     );
 }

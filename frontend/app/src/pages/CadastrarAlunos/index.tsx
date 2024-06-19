@@ -15,7 +15,9 @@ import AdicionarAluno from "../../components/AdicionarAluno";
 import ActivateModalButton from "../../components/ButtonAddModal";
 import { Picker } from "@react-native-picker/picker";
 import SaveEdit from "../../components/SaveEdit";
-import ImportarArquivo from "../../components/ImportarArquivo";
+import UploadArquivo from "../../components/UploadArquivo";
+import ButtonVisibleModal from "../../components/ButtonVisibleModal";
+import ControleAulaAluno from "../../components/ControleAulaAluno";
 
 type FormInputs = {
   nome: string;
@@ -27,11 +29,12 @@ type FormInputs = {
 export default function CadastrarAluno(options: any) {
   const [coordenadoria_list, set_coordenadoria_list] = useState<any[]>([]);
   const [aluno_list, set_aluno_list] = useState<any[]>([]);
-  const [modal_visible, set_modal_visible] = useState(false); // Estado para controlar a visibilidade do modal de importação de arquivo
 
   const [editingIndex, setEditingIndex] = useState(null); // Estado para rastrear o índice do item sendo editado
 
-  const [isVisible, setIsVisible] = useState(false);
+  const [modal_visible, set_modal_visible] = useState(false); // Estado para controlar a visibilidade do modal de importação de arquivo
+  const [isUploadVisible, setIsUploadVisible] = useState(false);
+  const [isAulasVisible, setIsAulasVisible] = useState(false);
   const {
     register,
     handleSubmit,
@@ -51,6 +54,7 @@ export default function CadastrarAluno(options: any) {
   useFocusEffect(
     React.useCallback(() => {
       // Função para carregar os dados iniciais da tela
+
       API.get("/alunos")
         .then((response) => {
           const data = response.data;
@@ -128,11 +132,10 @@ export default function CadastrarAluno(options: any) {
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={[styles.rowFlexEnd, styles.marginTop]}>
-          <ImportarArquivo
+          <UploadArquivo
             isVisible={modal_visible}
             setIsVisible={set_modal_visible}
             onClose={() => set_modal_visible(false)}
-            importar={"alunos"}
           />
           <View style={styles.marginRight}>
             <ActivateModalButton
@@ -143,9 +146,9 @@ export default function CadastrarAluno(options: any) {
           </View>
 
           <AdicionarAluno
-            isVisible={isVisible}
-            setIsVisible={setIsVisible}
-            onClose={() => setIsVisible(!isVisible)}
+            isVisible={isUploadVisible}
+            setIsVisible={setIsUploadVisible}
+            onClose={() => setIsUploadVisible(!isUploadVisible)}
             watch={watch}
             control={control}
             setValue={setValue}
@@ -154,8 +157,8 @@ export default function CadastrarAluno(options: any) {
           />
 
           <ActivateModalButton
-            set_modal_visible={setIsVisible}
-            modal_visible={isVisible}
+            set_modal_visible={setIsUploadVisible}
+            modal_visible={isUploadVisible}
             text={"Aluno"}
           />
         </View>
@@ -164,11 +167,12 @@ export default function CadastrarAluno(options: any) {
             source={require("../../../assets/alunos.png")}
             style={[styles.iconElement]}
           />
-          <Text style={[styles.text, styles.row6]}>Nome</Text>
-          <Text style={[styles.text, styles.row6]}>Matricula</Text>
-          <Text style={[styles.text, styles.row6]}>Email</Text>
-          <Text style={[styles.text, styles.row6]}>Coordenadoria</Text>
-          <Text style={[styles.text, styles.row6]}>Ações</Text>
+          <Text style={[styles.text]}>Nome</Text>
+          <Text style={[styles.text]}>Matricula</Text>
+          <Text style={[styles.text]}>Email</Text>
+          <Text style={[styles.text]}>Coordenadoria</Text>
+          <Text style={[styles.text]}>Aulas</Text>
+          <Text style={[styles.text]}>Ações</Text>
         </View>
 
         {/* Lista de alunos */}
@@ -178,7 +182,7 @@ export default function CadastrarAluno(options: any) {
               <View style={styles.listLine} key={index}>
                 <Image
                   source={require("../../../assets/alunos.png")}
-                  style={styles.iconElement}
+                  style={[styles.iconElement]}
                 />
 
                 {editingIndex === index ? (
@@ -241,13 +245,26 @@ export default function CadastrarAluno(options: any) {
                   </Text>
                 )}
 
+                <View style={[styles.textLabel, { width: "15%" }]}>
+                  <ButtonVisibleModal
+                    modal_visible={isAulasVisible}
+                    set_modal_visible={setIsAulasVisible}
+                    origin="aula"
+                  />
+                  <ControleAulaAluno
+                    isVisible={isAulasVisible}
+                    setIsVisible={setIsAulasVisible}
+                    onClose={() => setIsAulasVisible(!isAulasVisible)}
+                  />
+                </View>
+
                 {editingIndex === index ? (
                   <SaveEdit
                     onCancel={() => setEditingIndex(null)}
                     onSave={() => handleSaveEdit(index)}
                   />
                 ) : (
-                  <>
+                  <View style={[styles.row]}>
                     <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleEdit(index)}
@@ -267,7 +284,7 @@ export default function CadastrarAluno(options: any) {
                         style={styles.iconElement}
                       />
                     </TouchableHighlight>
-                  </>
+                  </View>
                 )}
               </View>
             ))

@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 // import Redirector from '../pages/Redirector';
 
 //MainPages
-import Home from "../pages/Home";
+import Login from "../pages/Login";
 
 const Stack = createStackNavigator();
 
@@ -20,11 +20,11 @@ export function StackAuth() {
 
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="Login"
     >
       <Stack.Screen
-        name="Home"
-        component={Home}
+        name="Login"
+        component={Login}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -5,7 +5,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   RefreshControl,
   Alert,
@@ -94,9 +94,9 @@ const AdicionarCoordenador = ({
         />
 
         <View style={styles.rowCenter}>
-          <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          <TouchableHighlight style={styles.button} onPress={handleRegister}>
             <Text style={styles.buttonText}>Salvar</Text>
-          </TouchableOpacity>
+          </TouchableHighlight>
         </View>
       </>
     </ModalComponent>

@@ -3,6 +3,7 @@ package com.example.backend.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.backend.dominio.Periodo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,20 @@ public class AulaService {
         return aulaRepository.findAll();
     }
 
-    public List<Aula> listarAulaPorTurma(Long turmaId) {
-        return aulaRepository.findByTurmaId(turmaId);
+    public List<Aula> listarAulaPorTurma(Long turmaId, Long periodoId) {
+        return aulaRepository.findByTurmaId(turmaId, periodoId);
+    }
+
+    public List<Aula> listarAulaPorLocal(Long localId, Long periodoId) {
+        return aulaRepository.findByLocalId(localId, periodoId);
+    }
+
+    public List<Aula> listarAulaPorAluno(Long alunoId, Long periodoId) {
+        return aulaRepository.findByAlunoId(alunoId, periodoId);
+    }
+
+    public List<Aula> listarAulaPorProfessor(Long professorId, Long periodoId) {
+        return aulaRepository.findByProfessorId(professorId, periodoId);
     }
 
     public Optional<Aula> encontrarAulaPorId(Long id) {

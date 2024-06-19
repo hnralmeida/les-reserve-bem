@@ -3,7 +3,6 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
   SafeAreaView,
   ScrollView,
   TouchableHighlight,
@@ -212,9 +211,9 @@ export default function ReservarEventos(options: any) {
                 </View>
               </View>
               <View style={styles.rowCenter}>
-                <TouchableOpacity style={styles.textFocus} onPress={onSubmit}>
+                <TouchableHighlight style={styles.textFocus} onPress={onSubmit}>
                   <Text>Salvar</Text>
-                </TouchableOpacity>
+                </TouchableHighlight>
               </View>
             </form>
           </View>

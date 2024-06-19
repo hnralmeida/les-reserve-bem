@@ -2,15 +2,11 @@ package com.example.backend.controller;
 
 import java.util.List;
 
+import com.example.backend.dominio.Aluno;
+import com.example.backend.dominio.Periodo;
+import com.example.backend.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.backend.dominio.Aula;
 import com.example.backend.service.AulaService;
@@ -21,6 +17,9 @@ public class AulaController {
 
     @Autowired
     private AulaService aulaService;
+
+    @Autowired
+    private AlunoService alunoService;
 
     @PostMapping
     public Aula cadastrarAula(@RequestBody Aula aula) {
@@ -33,8 +32,24 @@ public class AulaController {
     }
 
     @GetMapping("/turma/{turmaId}")
-    public List<Aula> listarAulaPorTurma(@PathVariable Long turmaId) {
-        return aulaService.listarAulaPorTurma(turmaId);
+    public List<Aula> listarAulaPorTurma(@PathVariable Long turmaId, @RequestParam Long periodoId) {
+        return aulaService.listarAulaPorTurma(turmaId, periodoId);
+    }
+
+    @GetMapping("/local/{localId}")
+    public List<Aula> listarAulaPorLocal(@PathVariable Long localId, @RequestParam Long periodoId) {
+        return aulaService.listarAulaPorLocal(localId, periodoId);
+    }
+
+    @GetMapping("/aluno/{alunoMatricula}")
+    public List<Aula> listarAulaPorAluno(@PathVariable Long alunoMatricula, @RequestParam Long periodoId) {
+        Aluno aluno = alunoService.encontrarAlunoPorMatricuka(alunoMatricula);
+        return aulaService.listarAulaPorAluno(aluno.getId(), periodoId);
+    }
+
+    @GetMapping("/professor/{professorId}")
+    public List<Aula> listarAulaPorProfessor(@PathVariable Long professorId, @RequestParam Long periodoId) {
+        return aulaService.listarAulaPorProfessor(professorId, periodoId);
     }
 
     @PutMapping("/{id}")

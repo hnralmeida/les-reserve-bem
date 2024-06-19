@@ -4,7 +4,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   RefreshControl,
   Image,
@@ -16,21 +16,43 @@ import ModalComponent from "../modal";
 type Props = {
   isVisible: boolean;
   setIsVisible: Dispatch<SetStateAction<boolean>>;
+  equipamentList: any[];
   onClose: () => void;
 };
 
-const ControleEquipamentos = ({ isVisible, setIsVisible, onClose }: Props) => {
+const ControleEquipamentos = ({
+  isVisible,
+  setIsVisible,
+  onClose,
+  equipamentList,
+}: Props) => {
   return (
     <ModalComponent
       isVisible={isVisible}
       setIsVisible={setIsVisible}
       onClose={onClose}
     >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Editar equipamentos</Text>
+      <>
+        <View style={styles.row}>
+          <Text style={styles.modalTitle}>Equipamentos no Local</Text>
         </View>
-      </View>
+        <View style={styles.row}>
+          <Text style={styles.text}>Nome</Text>
+          <Text style={styles.text}>Quantidade</Text>
+          <Text style={styles.text}>Observação</Text>
+        </View>
+        {equipamentList
+          ? equipamentList.map((equipament) => (
+              <View style={styles.row}>
+                <Text style={styles.text}>
+                  {equipament.equipamento.nomeEquipamento}
+                </Text>
+                <Text style={styles.text}>{equipament.quantidade}</Text>
+                <Text style={styles.text}>{equipament.observacao}</Text>
+              </View>
+            ))
+          : "Nenhum equipamento cadastrado"}
+      </>
     </ModalComponent>
   );
 };

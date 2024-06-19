@@ -1,4 +1,4 @@
-import { Image, LayoutAnimation, Platform, StyleSheet, Text, TouchableNativeFeedback, TouchableOpacity, UIManager, View } from 'react-native'
+import { Image, LayoutAnimation, Platform, StyleSheet, Text, TouchableNativeFeedback, TouchableHighlight, UIManager, View } from 'react-native'
 import React, { useState } from 'react'
 import Colors from '../constants/Colors'
 import { DrawerNavigationState, ParamListBase, useNavigation } from '@react-navigation/native'
@@ -21,9 +21,9 @@ const DrawerContent = (props: Props) => {
     return (
         <>
             {/* profile header */}
-            <TouchableOpacity onPress={() => console.log('Home')}>
+            <TouchableHighlight onPress={() => console.log('Home')}>
                 <Text>Software Engineer</Text>
-            </TouchableOpacity>
+            </TouchableHighlight>
         </>
     )
 }

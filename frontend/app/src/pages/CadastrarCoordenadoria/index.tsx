@@ -3,7 +3,7 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
+  TouchableHighlight,
   Image,
   Alert,
 } from "react-native";
@@ -140,15 +140,15 @@ export default function CadastrarCoordenadoria(options: any) {
                 )}
 
                 {editingIndex === index ? (
-                  <TouchableOpacity
+                  <TouchableHighlight
                     style={styles.textFocus}
                     onPress={() => handleSaveEdit(index)}
                   >
                     <Text>Salvar</Text>
-                  </TouchableOpacity>
+                  </TouchableHighlight>
                 ) : (
                   <>
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleEdit(index)}
                     >
@@ -156,9 +156,9 @@ export default function CadastrarCoordenadoria(options: any) {
                         source={require("../../../assets/edit.png")}
                         style={styles.iconElement}
                       />
-                    </TouchableOpacity>
+                    </TouchableHighlight>
 
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleDelete(item.id)}
                     >
@@ -166,7 +166,7 @@ export default function CadastrarCoordenadoria(options: any) {
                         source={require("../../../assets/delete.png")}
                         style={styles.iconElement}
                       />
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                   </>
                 )}
               </View>

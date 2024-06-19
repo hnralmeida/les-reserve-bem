@@ -3,11 +3,10 @@ import {
   View,
   Text,
   TextInput,
-  TouchableHighlight,
   Image,
   SafeAreaView,
   Alert,
-  TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import styles from "../../styles";
@@ -80,7 +79,7 @@ const CadastrarLocal = () => {
         });
         set_local_list(data);
       });
-    }, [is_equipamentos_visible, ])
+    }, [is_equipamentos_visible])
   );
 
   const handleEdit = (index: any) => {
@@ -148,22 +147,22 @@ const CadastrarLocal = () => {
             text={"Local"}
           />
         </View>
-        <View style={[styles.listLine, styles.padmargin]}>
+        <View style={[styles.row, styles.padmargin]}>
           <Image
             source={require("../../../assets/salas.png")}
             style={[styles.iconElement]}
           />
-          <Text style={[styles.text, styles.row6]}>Nome</Text>
-          <Text style={[styles.text, styles.row6]}>Capacidade</Text>
-          <Text style={[styles.text, styles.row6]}>Obsercação</Text>
-          <Text style={[styles.text, styles.row6]}>Equipamentos</Text>
-          <Text style={[styles.text, styles.row6]}>Ações</Text>
+          <Text style={[styles.text]}>Nome</Text>
+          <Text style={[styles.text]}>Capacidade</Text>
+          <Text style={[styles.text]}>Observação</Text>
+          <Text style={[styles.text]}>Equipamentos</Text>
+          <Text style={[styles.text]}>Ações</Text>
         </View>
 
         <ScrollView style={styles.listBox}>
           {local_list.length > 0 ? (
             local_list.map((item: any, index) => (
-              <View style={styles.listLine} key={index}>
+              <View style={styles.row} key={index}>
                 <Image
                   source={require("../../../assets/salas.png")}
                   style={styles.iconElement}
@@ -190,7 +189,7 @@ const CadastrarLocal = () => {
                   : [
                       <Text style={styles.textLabel}>{item.nomeLocal}</Text>,
                       <Text style={styles.textLabel}>{item.capacidade}</Text>,
-                      <Text style={styles.textLabel}>{item.observacao}</Text>,
+                      <Text style={styles.textLabel}>{item.observacao||"Sem observação"}</Text>,
                       <>
                         <ButtonVisibleModal
                           modal_visible={is_equipamentos_visible}
@@ -199,6 +198,7 @@ const CadastrarLocal = () => {
                         <ControleEquipamentos
                           isVisible={is_equipamentos_visible}
                           setIsVisible={set_is_equipamentos_visible}
+                          equipamentList={item.locaisEquipamentos}
                           onClose={() =>
                             set_is_equipamentos_visible(
                               !is_equipamentos_visible
@@ -215,7 +215,7 @@ const CadastrarLocal = () => {
                   />
                 ) : (
                   <>
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleEdit(index)}
                     >
@@ -223,9 +223,9 @@ const CadastrarLocal = () => {
                         source={require("../../../assets/edit.png")}
                         style={styles.iconElement}
                       />
-                    </TouchableOpacity>
+                    </TouchableHighlight>
 
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleDelete(item.id)}
                     >
@@ -233,7 +233,7 @@ const CadastrarLocal = () => {
                         source={require("../../../assets/delete.png")}
                         style={styles.iconElement}
                       />
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                   </>
                 )}
               </View>

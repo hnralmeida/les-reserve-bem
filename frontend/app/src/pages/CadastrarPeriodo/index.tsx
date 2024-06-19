@@ -3,7 +3,7 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
+  TouchableHighlight,
   Alert,
   ScrollView,
   Image,
@@ -179,7 +179,7 @@ export default function CadastrarPeriodo(options: any) {
                   />
                 ) : (
                   <>
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleEdit(index)}
                     >
@@ -187,9 +187,9 @@ export default function CadastrarPeriodo(options: any) {
                         source={require("../../../assets/edit.png")}
                         style={styles.iconElement}
                       />
-                    </TouchableOpacity>
+                    </TouchableHighlight>
 
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleDelete(item.id)}
                     >
@@ -197,7 +197,7 @@ export default function CadastrarPeriodo(options: any) {
                         source={require("../../../assets/delete.png")}
                         style={styles.iconElement}
                       />
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                   </>
                 )}
               </View>

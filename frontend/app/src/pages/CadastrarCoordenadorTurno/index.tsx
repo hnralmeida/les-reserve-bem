@@ -3,7 +3,7 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
+  TouchableHighlight,
   Alert,
   Image,
 } from "react-native";
@@ -180,7 +180,7 @@ export default function Cadastrarcoordenador(options: any) {
                   />
                 ) : (
                   <>
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleEdit(index)}
                     >
@@ -188,9 +188,9 @@ export default function Cadastrarcoordenador(options: any) {
                         source={require("../../../assets/edit.png")}
                         style={styles.iconElement}
                       />
-                    </TouchableOpacity>
+                    </TouchableHighlight>
 
-                    <TouchableOpacity
+                    <TouchableHighlight
                       style={styles.textActions}
                       onPress={() => handleDelete(item.id)}
                     >
@@ -198,7 +198,7 @@ export default function Cadastrarcoordenador(options: any) {
                         source={require("../../../assets/delete.png")}
                         style={styles.iconElement}
                       />
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                   </>
                 )}
               </View>

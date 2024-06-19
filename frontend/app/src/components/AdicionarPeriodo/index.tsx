@@ -5,7 +5,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   RefreshControl,
   Alert,

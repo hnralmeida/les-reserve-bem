@@ -1,46 +1,46 @@
 package com.example.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.example.backend.dominio.UsuarioRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.backend.dominio.Usuario;
 import com.example.backend.service.UsuarioService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/login")
 public class UsuariosController {
 
     @Autowired
     private UsuarioService usuarioService;
-
-    @PostMapping
-    public Usuario cadastrarUsuario(@RequestBody Usuario usuario) {
-        return usuarioService.cadastrarUsuario(usuario);
-    }
 
     @GetMapping
     public List<Usuario> listarUsuarios() {
         return usuarioService.listarUsuario();
     }
 
-    @PutMapping("/{id}")
-    public Usuario editarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        return usuarioService.editarUsuario(id, usuario);
+    @GetMapping("/usuario/{id}")
+    public Optional<Usuario> obterUsuarios(@PathVariable Long id) {
+        return usuarioService.encontrarUsuarioPorId(id);
     }
 
     @DeleteMapping("/{id}")
-    public void excluirUsuario(@PathVariable Long id) {
+    public void deletarUsuario(@PathVariable Long id) {
         usuarioService.excluirUsuario(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> getUsuarioService(@RequestBody UsuarioRequest user) {
+
+        System.out.println(user.getUsuario());
+        System.out.println(user.getSenha());
+
+        return usuarioService.authenticate(user.getUsuario(), user.getSenha());
+
     }
 
 }

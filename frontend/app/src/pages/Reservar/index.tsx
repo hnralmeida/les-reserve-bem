@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TextInput, TouchableHighlight, Image } from 'react-native';
 import styles from '../../styles';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../routes/stack.routes";
 
