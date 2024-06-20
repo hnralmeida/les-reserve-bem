@@ -14,7 +14,7 @@ export default function ButtonVisibleModal({
 }: Props) {
   return (
     <TouchableHighlight
-      style={[styles.textActions, { width: "15%" }]}
+      style={[styles.text, { width: "15%" }]}
       onPress={() => set_modal_visible(!modal_visible)}
     >
       <View style={[styles.listLine, { margin: 0 }]}>

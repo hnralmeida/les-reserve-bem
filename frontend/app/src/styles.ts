@@ -13,6 +13,17 @@ export const colors = {
 };
 
 const styles = StyleSheet.create({
+  logo: {
+    width: 128,
+    height: 128,
+    opacity: 1,
+  },
+  drawerBackground: {
+    width: "100%",
+    height: 128,
+    margin: 0,
+    padding: 0,	
+  },
   container: {
     flex: 1,
     paddingTop: 16,
@@ -123,6 +134,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   title: {},
+  footer: {
+    padding: 8,
+    marginTop: 4,
+    borderTopColor: colors.primaryColor,
+  },
   padmargin: {
     padding: 8,
     marginTop: 32,
@@ -260,9 +276,8 @@ const styles = StyleSheet.create({
   },
   listLine: {
     flexDirection: "row",
-    alignContent: "center",
     textAlign: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
     marginBottom: 8,
     width: "100%",
   },
@@ -281,8 +296,8 @@ const styles = StyleSheet.create({
   },
   centerText: {
     display: "flex",
-    alignContent: "center",
     justifyContent: "center",
+    alignItems: "center",
     textAlign: "center",
   },
   containerPage: {
@@ -329,6 +344,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   row: {
+    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

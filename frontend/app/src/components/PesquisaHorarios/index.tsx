@@ -102,7 +102,7 @@ export function PesquisaHorarios({
           ))}
         </Picker>
       );
-    case "Locais":
+    case "Local":
       return (
         <View style={[styles.row, { marginBottom: 0 }]}>
           <Picker

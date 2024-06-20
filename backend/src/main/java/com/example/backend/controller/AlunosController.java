@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.backend.service.CoordenadoriaService;
+import com.example.backend.service.TurmaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,9 @@ public class AlunosController {
 
     @Autowired
     private CoordenadoriaService coordenadoriaService;
+
+    @Autowired
+    private TurmaService turmaService;
 
     @PostMapping
     public Aluno cadastrarAluno(@RequestBody Aluno aluno) {
@@ -50,6 +54,12 @@ public class AlunosController {
 
                 for (CSVRecord csvRecord : csvRecords) {
                     Aluno aluno = new Aluno();
+                    aluno.setNome(csvRecord.get("Nome"));
+                    aluno.setMatricula(csvRecord.get("Matricula"));
+                    aluno.setEmail(csvRecord.get("Email"));
+                    aluno.setSenha(csvRecord.get("Senha"));
+                    aluno.setTurma(turmaService.encontrarTurmaPorId(Long.parseLong(csvRecord.get("Turma"))));
+                    aluno.setCoordenadoria(coordenadoriaService.encontrarCoordenadoriaPorId(Long.parseLong(csvRecord.get("Coordenadoria"))));
 
                     try {
                         alunoService.cadastrarAluno(aluno);

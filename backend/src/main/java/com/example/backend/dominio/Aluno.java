@@ -20,6 +20,10 @@ public class Aluno extends Usuario {
     @JoinColumn(name = "coordenadoria_id")
     private @NotNull Coordenadoria coordenadoria;
 
+    @ManyToOne
+    @JoinColumn(name = "turma_id")
+    private Turma turma;
+
     @OneToMany(mappedBy = "aluno")
     private List<AulaAluno> aulas;
 }

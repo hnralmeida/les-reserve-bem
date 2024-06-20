@@ -11,28 +11,29 @@ import com.example.backend.repository.TurmaRepository;
 
 @Service
 public class TurmaService {
-    
+
     @Autowired
     private TurmaRepository turmaRepository;
 
-    public Turma caadstrarTurma(Turma turma){
+    public Turma caadstrarTurma(Turma turma) {
         return turmaRepository.save(turma);
     }
 
-    public List<Turma> listarTurma(){
+    public List<Turma> listarTurma() {
         return turmaRepository.findAll();
     }
 
-    public Optional<Turma> encontrarTurmaPorId(Long id){
-        return turmaRepository.findById(id);
+    public Turma encontrarTurmaPorId(Long id) {
+        Optional<Turma> t = turmaRepository.findById(id);
+        return t.orElse(null);
     }
 
-    public Turma editarTurma(Long id, Turma turma){
+    public Turma editarTurma(Long id, Turma turma) {
         turma.setId(id);
         return turmaRepository.save(turma);
     }
 
-    public void excluirTurma(Long id){
+    public void excluirTurma(Long id) {
         turmaRepository.deleteById(id);
     }
 }

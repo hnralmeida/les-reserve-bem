@@ -107,7 +107,7 @@ export default function CadastrarCoordenadoria(options: any) {
           />
           <Text style={[styles.text, styles.row6]}>Coordenadoria</Text>
           <Text style={[styles.text, styles.row6]}>Sigla</Text>
-          <Text style={[styles.text, styles.row6]}>Ações</Text>
+          <Text style={[styles.text, {width: 128, marginRight: "6.25%"}]}>Ações</Text>
         </View>
 
         <ScrollView style={styles.listBox}>

@@ -1,67 +1,79 @@
-// EquipmentModal.js
-import React, { useCallback, useState, SetStateAction, Dispatch } from "react";
-
-import {
-  View,
-  Text,
-  TouchableHighlight,
-  ActivityIndicator,
-  Button,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Text, TouchableHighlight, Button, Alert } from "react-native";
 import ModalComponent from "../modal";
-
 import styles from "../../styles";
 import API from "../../services/API";
 import { LoadingIcon } from "../LoadingIcon";
-import { set } from "react-hook-form";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 
 type Props = {
   isVisible: boolean;
-  setIsVisible: Dispatch<SetStateAction<boolean>>;
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onClose: () => void;
 };
 
 const UploadArquivo = ({ isVisible, setIsVisible, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
-
   const [fileInfo, setFileInfo] = useState<any>(null);
   const [uploadStatus, setUploadStatus] = useState("");
 
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync();
 
-    if (result.assets != null) {
+    if (result.canceled === false) {
       setFileInfo(result);
+    } else {
+      setUploadStatus("Nenhum arquivo selecionado.");
     }
   };
 
-  const handle: () => void = async () => {
+  const handleUpload = async () => {
+    if (!fileInfo) {
+      Alert.alert("Erro", "Por favor, selecione um arquivo primeiro.");
+      return;
+    }
+
     setLoading(true);
+    setUploadStatus("");
 
-    console.log(fileInfo);
-    const fileUri = fileInfo.uri;
-    const fileBase64 = await FileSystem.readAsStringAsync(fileUri, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-
-    API.post(
-      "alunos/importar/",
-      JSON.stringify({
-        name: fileInfo.name,
-        type: fileInfo.mimeType,
-        data: fileBase64,
-      })
-    )
-      .then((response) => {
-        alert("Importado com sucesso!");
-      })
-      .finally(() => {
-        alert("Aconteceu um erro ou o Matheus não fez a API ainda");
-        setLoading(false);
-        onClose();
+    try {
+      const fileUri = fileInfo.uri;
+      const fileBase64 = await FileSystem.readAsStringAsync(fileUri, {
+        encoding: FileSystem.EncodingType.Base64,
       });
+      console.log(fileBase64);
+
+      API.post(
+        "alunos/importar/",
+        JSON.stringify({
+          name: fileInfo.name,
+          type: fileInfo.mimeType,
+          data: fileBase64,
+        })
+      )
+        .then((response) => {
+          alert("Importado com sucesso!");
+        })
+        .catch((error) => {
+          alert("Aconteceu um erro ou o Matheus não fez a API ainda");
+          alert(error);
+        })
+        .finally(() => {
+          alert("Importação termianda.");
+          setLoading(false);
+          onClose();
+        });
+
+      setUploadStatus("Importado com sucesso!");
+      Alert.alert("Sucesso", "Importado com sucesso!");
+    } catch (error) {
+      setUploadStatus("Aconteceu um erro ou o Matheus não fez a API ainda");
+      Alert.alert("Erro", "Aconteceu um erro ou o Matheus não fez a API ainda");
+    } finally {
+      setLoading(false);
+      onClose();
+    }
   };
 
   return (
@@ -81,7 +93,10 @@ const UploadArquivo = ({ isVisible, setIsVisible, onClose }: Props) => {
           {fileInfo && (
             <View style={[styles.padmargin, { marginTop: 20 }]}>
               <Text>Nome do arquivo: {fileInfo.assets[0].name}</Text>
-              <Text>Tamanho do arquivo: {fileInfo.assets[0].size} bytes</Text>
+              <Text>
+                Tamanho do arquivo:{" "}
+                {(fileInfo.assets[0].size / 1024).toFixed(2)} MB
+              </Text>
             </View>
           )}
           {uploadStatus && (
@@ -101,7 +116,7 @@ const UploadArquivo = ({ isVisible, setIsVisible, onClose }: Props) => {
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.button}
-              onPress={handle}
+              onPress={handleUpload}
               disabled={loading}
             >
               <Text style={styles.buttonText}>Enviar</Text>

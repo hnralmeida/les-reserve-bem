@@ -130,7 +130,7 @@ export default function Cadastrarcoordenador(options: any) {
           <Text style={[styles.text, styles.row6]}>Nome</Text>
           <Text style={[styles.text, styles.row6]}>Matricula</Text>
           <Text style={[styles.text, styles.row6]}>Email</Text>
-          <Text style={[styles.text, styles.row6]}>Ações</Text>
+          <Text style={[styles.text, { width: 128, marginRight: "6.25%" }]}>Ações</Text>
         </View>
 
         {/* Lista de coordenadores */}

@@ -64,10 +64,6 @@ const AdicionarLocal = ({
     }, [])
   );
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
   const onSubmit = () => {
     if (control._formValues.nomeLocal.trim() !== "") {
       API.post("/locais", {
@@ -113,12 +109,12 @@ const AdicionarLocal = ({
       const item = {
         quantidade: quantidadeEquipamentos,
         equipamento: equipamentos_list.find(
-          (item) => item.id === equipamentoSelecionado
+          (item) => Number(item.id) === Number(equipamentoSelecionado)
         ),
         observacao: observacao,
       };
       set_equipamentos_local((prevEquipamentos) => [...prevEquipamentos, item]);
-
+      console.log(item);
       equipamentos_list.push(item);
 
       // Resetar o valor selecionado após adicionar o equipamento
@@ -248,7 +244,6 @@ const AdicionarLocal = ({
             observacao={observacao}
             set_observacao={set_observacao}
             equipamentos_list={equipamentos_list}
-            set_equipamentos_list={set_equipamentos_list}
             delete_equipamento={delete_equip}
             adicionar_equipamento={adicionarEquipamento}
             refreshPage={refreshPage}

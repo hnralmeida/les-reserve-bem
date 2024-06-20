@@ -22,8 +22,8 @@ public class ProfessorService {
         return professorRepository.findAll();
     }
 
-    public Optional<Professor> encontrarProfessorPorId(Long id) {
-        return professorRepository.findById(id);
+    public Optional<Professor> encontrarProfessorPorMatricula(String matricula) {
+        return professorRepository.findByMatricula(matricula);
     }
 
     public Professor editarProfessor(Long id, Professor professor) {

@@ -128,6 +128,29 @@ const CadastrarLocal = () => {
     }
   };
 
+  function LabelControleEquipamentos({
+    locaisList,
+    index,
+  }: {
+    locaisList: any[];
+    index: any;
+  }) {
+    return (
+      <>
+        <ButtonVisibleModal
+          modal_visible={is_equipamentos_visible}
+          set_modal_visible={set_is_equipamentos_visible}
+        />
+        <ControleEquipamentos
+          isVisible={is_equipamentos_visible}
+          setIsVisible={set_is_equipamentos_visible}
+          equipamentList={locaisList[index].locaisEquipamentos}
+          onClose={() => set_is_equipamentos_visible(!is_equipamentos_visible)}
+        />
+      </>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <SafeAreaView style={styles.content}>
@@ -147,7 +170,7 @@ const CadastrarLocal = () => {
             text={"Local"}
           />
         </View>
-        <View style={[styles.row, styles.padmargin]}>
+        <View style={[styles.row]}>
           <Image
             source={require("../../../assets/salas.png")}
             style={[styles.iconElement]}
@@ -155,17 +178,17 @@ const CadastrarLocal = () => {
           <Text style={[styles.text]}>Nome</Text>
           <Text style={[styles.text]}>Capacidade</Text>
           <Text style={[styles.text]}>Observação</Text>
-          <Text style={[styles.text]}>Equipamentos</Text>
-          <Text style={[styles.text]}>Ações</Text>
+          <Text style={[styles.text, { width: "15%", marginRight: "6.25%" }]}>Equipamentos</Text>
+          <Text style={[styles.textActions, {marginRight: "6.25%"}]}>Ações</Text>
         </View>
 
         <ScrollView style={styles.listBox}>
           {local_list.length > 0 ? (
             local_list.map((item: any, index) => (
-              <View style={styles.row} key={index}>
+              <View style={[styles.row]} key={index}>
                 <Image
                   source={require("../../../assets/salas.png")}
-                  style={styles.iconElement}
+                  style={[styles.iconElement]}
                 />
 
                 {editing_index === index
@@ -189,23 +212,13 @@ const CadastrarLocal = () => {
                   : [
                       <Text style={styles.textLabel}>{item.nomeLocal}</Text>,
                       <Text style={styles.textLabel}>{item.capacidade}</Text>,
-                      <Text style={styles.textLabel}>{item.observacao||"Sem observação"}</Text>,
-                      <>
-                        <ButtonVisibleModal
-                          modal_visible={is_equipamentos_visible}
-                          set_modal_visible={set_is_equipamentos_visible}
-                        />
-                        <ControleEquipamentos
-                          isVisible={is_equipamentos_visible}
-                          setIsVisible={set_is_equipamentos_visible}
-                          equipamentList={item.locaisEquipamentos}
-                          onClose={() =>
-                            set_is_equipamentos_visible(
-                              !is_equipamentos_visible
-                            )
-                          }
-                        />
-                      </>,
+                      <Text style={styles.textLabel}>
+                        {item.observacao || "Sem observação"}
+                      </Text>,
+                      <LabelControleEquipamentos
+                        locaisList={local_list}
+                        index={index}
+                      />,
                     ]}
 
                 {editing_index === index ? (

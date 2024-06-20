@@ -132,7 +132,7 @@ export default function CadastrarPeriodo(options: any) {
           <Text style={[styles.text, styles.row6]}>Período</Text>
           <Text style={[styles.text, styles.row6]}>Início</Text>
           <Text style={[styles.text, styles.row6]}>Fim</Text>
-          <Text style={[styles.text, styles.row6]}>Ações</Text>
+          <Text style={[styles.text, { width: 128, marginRight: "6.25%" }]}>Ações</Text>
         </View>
         {/* Lista de periodos */}
         <ScrollView style={styles.listBox}>

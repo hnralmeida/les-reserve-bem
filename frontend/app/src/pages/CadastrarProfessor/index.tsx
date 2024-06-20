@@ -139,7 +139,7 @@ export default function CadastrarProfessor(options: any) {
             text={"Professor"}
           />
         </View>
-        <View style={[styles.listLine, styles.padmargin]}>
+        <View style={[styles.listLine]}>
           <Image
             source={require("../../../assets/professores.png")}
             style={[styles.iconElement]}
@@ -148,7 +148,7 @@ export default function CadastrarProfessor(options: any) {
           <Text style={[styles.text, styles.row6]}>Matricula</Text>
           <Text style={[styles.text, styles.row6]}>Email</Text>
           <Text style={[styles.text, styles.row6]}>Coordenadoria</Text>
-          <Text style={[styles.text, styles.row6]}>Ações</Text>
+          <Text style={[styles.text, {width: 128, marginRight: "6.25%"}]}>Ações</Text>
         </View>
 
         {/* Lista de professores */}

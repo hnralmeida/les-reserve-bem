@@ -3,8 +3,6 @@ import { Image, TextInput, TouchableHighlight, View } from "react-native";
 import styles from "../../styles";
 import { Picker } from "@react-native-picker/picker";
 import EquipmentModal from "../Equipamento";
-import { useFocusEffect } from "@react-navigation/native";
-import API from "../../services/API";
 
 type Props = {
   modalVisible: boolean;
@@ -14,7 +12,6 @@ type Props = {
   equipamentoSelecionado: string | null;
   setEquipamentoSelecionado: Dispatch<SetStateAction<string | null>>;
   equipamentos_list: any[];
-  set_equipamentos_list: Dispatch<SetStateAction<any[]>>;
   observacao: string;
   set_observacao: Dispatch<SetStateAction<string>>;
   delete_equipamento: (index: any) => void;
@@ -34,7 +31,6 @@ const ViewEquipamentEditting = ({
   delete_equipamento,
   adicionar_equipamento,
   equipamentos_list, 
-  set_equipamentos_list,
   refreshPage
 }: Props) => {
   const handleInputNumberChange = (text: any): string => {
@@ -46,14 +42,6 @@ const ViewEquipamentEditting = ({
     }
     return numbersOnly;
   };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      API.get("/equipamentos").then((response) => {
-        set_equipamentos_list(response.data);
-      });
-    }, [refreshPage])
-  );
 
   return (
     <View style={styles.row}>

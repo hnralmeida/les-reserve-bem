@@ -17,7 +17,7 @@ import API from "../../services/API";
 import dayjs, { Dayjs } from "dayjs";
 import ModalComponent from "../../components/modal";
 import SaveEdit from "../../components/SaveEdit";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import functionLib from "../../services/functions";
 import DateTimePicker from "react-native-ui-datepicker";
 import InputDate from "../../components/InputDate";
@@ -45,7 +45,7 @@ export default function ConsultarHorarios(options: any) {
     "Aluno",
     "Professor",
     //"Periodo",
-    "Locais",
+    "Local",
     "Turma",
     //"Data",
   ];
@@ -116,7 +116,7 @@ export default function ConsultarHorarios(options: any) {
         return list_professores.filter(
           (professor) => professor.id == control._formValues.input
         )[0]?.nome;
-      case "Locais":
+      case "Local":
         return list_locais.filter(
           (local) => local.id == control._formValues.input
         )[0]?.nomeLocal;
@@ -134,15 +134,18 @@ export default function ConsultarHorarios(options: any) {
         return list_alunos.filter(
           (aluno) => aluno.id == control._formValues.input
         )[0]?.coordenadoria.nome;
+        break;
       case "Professor":
         return list_professores.filter(
           (professor) => professor.id == control._formValues.input
         )[0]?.coordenadoria.nome;
-      case "Locais":
+        break;
+      case "Local":
       case "Turma":
         return list_periodos.find(
           (periodo) => periodo.id == control._formValues.inputAux1
         )[0]?.nome;
+        break;
     }
     return "";
   }
@@ -154,14 +157,14 @@ export default function ConsultarHorarios(options: any) {
         return list_periodos.find(
           (periodo) => periodo.id == control._formValues.inputAux1
         )[0]?.nome;
-        case "Locais":
-          return list_locais.filter(
-            (local) => local.id == control._formValues.input
-          )[0]?.capacidade;
-        case "Turma":
-          return list_turmas.filter(
-            (turma) => turma.id == control._formValues.input
-          )[0]?.nome;
+      case "Local":
+        return list_locais.filter(
+          (local) => local.id == control._formValues.input
+        )[0]?.capacidade;
+      case "Turma":
+        return list_turmas.filter(
+          (turma) => turma.id == control._formValues.input
+        )[0]?.nome;
     }
     return "";
   }
@@ -174,9 +177,11 @@ export default function ConsultarHorarios(options: any) {
         </View>
         <View style={styles.headerCell}>
           <View style={styles.column}>
-            {control._formValues.control?.input ? line1define() : ""}
-            {control._formValues.control?.input ? line2define() : ""}
-            {control._formValues.control?.input ? line3define() : ""}
+            {list_aulas.length > 0 ? line1define() : ""}
+            <Text />
+            {list_aulas.length > 0 ? line2define() : ""}
+            <Text />
+            {list_aulas.length > 0 ? line3define() : ""}
           </View>
         </View>
       </View>
@@ -212,11 +217,17 @@ export default function ConsultarHorarios(options: any) {
         API.get("/aulas/aluno/" + control._formValues.input, {
           params: { periodoId: control._formValues.inputAux1 },
         }).then((response) => {
-          set_list_alunos(response.data);
+          set_list_aulas(response.data);
           console.log(response.data);
         });
         break;
       case "Professor":
+        API.get("/aulas/professor/" + control._formValues.input, {
+          params: { periodoId: control._formValues.inputAux1 },
+        }).then((response) => {
+          set_list_aulas(response.data);
+          console.log(response.data);
+        });
         break;
       case "Locais":
         API.get("/aulas/local/" + control._formValues.input, {
@@ -255,6 +266,7 @@ export default function ConsultarHorarios(options: any) {
             placeholder="modelo"
             onValueChange={(itemValue: string) => {
               setValue("modelo", itemValue);
+              setValue("input", "");
             }}
           >
             <Picker.Item

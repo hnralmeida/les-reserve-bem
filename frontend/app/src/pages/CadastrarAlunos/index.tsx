@@ -172,7 +172,7 @@ export default function CadastrarAluno(options: any) {
           <Text style={[styles.text]}>Email</Text>
           <Text style={[styles.text]}>Coordenadoria</Text>
           <Text style={[styles.text]}>Aulas</Text>
-          <Text style={[styles.text]}>Ações</Text>
+          <Text style={[styles.text, { width: 128, marginRight: "6.25%" }]}>Ações</Text>
         </View>
 
         {/* Lista de alunos */}

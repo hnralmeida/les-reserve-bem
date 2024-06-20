@@ -22,6 +22,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import EquipmentModal from "../components/Equipamento";
 import { createStackNavigator } from "@react-navigation/stack";
 import { colors } from "../styles";
+import DrawerIndex from "./drawer.index";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -37,7 +38,7 @@ export default function DrawStack() {
 
   return (
     <Drawer.Navigator
-      //drawerContent={(props) => <CustomDrawer {...props} />}
+      drawerContent={(props) => <DrawerIndex {...props} />}
       initialRouteName="Home"
       screenOptions={{
         headerTintColor: colors.whiteColor,
