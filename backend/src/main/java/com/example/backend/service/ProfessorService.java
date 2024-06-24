@@ -22,7 +22,7 @@ public class ProfessorService {
         return professorRepository.findAll();
     }
 
-    public Optional<Professor> encontrarProfessorPorMatricula(String matricula) {
+    public Professor encontrarProfessorPorMatricula(String matricula) {
         return professorRepository.findByMatricula(matricula);
     }
 

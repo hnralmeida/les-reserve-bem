@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.backend.dominio.Aluno;
-import com.example.backend.dominio.Periodo;
 import com.example.backend.dominio.Professor;
 import com.example.backend.service.AlunoService;
 import com.example.backend.service.ProfessorService;
@@ -51,13 +50,29 @@ public class AulaController {
 
     @GetMapping("/aluno/{alunoMatricula}")
     public List<Aula> listarAulaPorAluno(@PathVariable Long alunoMatricula, @RequestParam Long periodoId) {
-        Aluno aluno = alunoService.encontrarAlunoPorMatricuka(alunoMatricula);
-        return aulaService.listarAulaPorAluno(aluno.getId(), periodoId);
+        Aluno aluno = alunoService.encontrarAlunoPorMatricula(alunoMatricula);
+        // return aulaService.listarAulaPorAluno(aluno.getId(), periodoId);
+
+        // Esse trecho existe por que para o retorno anterior funcionar é necessário criar
+        // os controladores que relacionam aula-aluno no AulaController
+        if(aluno.getTurma()!=null){
+            System.out.println(aluno.getNome());
+            return aulaService.listarAulaPorTurma(aluno.getTurma().getId(), periodoId);
+        }else {
+            System.out.println(aluno.getTurma()!=null);
+            return null;
+        }
+    }
+
+    @GetMapping("/aluno/proxima/{alunoMatricula}")
+    public Aula proximaAulaPorAluno(@PathVariable Long alunoMatricula, @RequestParam Long periodoId) {
+        Aluno aluno = alunoService.encontrarAlunoPorMatricula(alunoMatricula);
+        return aulaService.proximaAulaPorAluno(aluno, periodoId);
     }
 
     @GetMapping("/professor/{professorMatricula}")
     public ResponseEntity<?> listarAulaPorProfessor(@PathVariable String professorMatricula, @RequestParam Long periodoId) {
-        Optional<Professor> p = professorService.encontrarProfessorPorMatricula(professorMatricula);
+        Optional<Professor> p = Optional.ofNullable(professorService.encontrarProfessorPorMatricula(professorMatricula));
 
         if (p.isPresent()) {
             List<Aula> aulas = aulaService.listarAulaPorProfessor(p.get().getId(), periodoId);
@@ -66,6 +81,24 @@ public class AulaController {
             String mensagemErro = "Professor com a matrícula " + professorMatricula + " não encontrado.";
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensagemErro);
         }
+    }
+
+    @GetMapping("/professor/proxima/{professorMatricula}")
+    public Aula proximaAulaPorProfessor(@PathVariable Long professorMatricula, @RequestParam Long periodoId) {
+        Professor professor = professorService.encontrarProfessorPorMatricula(String.valueOf(professorMatricula));
+        if (professor!=null)
+            return aulaService.proximaAulaPorProfessor(professor, periodoId);
+        else return null;
+    }
+
+    @PostMapping("/aluno/{id}")
+    public ResponseEntity<?> CadastrarAulaPorAluno(@PathVariable Long idAluno, @RequestParam List<Aula> aulas) {
+        Optional<Aluno> aluno = alunoService.encontrarAlunoPorId(idAluno);
+
+        for (Aula aula : aulas) {
+            aulaService.cadastrarAulaAluno(aluno, aula);
+        }
+        return (ResponseEntity<?>) aulas;
     }
 
     @PutMapping("/{id}")

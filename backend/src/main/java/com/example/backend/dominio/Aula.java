@@ -49,5 +49,25 @@ public class Aula {
 
     @OneToMany(mappedBy = "aula")
     private List<AulaAluno> alunos;
-    
+
+    public Integer getDiaDaSemanaInt() {
+        switch (this.diaDaSemana) {
+            case "Segunda-Feira":
+                return 7;
+            case "Terça-Feira":
+                return 2;
+            case "Quarta-Feira":
+                return 3;
+            case "Quinta-Feira":
+                return 4;
+            case "Sexta-Feira":
+                return 5;
+            case "Sábado":
+                return 6;
+            case "Domingo":
+                return 0;
+            default:
+                throw new IllegalArgumentException("Dia da semana inválido: " + this.diaDaSemana);
+        }
+    }
 }

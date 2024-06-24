@@ -106,7 +106,7 @@ export default function ConsultarTurmas(options: any) {
           />
         </View>
 
-        <View style={[styles.listLine, styles.padmargin]}>
+        <View style={[styles.listLine]}>
           <Image
             source={require("../../../assets/turmas.png")}
             style={[styles.iconElement]}

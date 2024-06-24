@@ -212,7 +212,7 @@ export default function ConsultarEventos(options: any) {
                   )}
 
                   <TouchableHighlight
-                    style={[styles.buttonText, styles.row6]}
+                    style={[styles.buttonText, { width: "10%" }]}
                     onPress={() => setIsVisible(!isVisible)}
                   >
                     <Text style={[styles.text]}>Clique para ler</Text>
@@ -275,7 +275,6 @@ export default function ConsultarEventos(options: any) {
             </View>
           )}
         </ScrollView>
-        
       </View>
     </View>
   );

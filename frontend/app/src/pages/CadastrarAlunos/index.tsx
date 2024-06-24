@@ -23,12 +23,14 @@ type FormInputs = {
   nome: string;
   matricula: string;
   coordenadoria: string;
+  turma: string;
   email: string;
 };
 
 export default function CadastrarAluno(options: any) {
   const [coordenadoria_list, set_coordenadoria_list] = useState<any[]>([]);
   const [aluno_list, set_aluno_list] = useState<any[]>([]);
+  const [turma_list, set_turma_list] = useState<any[]>([]);
 
   const [editingIndex, setEditingIndex] = useState(null); // Estado para rastrear o índice do item sendo editado
 
@@ -47,6 +49,7 @@ export default function CadastrarAluno(options: any) {
       nome: "",
       matricula: "",
       coordenadoria: "",
+      turma: "",
       email: "",
     },
   });
@@ -74,6 +77,14 @@ export default function CadastrarAluno(options: any) {
             set_coordenadoria_list(data);
           });
         });
+      API.get("/turmas").then((response) => {
+        const data = response.data;
+        // sort in alphabetical order
+        data.sort((a: any, b: any) => {
+          return a.nome.localeCompare(b.nome);
+        });
+        set_turma_list(data);
+      });
     }, [])
   );
 
@@ -82,6 +93,7 @@ export default function CadastrarAluno(options: any) {
     setValue("nome", aluno_list[index].nome); // Preenche o campo de edição com o nome atual do item
     setValue("matricula", aluno_list[index].matricula);
     setValue("email", aluno_list[index].email);
+    setValue("turma", aluno_list[index].turma);
     setValue(
       "coordenadoria",
       aluno_list[index].coordenadoria
@@ -105,13 +117,19 @@ export default function CadastrarAluno(options: any) {
           (item) =>
             Number(item.id) === Number(control._formValues.coordenadoria)
         )[0],
+        turma: turma_list.filter(
+          (item) => Number(item.id) === Number(control._formValues.turma)
+        )[0],
         email: control._formValues.email,
       }).then(() => {
         aluno_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
         aluno_list[index].coordenadoria = coordenadoria_list.filter(
           (item) =>
             Number(item.id) === Number(control._formValues.coordenadoria)
-        )[0]; // Atualiza o nome do item na lista
+        )[0];
+        aluno_list[index].turma = turma_list.filter(
+          (item) => Number(item.id) === Number(control._formValues.turma)
+        )[0];
         aluno_list[index].matricula = control._formValues.matricula;
         aluno_list[index].email = control._formValues.email;
 
@@ -119,6 +137,7 @@ export default function CadastrarAluno(options: any) {
         setValue("matricula", "");
         setValue("email", "");
         setValue("coordenadoria", "");
+        setValue("turma", "");
 
         setEditingIndex(null); // Limpa o índice do item sendo editado
       });
@@ -154,6 +173,7 @@ export default function CadastrarAluno(options: any) {
             setValue={setValue}
             alunoList={aluno_list}
             coordenadoriaList={coordenadoria_list}
+            turmaList={turma_list}
           />
 
           <ActivateModalButton
@@ -170,9 +190,12 @@ export default function CadastrarAluno(options: any) {
           <Text style={[styles.text]}>Nome</Text>
           <Text style={[styles.text]}>Matricula</Text>
           <Text style={[styles.text]}>Email</Text>
+          <Text style={[styles.text]}>Turma</Text>
           <Text style={[styles.text]}>Coordenadoria</Text>
           <Text style={[styles.text]}>Aulas</Text>
-          <Text style={[styles.text, { width: 128, marginRight: "6.25%" }]}>Ações</Text>
+          <Text style={[styles.text, { width: 128, marginRight: "6.25%" }]}>
+            Ações
+          </Text>
         </View>
 
         {/* Lista de alunos */}
@@ -213,6 +236,36 @@ export default function CadastrarAluno(options: any) {
                   />
                 ) : (
                   <Text style={styles.textLabel}>{item.email}</Text>
+                )}
+
+                {editingIndex === index ? (
+                  <Picker
+                    placeholder="Turma"
+                    style={styles.input}
+                    selectedValue={watch("turma")}
+                    onValueChange={(itemValue: string) => {
+                      setValue("turma", itemValue);
+                    }}
+                  >
+                    <Picker.Item
+                      key={"unselectable"}
+                      label={"Selecione uma turma"}
+                      value={0}
+                    />
+                    {turma_list.map((item, index) => (
+                      <Picker.Item
+                        key={index}
+                        label={item.nome}
+                        value={item.id}
+                      />
+                    ))}
+                  </Picker>
+                ) : (
+                  <Text style={styles.textLabel}>
+                    {item.turma
+                      ? item.turma.nome
+                      : "Sem turma"}
+                  </Text>
                 )}
 
                 {editingIndex === index ? (

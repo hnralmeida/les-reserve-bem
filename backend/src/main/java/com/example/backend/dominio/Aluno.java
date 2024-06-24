@@ -23,7 +23,4 @@ public class Aluno extends Usuario {
     @ManyToOne
     @JoinColumn(name = "turma_id")
     private Turma turma;
-
-    @OneToMany(mappedBy = "aluno")
-    private List<AulaAluno> aulas;
 }

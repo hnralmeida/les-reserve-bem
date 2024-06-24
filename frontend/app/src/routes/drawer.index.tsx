@@ -45,15 +45,7 @@ const DrawerIndex = (props: Props) => {
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props} style={{ margin: 0, padding: 0 }}>
-        <ImageBackground
-          source={require("../../assets/drawerbackground.png")}
-          style={styles.drawerBackground}
-        >
-          <Image
-            source={require("../../assets/ifes.png")}
-            style={styles.logo}
-          />
-        </ImageBackground>
+        <Image source={require("../../assets/ifes.png")} style={styles.logo} />
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
       <View style={styles.footer}>

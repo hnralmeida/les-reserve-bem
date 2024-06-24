@@ -100,7 +100,7 @@ export default function CadastrarCoordenadoria(options: any) {
             text={"Coordenadoria"}
           />
         </View>
-        <View style={[styles.listLine, styles.padmargin]}>
+        <View style={[styles.listLine]}>
           <Image
             source={require("../../../assets/coordenadorias.png")}
             style={[styles.iconElement]}

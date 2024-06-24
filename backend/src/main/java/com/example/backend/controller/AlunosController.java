@@ -43,6 +43,8 @@ public class AlunosController {
         List<Aluno> sucess = new ArrayList<>(), failure = new ArrayList<>();
         String TYPE = "text/csv";
 
+        System.out.println("===>"+file.getName());
+
         if (TYPE.equals(file.getContentType())) {
             try {
                 BufferedReader fileReader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));

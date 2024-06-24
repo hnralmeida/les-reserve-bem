@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Button, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -19,10 +19,11 @@ const styles = StyleSheet.create({
     opacity: 1,
   },
   drawerBackground: {
+    opacity: 0.1,
     width: "100%",
     height: 128,
     margin: 0,
-    padding: 0,	
+    padding: 0,
   },
   container: {
     flex: 1,
@@ -170,6 +171,13 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.neutralColor,
   },
+  printButton: {
+    position: "absolute",
+    marginLeft: "80%",
+    marginTop: 16,
+    width: 16,
+    height: 16,
+  },
   button: {
     display: "flex",
     width: "50%",
@@ -197,6 +205,18 @@ const styles = StyleSheet.create({
   iconElement: {
     width: 32,
     height: 32,
+  },
+  pick: {
+    width: "100%",
+    height: 48,
+    backgroundColor: colors.background,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: colors.blackColor,
+    borderStyle: "dotted",
   },
   buttonText: {
     width: "100%",
@@ -292,6 +312,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  rowStart: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   centerText: {
@@ -460,7 +486,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   marginTop: {
-    marginTop: 64,
+    marginTop: 8,
     marginBottom: 8,
   },
   cell: {

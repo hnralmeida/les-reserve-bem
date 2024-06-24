@@ -151,7 +151,6 @@ export default function ReservarAulas(options: any) {
               utils.toHours(item)
             ) === 0
           ) {
-            control._reset();
             setValue("disciplina", null);
             setValue("turma", null);
             setValue("professor", null);

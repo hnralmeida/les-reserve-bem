@@ -27,6 +27,7 @@ type Props = {
   setValue: UseFormSetValue<any>;
   coordenadoriaList: any[];
   alunoList: any[];
+  turmaList: any[];
 };
 
 const AdicionarAluno = ({
@@ -38,6 +39,7 @@ const AdicionarAluno = ({
   setValue,
   coordenadoriaList,
   alunoList,
+  turmaList,
 }: Props) => {
   const handleRegister = () => {
     // Check if the equipment name is not empty before registering
@@ -47,6 +49,10 @@ const AdicionarAluno = ({
         nome: control._formValues.nome,
         matricula: control._formValues.matricula,
         email: control._formValues.email,
+        turma: turmaList.filter(
+          (item) =>
+            Number(item.id) === Number(control._formValues.turma)
+        )[0],
         coordenadoria: coordenadoriaList.filter(
           (item) =>
             Number(item.id) === Number(control._formValues.coordenadoria)
@@ -58,6 +64,7 @@ const AdicionarAluno = ({
         setValue("matricula", "");
         setValue("email", "");
         setValue("coordenadoria", "");
+        setValue("turma", "");
 
         onClose();
       });
@@ -112,6 +119,24 @@ const AdicionarAluno = ({
             value={0}
           />
           {coordenadoriaList.map((item, index) => (
+            <Picker.Item key={index} label={item.nome} value={item.id} />
+          ))}
+        </Picker>
+        <Text style={styles.title}>Turma</Text>
+        <Picker
+          style={styles.boxBorder}
+          placeholder="Turma"
+          onValueChange={(itemValue: string) => {
+            setValue("turma", itemValue);
+          }}
+        >
+          <Picker.Item
+            key={"unselectable"}
+            style={styles.boxBorder}
+            label={"Selecione uma turma"}
+            value={0}
+          />
+          {turmaList.map((item, index) => (
             <Picker.Item key={index} label={item.nome} value={item.id} />
           ))}
         </Picker>

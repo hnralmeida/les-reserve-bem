@@ -22,6 +22,7 @@ import functionLib from "../../services/functions";
 import DateTimePicker from "react-native-ui-datepicker";
 import InputDate from "../../components/InputDate";
 import { PesquisaHorarios } from "../../components/PesquisaHorarios";
+import { onPrint } from "../../components/PrintViewer";
 
 type FormInputs = {
   id: string;
@@ -106,69 +107,6 @@ export default function ConsultarHorarios(options: any) {
     return aula ? aula.disciplina.sigla + "\n" + aula.professor.nome : "";
   }
 
-  function line1define(): string {
-    switch (control._formValues.modelo) {
-      case "Aluno":
-        return list_alunos.filter(
-          (aluno) => aluno.id == control._formValues.input
-        )[0]?.nome;
-      case "Professor":
-        return list_professores.filter(
-          (professor) => professor.id == control._formValues.input
-        )[0]?.nome;
-      case "Local":
-        return list_locais.filter(
-          (local) => local.id == control._formValues.input
-        )[0]?.nomeLocal;
-      case "Turma":
-        return list_turmas.filter(
-          (turma) => turma.id == control._formValues.input
-        )[0]?.nome;
-    }
-    return "";
-  }
-
-  function line2define(): string {
-    switch (control._formValues.modelo) {
-      case "Aluno":
-        return list_alunos.filter(
-          (aluno) => aluno.id == control._formValues.input
-        )[0]?.coordenadoria.nome;
-        break;
-      case "Professor":
-        return list_professores.filter(
-          (professor) => professor.id == control._formValues.input
-        )[0]?.coordenadoria.nome;
-        break;
-      case "Local":
-      case "Turma":
-        return list_periodos.find(
-          (periodo) => periodo.id == control._formValues.inputAux1
-        )[0]?.nome;
-        break;
-    }
-    return "";
-  }
-
-  function line3define(): string {
-    switch (control._formValues.modelo) {
-      case "Aluno":
-      case "Professor":
-        return list_periodos.find(
-          (periodo) => periodo.id == control._formValues.inputAux1
-        )[0]?.nome;
-      case "Local":
-        return list_locais.filter(
-          (local) => local.id == control._formValues.input
-        )[0]?.capacidade;
-      case "Turma":
-        return list_turmas.filter(
-          (turma) => turma.id == control._formValues.input
-        )[0]?.nome;
-    }
-    return "";
-  }
-
   const GridHeader = ({ horarios }: any) => (
     <>
       <View style={[styles.row, { marginBottom: 0 }]}>
@@ -176,12 +114,11 @@ export default function ConsultarHorarios(options: any) {
           <Text style={[styles.headerText, styles.cellText]}> IFES </Text>
         </View>
         <View style={styles.headerCell}>
-          <View style={styles.column}>
-            {list_aulas.length > 0 ? line1define() : ""}
-            <Text />
-            {list_aulas.length > 0 ? line2define() : ""}
-            <Text />
-            {list_aulas.length > 0 ? line3define() : ""}
+          <View style={[styles.column, { justifyContent: "center" }]}>
+            <Text style={[styles.headerText, styles.cellText]}> Horário </Text>
+            <Text style={[styles.headerText, styles.cellText]}>
+              {control._formValues.modelo}{" "}
+            </Text>
           </View>
         </View>
       </View>
@@ -216,34 +153,49 @@ export default function ConsultarHorarios(options: any) {
       case "Aluno":
         API.get("/aulas/aluno/" + control._formValues.input, {
           params: { periodoId: control._formValues.inputAux1 },
-        }).then((response) => {
-          set_list_aulas(response.data);
-          console.log(response.data);
-        });
+        })
+          .then((response) => {
+            set_list_aulas(response.data);
+            console.log(response.data);
+          })
+          .catch((error) => {
+            set_list_aulas([]);
+          });
         break;
       case "Professor":
         API.get("/aulas/professor/" + control._formValues.input, {
           params: { periodoId: control._formValues.inputAux1 },
-        }).then((response) => {
-          set_list_aulas(response.data);
-          console.log(response.data);
-        });
+        })
+          .then((response) => {
+            set_list_aulas(response.data);
+            console.log(response.data);
+          })
+          .catch((error) => {
+            set_list_aulas([]);
+          });
         break;
       case "Locais":
         API.get("/aulas/local/" + control._formValues.input, {
           params: { periodoId: control._formValues.inputAux1 },
-        }).then((response) => {
-          set_list_aulas(response.data);
-          console.log(response.data);
-        });
+        })
+          .then((response) => {
+            set_list_aulas(response.data);
+            console.log(response.data);
+          })
+          .catch((error) => {
+            set_list_aulas([]);
+          });
         break;
       case "Turma":
         API.get("/aulas/turma/" + control._formValues.input, {
           params: { periodoId: control._formValues.inputAux1 },
-        }).then((response) => {
-          set_list_aulas(response.data);
-          console.log(response.data);
-        });
+        })
+          .then((response) => {
+            set_list_aulas(response.data);
+          })
+          .catch((error) => {
+            set_list_aulas([]);
+          });
         break;
       case "Data":
         break;
@@ -252,14 +204,26 @@ export default function ConsultarHorarios(options: any) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <View
-          style={[
-            styles.row,
-            styles.padmargin,
-            { justifyContent: "flex-start" },
-          ]}
+      {list_aulas.length > 0 ? (
+        <TouchableHighlight
+          style={styles.printButton}
+          onPress={() =>
+            onPrint({
+              modelo: control._formValues.modelo,
+              local: list_locais,
+              turma: list_turmas,
+              horarioIndividual: list_aulas,
+            })
+          }
         >
+          <Image
+            style={styles.logo}
+            source={require("../../../assets/printer.png")}
+          />
+        </TouchableHighlight>
+      ) : null}
+      <View style={styles.content}>
+        <View style={[styles.row, { justifyContent: "flex-start" }]}>
           <Picker
             selectedValue={watch("modelo")}
             style={[styles.boxBorder, styles.marginRight]}

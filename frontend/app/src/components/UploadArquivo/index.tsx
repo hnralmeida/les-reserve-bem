@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableHighlight, Button, Alert } from "react-native";
+import { View, Text, TouchableHighlight, Alert, Pressable } from "react-native";
 import ModalComponent from "../modal";
 import styles from "../../styles";
 import API from "../../services/API";
@@ -33,7 +33,7 @@ const UploadArquivo = ({ isVisible, setIsVisible, onClose }: Props) => {
       Alert.alert("Erro", "Por favor, selecione um arquivo primeiro.");
       return;
     }
-
+    console.log(fileInfo);
     setLoading(true);
     setUploadStatus("");
 
@@ -45,10 +45,10 @@ const UploadArquivo = ({ isVisible, setIsVisible, onClose }: Props) => {
       console.log(fileBase64);
 
       API.post(
-        "alunos/importar/",
+        "alunos/importar",
         JSON.stringify({
-          name: fileInfo.name,
-          type: fileInfo.mimeType,
+          name: fileInfo.assets[0].name,
+          type: fileInfo.assets[0].mimeType,
           data: fileBase64,
         })
       )
@@ -88,23 +88,23 @@ const UploadArquivo = ({ isVisible, setIsVisible, onClose }: Props) => {
             Selecione arquivo para upload
           </Text>
           <View style={styles.padmargin}>
-            <Button title="Selecione um arquivo" onPress={pickDocument} />
+            <TouchableHighlight style={styles.pick} onPress={pickDocument}>
+              <Text style={styles.buttonText}>Selecionar arquivo</Text>
+            </TouchableHighlight>
           </View>
           {fileInfo && (
             <View style={[styles.padmargin, { marginTop: 20 }]}>
-              <Text>Nome do arquivo: {fileInfo.assets[0].name}</Text>
-              <Text>
-                Tamanho do arquivo:{" "}
-                {(fileInfo.assets[0].size / 1024).toFixed(2)} MB
-              </Text>
+              <>
+                <Text>Nome do arquivo: {fileInfo.assets[0].name}</Text>
+                <Text>
+                  Tamanho do arquivo:{" "}
+                  {(fileInfo.assets[0].size / 1024).toFixed(2)} MB
+                </Text>
+              </>
             </View>
           )}
-          {uploadStatus && (
-            <View style={{ marginTop: 20 }}>
-              <Text>{uploadStatus}</Text>
-            </View>
-          )}
-          <LoadingIcon loading={loading} />
+          
+          {loading ? <LoadingIcon loading={loading} /> : null }
 
           <View style={styles.spaced}>
             <TouchableHighlight

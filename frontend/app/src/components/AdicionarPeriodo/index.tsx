@@ -56,6 +56,8 @@ const AdicionarPeriodo = ({
 
         console.log(response.data);
         periodoList.push(response.data);
+
+        onClose();
       });
     } else {
       // Handle empty equipment name
