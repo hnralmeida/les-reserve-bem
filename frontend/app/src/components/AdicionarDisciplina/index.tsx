@@ -28,7 +28,9 @@ type Props = {
   watch: UseFormWatch<any>;
   control: Control<any>;
   setValue: UseFormSetValue<any>;
-  disciplinaList: any[];
+  disciplina_list: any[];
+  coordenadoria_list: any[];
+  index: any;
 };
 
 const AdicionarDisciplina = ({
@@ -38,7 +40,9 @@ const AdicionarDisciplina = ({
   watch,
   control,
   setValue,
-  disciplinaList,
+  disciplina_list,
+  coordenadoria_list,
+  index,
 }: Props) => {
   const [cordenadoriaList, setCordenadoriaList] = useState<any[]>([]);
 
@@ -58,27 +62,41 @@ const AdicionarDisciplina = ({
       )[0]
     );
     // Check if the equipment name is not empty before registering
-    if (control._formValues.nome.trim() !== "") {
+    if (control._formValues.id) {
+      API.put("/disciplinas/" + disciplina_list[index].id, {
+        nome: control._formValues.nome,
+        sigla: control._formValues.sigla,
+        cargaHoraria: control._formValues.cargaHoraria,
+        tipoDisciplina: control._formValues.tipoDisciplina,
+        coordenadoria: coordenadoria_list.filter(
+          (item) => item.id == control._formValues.coordenadoria
+        )[0],
+      }).then(() => {
+        // Atualiza o item na lista
+        disciplina_list[index].nome = control._formValues.nome;
+        disciplina_list[index].sigla = control._formValues.sigla;
+        disciplina_list[index].cargaHoraria = control._formValues.cargaHoraria;
+        disciplina_list[index].tipoDisciplina =
+          control._formValues.tipoDisciplina;
+        disciplina_list[index].coordenadoria = coordenadoria_list.filter(
+          (item) => item.id == control._formValues.coordenadoria
+        )[0];
+
+        onClose();
+      });
+    } else {
       API.post("/disciplinas", {
         nome: control._formValues.nome,
         sigla: control._formValues.sigla,
-        cargaHoraria: control._formValues.cargaHorario,
+        cargaHoraria: control._formValues.cargaHoraria,
         tipoDisciplina: control._formValues.tipoDisciplina,
         coordenadoria: cordenadoriaList.filter(
           (item) => item.id == control._formValues.coordenadoria
         )[0],
       }).then((response: any) => {
-        setValue("nome", "");
-        setValue("sigla", "");
-        setValue("cargaHorario", "");
-        setValue("tipoDisciplina", "");
-        setValue("coordenadoria", "");
-        disciplinaList.push(response.data);
+        disciplina_list.push(response.data);
         onClose();
       });
-    } else {
-      // Handle empty equipment name
-      Alert.alert("Campo vazio", "Nome da displina não pode estar vazio.");
     }
   };
 
@@ -111,8 +129,8 @@ const AdicionarDisciplina = ({
           style={styles.boxBorder}
           placeholder="Carga Horária"
           keyboardType="numeric"
-          value={watch("cargaHorario")}
-          onChangeText={(text) => setValue("cargaHorario", text)}
+          value={watch("cargaHoraria")}
+          onChangeText={(text) => setValue("cargaHoraria", text)}
         />
 
         <Text style={styles.title}>Tipo Disciplina</Text>

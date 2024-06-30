@@ -87,12 +87,12 @@ public class TerminalIntegration {
     }
 
     private String getEvent(String matricula) throws IOException {
-        String apiUrl = "http://" + this.serverIp + ":8080/aulas/aluno/proxima/" + matricula;
+        String apiUrl = "http://" + this.serverIp + ":8080/aulas/proxima/" + matricula;
         String charset = "UTF-8";
         String query = String.format("periodoId=%s", URLEncoder.encode(String.valueOf(1), charset));
         URL url = new URL(apiUrl + "?" + query);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
+
 
         int responseCode = conn.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -103,10 +103,14 @@ public class TerminalIntegration {
             }
             scanner.close();
             return response.toString();
+        } else if (responseCode == HttpURLConnection.HTTP_ACCEPTED) {
+            System.out.println("Error: Matricula Not Found");
+            System.out.println("Status: " + responseCode);
+            return "Sem registro de aula para hoje";
         } else {
             System.out.println("Error: Request failed");
             System.out.println("Status: " + responseCode);
-            return "error";
+            return "Matricula nao encontrada";
         }
     }
 
@@ -120,7 +124,7 @@ public class TerminalIntegration {
             if (jsonStructure.getValueType() == JsonValue.ValueType.OBJECT) {
                 JsonObject aulaInfo = jsonStructure.asJsonObject();
                 // Extraindo informações do JSON
-                String disciplina = aulaInfo.getJsonObject("disciplina").getString("nome", "N/A");
+                String disciplina = aulaInfo.getJsonObject("disciplina").getString("sigla", "N/A");
                 String professor = aulaInfo.getJsonObject("professor").getString("nome", "N/A");
                 String horaInicio = aulaInfo.getString("horaInicio", "N/A");
                 String horaFim = aulaInfo.getString("horaFim", "N/A");
@@ -140,14 +144,15 @@ public class TerminalIntegration {
                 dos.writeBytes(local + "\r\n");
             } else {
                 clearScreen(dos);
-                dos.writeBytes("Matricula nao foi\r\n" + "encontrada\r\n");
+                dos.writeBytes("Ocorreu um erro desconhecido ao ler as informacoes");
                 System.out.println("Error: No event found for the given matricula.");
             }
         } catch (Exception e) {
             System.out.println("Error displaying class information: " + e.getMessage());
             try {
                 clearScreen(dos);
-                dos.writeBytes("Erro ao exibir as informações da aula.\r\n");
+                // dos.writeBytes("Erro ao exibir as informações da aula.\r\n");
+                dos.writeBytes(response);
             } catch (IOException ioException) {
                 System.out.println("Error: " + ioException.getMessage());
             }

@@ -55,7 +55,10 @@ export default function ConsultarTurmas(options: any) {
   );
 
   const handleEdit = (index: any) => {
+    setIsVisible(true);
+
     set_editing_index(index); // Atualiza o índice do item sendo editado
+    setValue("id", turmas_list[index].id); // Preenche o campo de edição com o id atual do item
     setValue("nome", turmas_list[index].nome); // Preenche o campo de edição com o nome atual do item
     setValue("anoInicio", turmas_list[index].anoInicio);
   };
@@ -66,23 +69,10 @@ export default function ConsultarTurmas(options: any) {
     });
   };
 
-  const handleSaveEdit = (index: any) => {
-    if (control._formValues.nome.trim() !== "") {
-      API.put("/turmas/" + turmas_list[index].id, {
-        nome: control._formValues.nome,
-        anoInicio: control._formValues.anoInicio,
-      }).then(() => {
-        turmas_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
-        turmas_list[index].anoInicio = control._formValues.anoInicio; // Atualiza o nome do item na lista
-
-        setValue("nome", ""); // Limpa o campo de edição
-        setValue("anoInicio", ""); // Limpa o campo de edição
-        set_editing_index(null); // Limpa o índice do item sendo editado
-      });
-    } else {
-      // Handle empty equipment name
-      alert("Campos não podem estar vazios");
-    }
+  const onClose = () => {
+    setValue("nome", ""); // Limpa o campo de edição
+    setValue("anoInicio", ""); // Limpa o campo de edição
+    set_editing_index(null); // Limpa o índice do item sendo editado
   };
 
   return (
@@ -93,11 +83,14 @@ export default function ConsultarTurmas(options: any) {
           <AdicionarTurma
             isVisible={isVisible}
             setIsVisible={setIsVisible}
-            onClose={() => setIsVisible(!isVisible)}
+            onClose={() => {
+              setIsVisible(!isVisible), onClose();
+            }}
             watch={watch}
             control={control}
             setValue={setValue}
-            turmasList={turmas_list}
+            turmas_list={turmas_list}
+            index={editing_index}
           />
           <ActivateModalButton
             set_modal_visible={setIsVisible}
@@ -113,7 +106,9 @@ export default function ConsultarTurmas(options: any) {
           />
           <Text style={[styles.text]}>Nome</Text>
           <Text style={[styles.text]}>Ano de Início</Text>
-          <Text style={[styles.text, { width: "50%" }]}>Ações</Text>
+          <View style={styles.box128}>
+            <Text style={[styles.text]}>Ações</Text>
+          </View>
         </View>
         <ScrollView style={styles.listBox}>
           {set_turmas_list.length > 0 ? (
@@ -124,52 +119,28 @@ export default function ConsultarTurmas(options: any) {
                   style={styles.iconElement}
                 />
 
-                {editing_index === index
-                  ? [
-                      <TextInput
-                        style={[styles.boxBorder, { width: "20%" }]}
-                        value={watch("nome")}
-                        onChangeText={(text) => setValue("nome", text)}
-                      />,
-                      <TextInput
-                        style={[styles.boxBorder, { width: "20%" }]}
-                        value={watch("anoInicio")}
-                        onChangeText={(text) => setValue("anoInicio", text)}
-                      />,
-                    ]
-                  : [
-                      <Text style={styles.textLabel}>{item.nome}</Text>,
-                      <Text style={styles.textLabel}>{item.anoInicio}</Text>,
-                    ]}
+                <Text style={styles.textLabel}>{item.nome}</Text>
+                <Text style={styles.textLabel}>{item.anoInicio}</Text>
 
-                {editing_index === index ? (
-                  <SaveEdit
-                    onCancel={() => set_editing_index(null)}
-                    onSave={() => handleSaveEdit(index)}
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleEdit(index)}
+                >
+                  <Image
+                    source={require("../../../assets/edit.png")}
+                    style={styles.iconElement}
                   />
-                ) : (
-                  <>
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleEdit(index)}
-                    >
-                      <Image
-                        source={require("../../../assets/edit.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
+                </TouchableHighlight>
 
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleDelete(item.id)}
-                    >
-                      <Image
-                        source={require("../../../assets/delete.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-                  </>
-                )}
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleDelete(item.id)}
+                >
+                  <Image
+                    source={require("../../../assets/delete.png")}
+                    style={styles.iconElement}
+                  />
+                </TouchableHighlight>
               </View>
             ))
           ) : (

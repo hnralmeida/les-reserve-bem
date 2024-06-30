@@ -25,9 +25,10 @@ type Props = {
   watch: UseFormWatch<any>;
   control: Control<any>;
   setValue: UseFormSetValue<any>;
-  coordenadoriaList: any[];
-  alunoList: any[];
-  turmaList: any[];
+  coordenadoria_list: any[];
+  aluno_list: any[];
+  turma_list: any[];
+  index?: any;
 };
 
 const AdicionarAluno = ({
@@ -37,40 +38,57 @@ const AdicionarAluno = ({
   watch,
   control,
   setValue,
-  coordenadoriaList,
-  alunoList,
-  turmaList,
+  coordenadoria_list,
+  aluno_list,
+  turma_list,
+  index,
 }: Props) => {
   const handleRegister = () => {
     // Check if the equipment name is not empty before registering
     console.log(control._formValues);
-    if (control._formValues.nome.trim() !== "") {
-      API.post("/alunos", {
+    if (control._formValues.id) {
+      API.put("/alunos/" + control._formValues.id, {
         nome: control._formValues.nome,
         matricula: control._formValues.matricula,
-        email: control._formValues.email,
-        turma: turmaList.filter(
-          (item) =>
-            Number(item.id) === Number(control._formValues.turma)
-        )[0],
-        coordenadoria: coordenadoriaList.filter(
+        coordenadoria: coordenadoria_list.filter(
           (item) =>
             Number(item.id) === Number(control._formValues.coordenadoria)
         )[0],
-      }).then((response: any) => {
-        alunoList.push(response.data);
-
-        setValue("nome", "");
-        setValue("matricula", "");
-        setValue("email", "");
-        setValue("coordenadoria", "");
-        setValue("turma", "");
+        turma: turma_list.filter(
+          (item) => Number(item.id) === Number(control._formValues.turma)
+        )[0],
+        email: control._formValues.email,
+      }).then(() => {
+        aluno_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
+        aluno_list[index].coordenadoria = coordenadoria_list.filter(
+          (item) =>
+            Number(item.id) === Number(control._formValues.coordenadoria)
+        )[0];
+        aluno_list[index].turma = turma_list.filter(
+          (item) => Number(item.id) === Number(control._formValues.turma)
+        )[0];
+        aluno_list[index].matricula = control._formValues.matricula;
+        aluno_list[index].email = control._formValues.email;
 
         onClose();
       });
     } else {
-      // Handle empty equipment name
-      Alert.alert("Campo vazio", "Nome do equipmento não pode estar vazio.");
+      API.post("/alunos", {
+        nome: control._formValues.nome,
+        matricula: control._formValues.matricula,
+        email: control._formValues.email,
+        turma: turma_list.filter(
+          (item) => Number(item.id) === Number(control._formValues.turma)
+        )[0],
+        coordenadoria: coordenadoria_list.filter(
+          (item) =>
+            Number(item.id) === Number(control._formValues.coordenadoria)
+        )[0],
+      }).then((response: any) => {
+        aluno_list.push(response.data);
+
+        onClose();
+      });
     }
   };
 
@@ -108,6 +126,7 @@ const AdicionarAluno = ({
         <Picker
           style={styles.boxBorder}
           placeholder="Coordenadoria"
+          selectedValue={watch("coordenadoria")}
           onValueChange={(itemValue: string) => {
             setValue("coordenadoria", itemValue);
           }}
@@ -118,7 +137,7 @@ const AdicionarAluno = ({
             label={"Selecione uma coordenadoria"}
             value={0}
           />
-          {coordenadoriaList.map((item, index) => (
+          {coordenadoria_list.map((item, index) => (
             <Picker.Item key={index} label={item.nome} value={item.id} />
           ))}
         </Picker>
@@ -126,6 +145,7 @@ const AdicionarAluno = ({
         <Picker
           style={styles.boxBorder}
           placeholder="Turma"
+          selectedValue={watch("turma")}
           onValueChange={(itemValue: string) => {
             setValue("turma", itemValue);
           }}
@@ -136,7 +156,7 @@ const AdicionarAluno = ({
             label={"Selecione uma turma"}
             value={0}
           />
-          {turmaList.map((item, index) => (
+          {turma_list.map((item, index) => (
             <Picker.Item key={index} label={item.nome} value={item.id} />
           ))}
         </Picker>

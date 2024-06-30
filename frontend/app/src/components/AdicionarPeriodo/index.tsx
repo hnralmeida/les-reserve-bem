@@ -28,7 +28,8 @@ type Props = {
   watch: UseFormWatch<any>;
   control: Control<any>;
   setValue: UseFormSetValue<any>;
-  periodoList: any[];
+  periodo_list: any[];
+  index: any;
 };
 
 const AdicionarPeriodo = ({
@@ -38,30 +39,36 @@ const AdicionarPeriodo = ({
   watch,
   control,
   setValue,
-  periodoList,
+  periodo_list,
+  index
 }: Props) => {
 
   const handleRegister = () => {
-    console.log(control._formValues.dataFim.toISOString());
     // Check if the equipment name is not empty before registering
-    if (control._formValues.nome.trim() !== "") {
+    if (control._formValues.id) {
+      API.put("/periodos/" + periodo_list[index].id, {
+        nome: control._formValues.nome,
+        dataInicio: control._formValues.dataInicio,
+        dataFim: control._formValues.dataFim,
+      }).then(() => {
+        periodo_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
+        periodo_list[index].dataInicio = control._formValues.dataInicio;
+        periodo_list[index].dataFim = control._formValues.dataFim;
+        console.log(control._formValues.id)
+        onClose();
+      });
+    } else {
       API.post("/periodos", {
         nome: control._formValues.nome,
         dataInicio: control._formValues.dataInicio.toISOString(),
         dataFim: control._formValues.dataFim.toISOString(),
       }).then((response: any) => {
-        setValue("nome", ""); // Limpa os campos de input
-        setValue("dataInicio", new Date()); // Limpa os campos de input
-        setValue("dataFim", new Date()); // Limpa os campos de input
 
         console.log(response.data);
-        periodoList.push(response.data);
+        periodo_list.push(response.data);
 
         onClose();
       });
-    } else {
-      // Handle empty equipment name
-      alert("Campos não podem estar vazios.");
     }
   };
   const handleImport = () => {
@@ -93,7 +100,7 @@ const AdicionarPeriodo = ({
             />
           </View>
           <View style={styles.column}>
-            <Text style={styles.label}>dataFim: </Text>
+            <Text style={styles.label}>Fim: </Text>
             <InputDate
               data_evento={watch("dataFim")}
               label_value="dataFim"

@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
+import { Screen } from "react-native-screens";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -144,12 +145,19 @@ const styles = StyleSheet.create({
     padding: 8,
     marginTop: 32,
   },
+  box128: {
+    width: 128,
+    margin: 0,
+    padding: 0
+  },
   text: {
+    flexWrap: "wrap",
     textDecorationStyle: "double",
     flexDirection: "row",
-    alignContent: "center",
-    textAlign: "center",
     justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    textAlignVertical: "center",
     width: "100%",
   },
   buttonRow: {
@@ -287,7 +295,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignContent: "center",
     width: "100%",
-    height: "30%",
+    maxHeight: "75%",
     borderTopWidth: 2,
     borderTopColor: colors.primaryColor,
   },
@@ -463,6 +471,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     textAlign: "center",
+    textAlignVertical: "center",
     justifyContent: "center",
     alignContent: "center",
     marginLeft: 8,

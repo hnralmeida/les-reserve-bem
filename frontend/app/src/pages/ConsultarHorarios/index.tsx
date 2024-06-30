@@ -174,7 +174,7 @@ export default function ConsultarHorarios(options: any) {
             set_list_aulas([]);
           });
         break;
-      case "Locais":
+      case "Local":
         API.get("/aulas/local/" + control._formValues.input, {
           params: { periodoId: control._formValues.inputAux1 },
         })

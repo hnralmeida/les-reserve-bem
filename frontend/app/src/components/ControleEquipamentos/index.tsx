@@ -26,6 +26,7 @@ const ControleEquipamentos = ({
   onClose,
   equipamentList,
 }: Props) => {
+  
   return (
     <ModalComponent
       isVisible={isVisible}

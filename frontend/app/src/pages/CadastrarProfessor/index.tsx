@@ -19,6 +19,7 @@ import ActivateModalButton from "../../components/ButtonAddModal";
 import SaveEdit from "../../components/SaveEdit";
 
 type FormInputs = {
+  id: string;
   nome: string;
   matricula: string;
   coordenadoria: string;
@@ -35,6 +36,7 @@ export default function CadastrarProfessor(options: any) {
     formState: { errors },
   } = useForm<FormInputs>({
     defaultValues: {
+      id: "",
       nome: "",
       matricula: "",
       coordenadoria: "",
@@ -69,16 +71,13 @@ export default function CadastrarProfessor(options: any) {
   );
 
   const handleEdit = (index: any) => {
+    setIsVisible(true);
     setEditingIndex(index); // Atualiza o índice do item sendo editado
-    setValue("nome", professorList[index].nome); // Preenche o campo de edição com o nome atual do item
+    setValue("id", professorList[index].id);
+    setValue("nome", professorList[index].nome);
     setValue("matricula", professorList[index].matricula);
     setValue("email", professorList[index].email);
-    setValue(
-      "coordenadoria",
-      professorList[index].coordenadoria
-        ? professorList[index].coordenadoria.id
-        : null
-    );
+    setValue("coordenadoria", professorList[index].coordenadoria.id);
   };
 
   const handleDelete = (id: any) => {
@@ -87,37 +86,14 @@ export default function CadastrarProfessor(options: any) {
     });
   };
 
-  const handleSaveEdit = (index: any) => {
-    if (control._formValues.nome.trim() !== "") {
-      API.put("/professores/" + professorList[index].id, {
-        nome: control._formValues.nome,
-        matricula: control._formValues.matricula,
-        coordenadoria: coordenadoriaList.filter(
-          (item) =>
-            Number(item.id) === Number(control._formValues.coordenadoria)
-        )[0],
-        email: control._formValues.email,
-      }).then(() => {
-        professorList[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
-        professorList[index].coordenadoria = coordenadoriaList.filter(
-          (item) =>
-            Number(item.id) === Number(control._formValues.coordenadoria)
-        )[0]; // Atualiza o nome do item na lista
-        professorList[index].matricula = control._formValues.matricula;
-        professorList[index].email = control._formValues.email;
-
-        setValue("nome", "");
-        setValue("matricula", "");
-        setValue("email", "");
-        setValue("coordenadoria", "");
-
-        setEditingIndex(null); // Limpa o índice do item sendo editado
-      });
-    } else {
-      // Handle empty equipment name
-      console.error("Professor não pode ser vazio.");
-    }
-  };
+  function onClose() {
+    setEditingIndex(null);
+    setValue("id", "");
+    setValue("nome", "");
+    setValue("matricula", "");
+    setValue("email", "");
+    setValue("coordenadoria", "");
+  }
 
   return (
     <View style={styles.container}>
@@ -126,12 +102,15 @@ export default function CadastrarProfessor(options: any) {
           <AdicionarProfessor
             isVisible={isVisible}
             setIsVisible={setIsVisible}
-            onClose={() => setIsVisible(!isVisible)}
+            onClose={() => {
+              setIsVisible(!isVisible), onClose();
+            }}
             watch={watch}
             control={control}
             setValue={setValue}
             professorList={professorList}
             coordenadoriaList={coordenadoriaList}
+            index={editingIndex}
           />
           <ActivateModalButton
             set_modal_visible={setIsVisible}
@@ -148,7 +127,9 @@ export default function CadastrarProfessor(options: any) {
           <Text style={[styles.text, styles.row6]}>Matricula</Text>
           <Text style={[styles.text, styles.row6]}>Email</Text>
           <Text style={[styles.text, styles.row6]}>Coordenadoria</Text>
-          <Text style={[styles.text, {width: 128, marginRight: "6.25%"}]}>Ações</Text>
+          <View style={styles.box128}>
+            <Text style={[styles.text]}>Ações</Text>
+          </View>
         </View>
 
         {/* Lista de professores */}
@@ -161,94 +142,37 @@ export default function CadastrarProfessor(options: any) {
                   style={styles.iconElement}
                 />
 
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={watch("nome")}
-                    onChangeText={(text) => setValue("nome", text)}
+                <Text style={styles.textLabel}>{item.nome}</Text>
+
+                <Text style={styles.textLabel}>{item.matricula}</Text>
+
+                <Text style={styles.textLabel}>{item.email}</Text>
+
+                <Text style={styles.textLabel}>
+                  {item.coordenadoria
+                    ? item.coordenadoria.nome
+                    : "Sem coordenadoria"}
+                </Text>
+
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleEdit(index)}
+                >
+                  <Image
+                    source={require("../../../assets/edit.png")}
+                    style={styles.iconElement}
                   />
-                ) : (
-                  <Text style={styles.textLabel}>{item.nome}</Text>
-                )}
+                </TouchableHighlight>
 
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={watch("matricula")}
-                    onChangeText={(text) => setValue("matricula", text)}
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleDelete(item.id)}
+                >
+                  <Image
+                    source={require("../../../assets/delete.png")}
+                    style={styles.iconElement}
                   />
-                ) : (
-                  <Text style={styles.textLabel}>{item.matricula}</Text>
-                )}
-
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={watch("email")}
-                    onChangeText={(text) => setValue("email", text)}
-                  />
-                ) : (
-                  <Text style={styles.textLabel}>{item.email}</Text>
-                )}
-
-                {editingIndex === index ? (
-                  <Picker
-                    placeholder="Coordenadoria"
-                    style={styles.input}
-                    selectedValue={watch("coordenadoria")}
-                    onValueChange={(itemValue: string) => {
-                      setValue("coordenadoria", itemValue);
-                    }}
-                  >
-                    <Picker.Item
-                      key={"unselectable"}
-                      label={"Selecione uma coordenadoria"}
-                      value={0}
-                    />
-                    {coordenadoriaList.map((item, index) => (
-                      <Picker.Item
-                        key={index}
-                        label={item.nome}
-                        value={item.id}
-                      />
-                    ))}
-                  </Picker>
-                ) : (
-                  <Text style={styles.textLabel}>
-                    {item.coordenadoria
-                      ? item.coordenadoria.nome
-                      : "Sem coordenadoria"}
-                  </Text>
-                )}
-
-                {editingIndex === index ? (
-                  <SaveEdit
-                    onCancel={() => setEditingIndex(null)}
-                    onSave={() => handleSaveEdit(index)}
-                  />
-                ) : (
-                  <>
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleEdit(index)}
-                    >
-                      <Image
-                        source={require("../../../assets/edit.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleDelete(item.id)}
-                    >
-                      <Image
-                        source={require("../../../assets/delete.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-                  </>
-                )}
+                </TouchableHighlight>
               </View>
             ))
           ) : (

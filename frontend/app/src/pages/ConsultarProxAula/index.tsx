@@ -17,6 +17,7 @@ export default function ConsultarProxAula(options: any) {
   const [matricula, setMatricula] = useState("");
   const [aula, setAula] = useState<any>(null);
   const [picker, setPicker] = useState(false);
+  const [touched, setTouched] = useState(false);
 
   const [list_periodos, set_list_periodos] = useState<any[]>([]);
   const [periodo, setPeriodo] = useState<any>(null);
@@ -41,6 +42,7 @@ export default function ConsultarProxAula(options: any) {
         },
       }).then((response) => {
         console.log(response.data);
+        setTouched(true);
         setAula(response.data);
       });
     } else {
@@ -50,6 +52,7 @@ export default function ConsultarProxAula(options: any) {
         },
       }).then((response) => {
         console.log(response.data);
+        setTouched(true);
         setAula(response.data);
       });
     }
@@ -125,22 +128,22 @@ export default function ConsultarProxAula(options: any) {
         {aula ? (
           <View style={styles.row}>
             <View style={styles.column}>
-              <Text style={styles.text}>Aula</Text>
-              <Text style={styles.text}>
+              <Text style={styles.label}>Aula</Text>
+              <Text style={styles.label}>
                 {aula.disciplina ? aula.disciplina.nome : "Sem Disciplina"}
               </Text>
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.text}>Professor</Text>
-              <Text style={styles.text}>
+              <Text style={styles.label}>Professor</Text>
+              <Text style={styles.label}>
                 {aula.professor ? aula.professor.nome : "Sem Professor"}
               </Text>
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.text}>Horário</Text>
-              <Text style={styles.text}>
+              <Text style={styles.label}>Horário</Text>
+              <Text style={styles.label}>
                 {aula.horaInicio && aula.horaFim
                   ? aula.horaInicio + " às " + aula.horaFim
                   : "Sem horario definido"}
@@ -148,12 +151,14 @@ export default function ConsultarProxAula(options: any) {
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.text}>Local</Text>
-              <Text style={styles.text}>
+              <Text style={styles.label}>Local</Text>
+              <Text style={styles.label}>
                 {aula.local ? aula.local.nomeLocal : "Sem local"}
               </Text>
             </View>
           </View>
+        ) : touched ? (
+          <Text style={styles.label}>Nenhuma aula por hoje</Text>
         ) : null}
       </View>
     </SafeAreaView>

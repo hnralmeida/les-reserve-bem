@@ -28,6 +28,7 @@ type Props = {
   control: Control<any>;
   setValue: UseFormSetValue<any>;
   coordenadorList: any[];
+  index: any;
 };
 
 const AdicionarCoordenador = ({
@@ -38,10 +39,23 @@ const AdicionarCoordenador = ({
   control,
   setValue,
   coordenadorList,
+  index,
 }: Props) => {
   const handleRegister = () => {
     // Check if the equipment name is not empty before registering
-    if (control._formValues.nome.trim() !== "") {
+    if (control._formValues.id) {
+      API.put("/coordenadores/" + coordenadorList[index].id, {
+        nome: control._formValues.nome,
+        matricula: control._formValues.matricula,
+        email: control._formValues.email,
+      }).then(() => {
+        coordenadorList[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
+        coordenadorList[index].matricula = control._formValues.matricula;
+        coordenadorList[index].email = control._formValues.email;
+
+        onClose();
+      });
+    } else {
       API.post("/coordenadores", {
         nome: control._formValues.nome,
         matricula: control._formValues.matricula,
@@ -52,9 +66,6 @@ const AdicionarCoordenador = ({
         coordenadorList.push(response.data);
         onClose();
       });
-    } else {
-      // Handle empty equipment name
-      Alert.alert("Campo vazio", "Nome do equipmento não pode estar vazio.");
     }
   };
 

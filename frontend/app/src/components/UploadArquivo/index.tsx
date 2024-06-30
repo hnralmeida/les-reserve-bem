@@ -6,14 +6,17 @@ import API from "../../services/API";
 import { LoadingIcon } from "../LoadingIcon";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
+import { set } from "react-hook-form";
 
 type Props = {
   isVisible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  list: any[];
+  setList: React.Dispatch<React.SetStateAction<any[]>>;
   onClose: () => void;
 };
 
-const UploadArquivo = ({ isVisible, setIsVisible, onClose }: Props) => {
+const UploadArquivo = ({ isVisible, setIsVisible, onClose, list, setList }: Props) => {
   const [loading, setLoading] = useState(false);
   const [fileInfo, setFileInfo] = useState<any>(null);
   const [uploadStatus, setUploadStatus] = useState("");
@@ -33,43 +36,37 @@ const UploadArquivo = ({ isVisible, setIsVisible, onClose }: Props) => {
       Alert.alert("Erro", "Por favor, selecione um arquivo primeiro.");
       return;
     }
-    console.log(fileInfo);
     setLoading(true);
     setUploadStatus("");
 
     try {
-      const fileUri = fileInfo.uri;
-      const fileBase64 = await FileSystem.readAsStringAsync(fileUri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-      console.log(fileBase64);
+        var fdata = new FormData();
 
-      API.post(
-        "alunos/importar",
-        JSON.stringify({
-          name: fileInfo.assets[0].name,
-          type: fileInfo.assets[0].mimeType,
-          data: fileBase64,
-        })
-      )
-        .then((response) => {
-          alert("Importado com sucesso!");
+        fdata.append("file", fileInfo.assets[0].file, fileInfo.name);
+
+        API.post("alunos/importar", fdata, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }).then((response) => {
+          alert("Arquivo importado com sucesso");
+          for (let i = 0; i < response.data.length; i++) {
+            setList((list) => [...list, response.data[i]]);
+          }
         })
         .catch((error) => {
-          alert("Aconteceu um erro ou o Matheus não fez a API ainda");
           alert(error);
         })
         .finally(() => {
-          alert("Importação termianda.");
           setLoading(false);
           onClose();
         });
 
-      setUploadStatus("Importado com sucesso!");
-      Alert.alert("Sucesso", "Importado com sucesso!");
-    } catch (error) {
+    } catch (error: any) {
       setUploadStatus("Aconteceu um erro ou o Matheus não fez a API ainda");
-      Alert.alert("Erro", "Aconteceu um erro ou o Matheus não fez a API ainda");
+      alert(
+        "Aconteceu um erro ou o Matheus não fez a API ainda\n" + error.message
+      );
     } finally {
       setLoading(false);
       onClose();
@@ -103,8 +100,8 @@ const UploadArquivo = ({ isVisible, setIsVisible, onClose }: Props) => {
               </>
             </View>
           )}
-          
-          {loading ? <LoadingIcon loading={loading} /> : null }
+
+          {loading ? <LoadingIcon loading={loading} /> : null}
 
           <View style={styles.spaced}>
             <TouchableHighlight

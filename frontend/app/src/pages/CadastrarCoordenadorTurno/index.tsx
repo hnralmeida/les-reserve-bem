@@ -23,6 +23,7 @@ type FormInputs = {
   matricula: string;
   coordenadoria: string;
   email: string;
+  id: string;
 };
 
 export default function Cadastrarcoordenador(options: any) {
@@ -39,6 +40,7 @@ export default function Cadastrarcoordenador(options: any) {
       matricula: "",
       coordenadoria: "",
       email: "",
+      id: "",
     },
   });
   const [isVisible, setIsVisible] = useState(false);
@@ -66,8 +68,10 @@ export default function Cadastrarcoordenador(options: any) {
   );
 
   const handleEdit = (index: any) => {
+    setIsVisible(true);
     setEditingIndex(index); // Atualiza o índice do item sendo editado
-    setValue("nome", coordenadorList[index].nome); // Preenche o campo de edição com o nome atual do item
+    setValue("id", coordenadorList[index].id);
+    setValue("nome", coordenadorList[index].nome);
     setValue("matricula", coordenadorList[index].matricula);
     setValue("email", coordenadorList[index].email);
   };
@@ -78,30 +82,12 @@ export default function Cadastrarcoordenador(options: any) {
     });
   };
 
-  const handleSaveEdit = (index: any) => {
-    // Aqui você pode adicionar lógica para salvar as alterações feitas no nome da coordenador
-
-    if (control._formValues.nome.trim() !== "") {
-      API.put("/coordenadores/" + coordenadorList[index].id, {
-        nome: control._formValues.nome,
-        matricula: control._formValues.matricula,
-        email: control._formValues.email,
-      }).then(() => {
-        coordenadorList[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
-        coordenadorList[index].matricula = control._formValues.matricula;
-        coordenadorList[index].email = control._formValues.email;
-
-        setValue("nome", "");
-        setValue("matricula", "");
-        setValue("email", "");
-
-        setEditingIndex(null); // Limpa o índice do item sendo editado
-      });
-    } else {
-      // Handle empty equipment name
-      console.error("coordenador não pode ser vazio.");
-    }
-  };
+  function onClose() {
+    setValue("id", "");
+    setValue("nome", "");
+    setValue("matricula", "");
+    setValue("email", "");
+  }
 
   return (
     <View style={styles.container}>
@@ -110,11 +96,14 @@ export default function Cadastrarcoordenador(options: any) {
           <AdicionarCoordenador
             isVisible={isVisible}
             setIsVisible={setIsVisible}
-            onClose={() => setIsVisible(!isVisible)}
+            onClose={() => {
+              setIsVisible(!isVisible), onClose();
+            }}
             watch={watch}
             control={control}
             setValue={setValue}
             coordenadorList={coordenadorList}
+            index={editingIndex}
           />
           <ActivateModalButton
             set_modal_visible={setIsVisible}
@@ -130,7 +119,9 @@ export default function Cadastrarcoordenador(options: any) {
           <Text style={[styles.text, styles.row6]}>Nome</Text>
           <Text style={[styles.text, styles.row6]}>Matricula</Text>
           <Text style={[styles.text, styles.row6]}>Email</Text>
-          <Text style={[styles.text, { width: 128, marginRight: "6.25%" }]}>Ações</Text>
+          <View style={styles.box128}>
+            <Text style={[styles.text]}>Ações</Text>
+          </View>
         </View>
 
         {/* Lista de coordenadores */}
@@ -143,64 +134,31 @@ export default function Cadastrarcoordenador(options: any) {
                   style={styles.iconElement}
                 />
 
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={watch("nome")}
-                    onChangeText={(text) => setValue("nome", text)}
-                  />
-                ) : (
-                  <Text style={styles.textLabel}>{item.nome}</Text>
-                )}
+                <Text style={styles.textLabel}>{item.nome}</Text>
 
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={watch("matricula")}
-                    onChangeText={(text) => setValue("matricula", text)}
-                  />
-                ) : (
-                  <Text style={styles.textLabel}>{item.matricula}</Text>
-                )}
+                <Text style={styles.textLabel}>{item.matricula}</Text>
 
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={watch("email")}
-                    onChangeText={(text) => setValue("email", text)}
-                  />
-                ) : (
-                  <Text style={styles.textLabel}>{item.email}</Text>
-                )}
+                <Text style={styles.textLabel}>{item.email}</Text>
 
-                {editingIndex === index ? (
-                  <SaveEdit
-                    onCancel={() => setEditingIndex(null)}
-                    onSave={() => handleSaveEdit(index)}
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleEdit(index)}
+                >
+                  <Image
+                    source={require("../../../assets/edit.png")}
+                    style={styles.iconElement}
                   />
-                ) : (
-                  <>
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleEdit(index)}
-                    >
-                      <Image
-                        source={require("../../../assets/edit.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
+                </TouchableHighlight>
 
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleDelete(item.id)}
-                    >
-                      <Image
-                        source={require("../../../assets/delete.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-                  </>
-                )}
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleDelete(item.id)}
+                >
+                  <Image
+                    source={require("../../../assets/delete.png")}
+                    style={styles.iconElement}
+                  />
+                </TouchableHighlight>
               </View>
             ))
           ) : (

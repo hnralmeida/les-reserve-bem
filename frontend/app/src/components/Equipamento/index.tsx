@@ -18,32 +18,30 @@ type Props = {
   isVisible: boolean;
   setIsVisible: Dispatch<SetStateAction<boolean>>;
   onClose: () => void;
+  equipmentList: any[];
 };
 
-const EquipmentModal = ({ isVisible, setIsVisible, onClose }: Props) => {
+const EquipmentModal = ({
+  isVisible,
+  setIsVisible,
+  equipmentList,
+  onClose,
+}: Props) => {
   const [equipmentName, setEquipmentName] = useState("");
-  const [equipmentList, setEquipmentList] = useState<any[]>([]);
 
   const [editingIndex, setEditingIndex] = useState(null); // Estado para rastrear o índice do item sendo editado
   const [editedName, setEditedName] = useState(""); // Estado para armazenar o nome editado
 
   const navigation = useNavigation();
 
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, [refreshing]);
-
   useFocusEffect(
     React.useCallback(() => {
-      if (navigation.getState()?.index == 4) setIsVisible(true);
-      API.get("/equipamentos").then((response) => {
-        setEquipmentList(response.data);
-      });
+      if (navigation.getState()?.index == 4) {
+        setIsVisible(true);
+        API.get("/equipamentos").then((response) => {
+          equipmentList.push(response.data);
+        });
+      }
     }, [])
   );
 
@@ -56,8 +54,6 @@ const EquipmentModal = ({ isVisible, setIsVisible, onClose }: Props) => {
         setEquipmentName("");
         console.log(response.data);
         equipmentList.push(response.data);
-
-        onRefresh();
       });
     } else {
       // Handle empty equipment name
@@ -75,9 +71,7 @@ const EquipmentModal = ({ isVisible, setIsVisible, onClose }: Props) => {
     API.delete("/equipamentos/" + id)
       .then(() => {
         // remove o item no index no valor id de equipmentList
-        setEquipmentList(
-          equipmentList.filter((equipment) => equipment.id !== id)
-        );
+        equipmentList.filter((equipment) => equipment.id !== id);
       })
       .catch((error) => {
         alert(
@@ -103,7 +97,6 @@ const EquipmentModal = ({ isVisible, setIsVisible, onClose }: Props) => {
       setEditedName(""); // Limpa o nome editado
 
       equipmentList[index].nomeEquipamento = editedName; // Atualiza o nome do item na lista
-      onRefresh();
     });
   };
 
@@ -126,13 +119,8 @@ const EquipmentModal = ({ isVisible, setIsVisible, onClose }: Props) => {
             </TouchableHighlight>
           </View>
 
-          <ScrollView
-            contentContainerStyle={styles.listBox}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
-            {equipmentList.length > 0 ? (
+          <ScrollView contentContainerStyle={styles.listBox}>
+            {equipmentList?.length > 0 ? (
               equipmentList.map((item: any, index) => (
                 <View style={styles.listLine} key={item.id}>
                   <Image
@@ -188,7 +176,9 @@ const EquipmentModal = ({ isVisible, setIsVisible, onClose }: Props) => {
           <View style={styles.rowCenter}>
             <TouchableHighlight
               style={styles.button}
-              onPress={() => setIsVisible(false)}
+              onPress={() => {
+                setIsVisible(false), onClose();
+              }}
             >
               <Text style={styles.buttonText}>Fechar</Text>
             </TouchableHighlight>

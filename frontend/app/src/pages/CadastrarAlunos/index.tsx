@@ -20,6 +20,7 @@ import ButtonVisibleModal from "../../components/ButtonVisibleModal";
 import ControleAulaAluno from "../../components/ControleAulaAluno";
 
 type FormInputs = {
+  id: string;
   nome: string;
   matricula: string;
   coordenadoria: string;
@@ -34,8 +35,8 @@ export default function CadastrarAluno(options: any) {
 
   const [editingIndex, setEditingIndex] = useState(null); // Estado para rastrear o índice do item sendo editado
 
-  const [modal_visible, set_modal_visible] = useState(false); // Estado para controlar a visibilidade do modal de importação de arquivo
-  const [isUploadVisible, setIsUploadVisible] = useState(false);
+  const [upload_visible, set_upload_visible] = useState(false); // Estado para controlar a visibilidade do modal de importação de arquivo
+  const [modal_visible, set_modal_visible] = useState(false);
   const [isAulasVisible, setIsAulasVisible] = useState(false);
   const {
     register,
@@ -46,6 +47,7 @@ export default function CadastrarAluno(options: any) {
     formState: { errors },
   } = useForm<FormInputs>({
     defaultValues: {
+      id: "",
       nome: "",
       matricula: "",
       coordenadoria: "",
@@ -89,17 +91,14 @@ export default function CadastrarAluno(options: any) {
   );
 
   const handleEdit = (index: any) => {
-    setEditingIndex(index); // Atualiza o índice do item sendo editado
-    setValue("nome", aluno_list[index].nome); // Preenche o campo de edição com o nome atual do item
+    set_modal_visible(true);
+    setEditingIndex(index);
+    setValue("id", aluno_list[index].id);
+    setValue("nome", aluno_list[index].nome);
     setValue("matricula", aluno_list[index].matricula);
     setValue("email", aluno_list[index].email);
-    setValue("turma", aluno_list[index].turma);
-    setValue(
-      "coordenadoria",
-      aluno_list[index].coordenadoria
-        ? aluno_list[index].coordenadoria.id
-        : null
-    );
+    setValue("turma", aluno_list[index].turma.id);
+    setValue("coordenadoria", aluno_list[index].coordenadoria.id);
   };
 
   const handleDelete = (id: any) => {
@@ -108,77 +107,54 @@ export default function CadastrarAluno(options: any) {
     });
   };
 
-  const handleSaveEdit = (index: any) => {
-    if (control._formValues.nome.trim() !== "") {
-      API.put("/alunos/" + aluno_list[index].id, {
-        nome: control._formValues.nome,
-        matricula: control._formValues.matricula,
-        coordenadoria: coordenadoria_list.filter(
-          (item) =>
-            Number(item.id) === Number(control._formValues.coordenadoria)
-        )[0],
-        turma: turma_list.filter(
-          (item) => Number(item.id) === Number(control._formValues.turma)
-        )[0],
-        email: control._formValues.email,
-      }).then(() => {
-        aluno_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
-        aluno_list[index].coordenadoria = coordenadoria_list.filter(
-          (item) =>
-            Number(item.id) === Number(control._formValues.coordenadoria)
-        )[0];
-        aluno_list[index].turma = turma_list.filter(
-          (item) => Number(item.id) === Number(control._formValues.turma)
-        )[0];
-        aluno_list[index].matricula = control._formValues.matricula;
-        aluno_list[index].email = control._formValues.email;
+  function onClose() {
+    setValue("id", "");
+    setValue("nome", "");
+    setValue("matricula", "");
+    setValue("email", "");
+    setValue("coordenadoria", "");
+    setValue("turma", "");
 
-        setValue("nome", "");
-        setValue("matricula", "");
-        setValue("email", "");
-        setValue("coordenadoria", "");
-        setValue("turma", "");
-
-        setEditingIndex(null); // Limpa o índice do item sendo editado
-      });
-    } else {
-      // Handle empty equipment name
-      console.error("Alunos não pode ter campos vazios.");
-    }
-  };
+    setEditingIndex(null); // Limpa o índice do item sendo editado
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={[styles.rowFlexEnd, styles.marginTop]}>
           <UploadArquivo
-            isVisible={modal_visible}
-            setIsVisible={set_modal_visible}
-            onClose={() => set_modal_visible(false)}
+            isVisible={upload_visible}
+            setIsVisible={set_upload_visible}
+            onClose={() => set_upload_visible(false)}
+            list={aluno_list}
+            setList={set_aluno_list}
           />
           <View style={styles.marginRight}>
             <ActivateModalButton
-              modal_visible={modal_visible}
-              set_modal_visible={set_modal_visible}
+              modal_visible={upload_visible}
+              set_modal_visible={set_upload_visible}
               text={"Importar"}
             />
           </View>
 
           <AdicionarAluno
-            isVisible={isUploadVisible}
-            setIsVisible={setIsUploadVisible}
-            onClose={() => setIsUploadVisible(!isUploadVisible)}
+            isVisible={modal_visible}
+            setIsVisible={set_modal_visible}
+            onClose={() => {
+              set_modal_visible(!modal_visible), onClose();
+            }}
             watch={watch}
             control={control}
             setValue={setValue}
-            alunoList={aluno_list}
-            coordenadoriaList={coordenadoria_list}
-            turmaList={turma_list}
+            aluno_list={aluno_list}
+            coordenadoria_list={coordenadoria_list}
+            turma_list={turma_list}
+            index={editingIndex}
           />
 
           <ActivateModalButton
-            set_modal_visible={setIsUploadVisible}
-            modal_visible={isUploadVisible}
+            set_modal_visible={set_modal_visible}
+            modal_visible={modal_visible}
             text={"Aluno"}
           />
         </View>
@@ -193,9 +169,9 @@ export default function CadastrarAluno(options: any) {
           <Text style={[styles.text]}>Turma</Text>
           <Text style={[styles.text]}>Coordenadoria</Text>
           <Text style={[styles.text]}>Aulas</Text>
-          <Text style={[styles.text, { width: 128, marginRight: "6.25%" }]}>
-            Ações
-          </Text>
+          <View style={styles.box128}>
+            <Text style={[styles.text]}>Ações</Text>
+          </View>
         </View>
 
         {/* Lista de alunos */}
@@ -208,95 +184,21 @@ export default function CadastrarAluno(options: any) {
                   style={[styles.iconElement]}
                 />
 
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={watch("nome")}
-                    onChangeText={(text) => setValue("nome", text)}
-                  />
-                ) : (
-                  <Text style={styles.textLabel}>{item.nome}</Text>
-                )}
+                <Text style={styles.textLabel}>{item.nome}</Text>
 
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={watch("matricula")}
-                    onChangeText={(text) => setValue("matricula", text)}
-                  />
-                ) : (
-                  <Text style={styles.textLabel}>{item.matricula}</Text>
-                )}
+                <Text style={styles.textLabel}>{item.matricula}</Text>
 
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={watch("email")}
-                    onChangeText={(text) => setValue("email", text)}
-                  />
-                ) : (
-                  <Text style={styles.textLabel}>{item.email}</Text>
-                )}
+                <Text style={styles.textLabel}>{item.email}</Text>
 
-                {editingIndex === index ? (
-                  <Picker
-                    placeholder="Turma"
-                    style={styles.input}
-                    selectedValue={watch("turma")}
-                    onValueChange={(itemValue: string) => {
-                      setValue("turma", itemValue);
-                    }}
-                  >
-                    <Picker.Item
-                      key={"unselectable"}
-                      label={"Selecione uma turma"}
-                      value={0}
-                    />
-                    {turma_list.map((item, index) => (
-                      <Picker.Item
-                        key={index}
-                        label={item.nome}
-                        value={item.id}
-                      />
-                    ))}
-                  </Picker>
-                ) : (
-                  <Text style={styles.textLabel}>
-                    {item.turma
-                      ? item.turma.nome
-                      : "Sem turma"}
-                  </Text>
-                )}
+                <Text style={styles.textLabel}>
+                  {item.turma ? item.turma.nome : "Sem turma"}
+                </Text>
 
-                {editingIndex === index ? (
-                  <Picker
-                    placeholder="Coordenadoria"
-                    style={styles.input}
-                    selectedValue={watch("coordenadoria")}
-                    onValueChange={(itemValue: string) => {
-                      setValue("coordenadoria", itemValue);
-                    }}
-                  >
-                    <Picker.Item
-                      key={"unselectable"}
-                      label={"Selecione uma coordenadoria"}
-                      value={0}
-                    />
-                    {coordenadoria_list.map((item, index) => (
-                      <Picker.Item
-                        key={index}
-                        label={item.nome}
-                        value={item.id}
-                      />
-                    ))}
-                  </Picker>
-                ) : (
-                  <Text style={styles.textLabel}>
-                    {item.coordenadoria
-                      ? item.coordenadoria.nome
-                      : "Sem coordenadoria"}
-                  </Text>
-                )}
+                <Text style={styles.textLabel}>
+                  {item.coordenadoria
+                    ? item.coordenadoria.nome
+                    : "Sem coordenadoria"}
+                </Text>
 
                 <View style={[styles.textLabel, { width: "15%" }]}>
                   <ButtonVisibleModal
@@ -311,34 +213,27 @@ export default function CadastrarAluno(options: any) {
                   />
                 </View>
 
-                {editingIndex === index ? (
-                  <SaveEdit
-                    onCancel={() => setEditingIndex(null)}
-                    onSave={() => handleSaveEdit(index)}
-                  />
-                ) : (
-                  <View style={[styles.row]}>
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleEdit(index)}
-                    >
-                      <Image
-                        source={require("../../../assets/edit.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
+                <View style={[styles.row]}>
+                  <TouchableHighlight
+                    style={styles.textActions}
+                    onPress={() => handleEdit(index)}
+                  >
+                    <Image
+                      source={require("../../../assets/edit.png")}
+                      style={styles.iconElement}
+                    />
+                  </TouchableHighlight>
 
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleDelete(item.id)}
-                    >
-                      <Image
-                        source={require("../../../assets/delete.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-                  </View>
-                )}
+                  <TouchableHighlight
+                    style={styles.textActions}
+                    onPress={() => handleDelete(item.id)}
+                  >
+                    <Image
+                      source={require("../../../assets/delete.png")}
+                      style={styles.iconElement}
+                    />
+                  </TouchableHighlight>
+                </View>
               </View>
             ))
           ) : (

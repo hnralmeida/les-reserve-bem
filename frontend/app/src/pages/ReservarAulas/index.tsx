@@ -11,7 +11,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
 import InputDate from "../../components/InputDate";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 // Funções
 import functionLib from "../../services/functions";
@@ -25,6 +25,8 @@ import { set, useForm } from "react-hook-form";
 import ActivateModalButton from "../../components/ButtonAddModal";
 import ImportarAulas from "../ImportarAulas";
 import ImportarArquivo from "../../components/ImportarArquivo";
+import { RootStackParamList } from "../../routes/stack.routes";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 type FormInputs = {
   disciplina: any;
@@ -37,7 +39,14 @@ type FormInputs = {
   diaDaSemana: string;
 };
 
+type ConsultarScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "ReservarAulas"
+>;
+
 export default function ReservarAulas(options: any) {
+  const navigation = useNavigation<ConsultarScreenNavigationProp>();
+
   const utils = new functionLib();
 
   const [disciplina_list, set_disciplina_list] = useState<any[]>([]);
@@ -144,22 +153,9 @@ export default function ReservarAulas(options: any) {
           horaFim: utils.toHours(utils.arrayAulas()[index + 1]),
         }).then((data: any) => {
           console.log(data.data);
-
-          if (
-            utils.comparaHorario(
-              control._formValues.horaFim,
-              utils.toHours(item)
-            ) === 0
-          ) {
-            setValue("disciplina", null);
-            setValue("turma", null);
-            setValue("professor", null);
-            setValue("local", null);
-            setValue("horaInicio", "");
-            setValue("horaFim", "");
-            setValue("diaDaSemana", "");
-          }
         });
+
+        navigation.navigate("Consultar");
       }
     });
   };

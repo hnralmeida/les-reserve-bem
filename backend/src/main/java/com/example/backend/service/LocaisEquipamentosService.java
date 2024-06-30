@@ -23,6 +23,10 @@ public class LocaisEquipamentosService {
         return locaisEquipamentosRepository.findAll();
     }
 
+    public List<LocaisEquipamentos> listarLocaisEquipamentosPorLocal(Long id) {
+        return locaisEquipamentosRepository.findByLocalId(id);
+    }
+
     public Optional<LocaisEquipamentos> encontrarLocaisEquipamentosPorId(Long id, Long equipamento_id, Long local_id) {
 
         return locaisEquipamentosRepository.findById(id);

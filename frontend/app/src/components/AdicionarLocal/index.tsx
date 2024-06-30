@@ -1,5 +1,11 @@
 // EquipmentModal.js
-import React, { useCallback, useState, SetStateAction, Dispatch } from "react";
+import React, {
+  useCallback,
+  useState,
+  SetStateAction,
+  Dispatch,
+  useEffect,
+} from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   Modal,
@@ -15,7 +21,7 @@ import {
 import styles from "../../styles";
 import API from "../../services/API";
 import ModalComponent from "../modal";
-import { Control, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { Control, UseFormSetValue, UseFormWatch, set } from "react-hook-form";
 import { Picker } from "@react-native-picker/picker";
 import EquipmentModal from "../Equipamento";
 import ButtonText from "../ButtonText";
@@ -28,7 +34,8 @@ type Props = {
   watch: UseFormWatch<any>;
   control: Control<any>;
   setValue: UseFormSetValue<any>;
-  localList: any[];
+  local_list: any[];
+  index: any;
 };
 
 const AdicionarLocal = ({
@@ -38,7 +45,8 @@ const AdicionarLocal = ({
   watch,
   control,
   setValue,
-  localList,
+  local_list,
+  index,
 }: Props) => {
   // modal equipamentos
   const [modalVisible, setModalVisible] = useState(false);
@@ -56,38 +64,63 @@ const AdicionarLocal = ({
   const [equipamentos_local, set_equipamentos_local] = useState<any[]>([]);
   const [equipamentos_list, set_equipamentos_list] = useState<any[]>([]);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      API.get("/equipamentos").then((response) => {
-        set_equipamentos_list(response.data);
-      });
-    }, [])
-  );
+  useEffect(() => {
+    API.get("/equipamentos").then((response) => {
+      set_equipamentos_list(response.data);
+    });
+    console.log("id", control._formValues.id);
+
+    API.get("/locais/equipamentos/" + control._formValues.id).then(
+      (response) => {
+        console.log("response.data: ", response.data);
+        set_equipamentos_local(response.data);
+      }
+    );
+  }, [isVisible]);
 
   const onSubmit = () => {
-    if (control._formValues.nomeLocal.trim() !== "") {
+    if (control._formValues.id) {
+      API.put("/locais/" + local_list[index].id, {
+        nomeLocal: control._formValues.nomeLocal,
+        capacidade: control._formValues.capacidade,
+        observacao: control._formValues.observacao,
+        locaisEquipamentos: control._formValues.locaisEquipamentos,
+      }).then(() => {
+        // Atualiza o campos do item na lista
+        local_list[index].nomeLocal = control._formValues.nomeLocal;
+        local_list[index].capacidade = control._formValues.capacidade;
+        local_list[index].observacao = control._formValues.observacao;
+        local_list[index].locaisEquipamentos =
+          control._formValues.locaisEquipamentos;
+
+        onClose();
+      });
+    } else {
       API.post("/locais", {
         nomeLocal: control._formValues.nomeLocal,
         capacidade: control._formValues.capacidade,
         observacao: control._formValues.observacao,
-        locaisEquipamentos: equipamentos_local,
+        locaisEquipamentos: [],
       })
         .then((response: any) => {
-          setValue("capacidade", "");
-          setValue("observacao", "");
-          setValue("nomeLocal", "");
-          set_equipamentos_local([]);
+          local_list.push(response.data);
 
-          // controle de interface
-          localList.push(response.data);
-          setIsVisible(false);
+          for (let i = 0; i < equipamentos_local.length; i++) {
+            console.log("enviar equipamento: ", equipamentos_local);
+
+            API.post("/locais" + "/equipamentos/" + response.data.id, {
+              quantidade: equipamentos_local[i].quantidade,
+              equipamento: equipamentos_local[i].equipamento,
+              observacao: equipamentos_local[i].observacao,
+            }).then(() => {
+              onClose();
+            });
+          }
+          set_equipamentos_local([]);
         })
         .catch((error) => {
           alert("Erro ao não identificado, contate o suporte.");
         });
-    } else {
-      // Handle empty equipment name
-      alert("Campos de local não podem estar vazios.");
     }
   };
 
@@ -106,16 +139,18 @@ const AdicionarLocal = ({
 
   const adicionarEquipamento = () => {
     if (quantidadeEquipamentos) {
-      const item = {
+      const itemToAdd = {
         quantidade: quantidadeEquipamentos,
         equipamento: equipamentos_list.find(
           (item) => Number(item.id) === Number(equipamentoSelecionado)
         ),
         observacao: observacao,
       };
-      set_equipamentos_local((prevEquipamentos) => [...prevEquipamentos, item]);
-      console.log(item);
-      equipamentos_list.push(item);
+      //setValue("locaisEquipamentos", item);
+      set_equipamentos_local((prevEquipamentos) => [
+        ...prevEquipamentos,
+        itemToAdd,
+      ]);
 
       // Resetar o valor selecionado após adicionar o equipamento
       setQuantidadeEquipamentos("0");
@@ -151,7 +186,6 @@ const AdicionarLocal = ({
   };
 
   const View_equipament_read = (item: any, index: any) => {
-    console.log(item);
     const item_equip = item.item;
     return (
       <>
@@ -188,7 +222,7 @@ const AdicionarLocal = ({
     API.get("/equipamentos").then((response) => {
       set_equipamentos_list(response.data);
     });
-  }
+  };
 
   return (
     <ModalComponent

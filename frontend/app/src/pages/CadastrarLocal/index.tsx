@@ -24,14 +24,15 @@ import ControleEquipamentos from "../../components/ControleEquipamentos";
 
 interface Equipamento {
   quantidade: string;
-  observacoes: string;
+  observacao: string;
   equipamento: any;
 }
 
 type FormInputs = {
+  id: string;
   nomeLocal: string;
   capacidade: string;
-  observacoes: string;
+  observacao: string;
   locaisEquipamentos: Equipamento[];
 };
 
@@ -48,9 +49,10 @@ const CadastrarLocal = () => {
     formState: { errors },
   } = useForm<FormInputs>({
     defaultValues: {
+      id: "",
       nomeLocal: "",
       capacidade: "",
-      observacoes: "",
+      observacao: "",
       locaisEquipamentos: [],
     },
   });
@@ -62,12 +64,6 @@ const CadastrarLocal = () => {
   const [local_list, set_local_list] = useState<any[]>([]);
 
   const [editing_index, set_editing_index] = useState(null);
-  const [edited_nome_local, set_edited_nome_local] = useState("");
-  const [edited_capacidade, set_edited_capacidade] = useState("");
-  const [edited_observacao, set_edited_observacao] = useState("");
-  const [edited_equipamentos_local, set_edited_equipamentos_local] = useState(
-    []
-  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -83,11 +79,14 @@ const CadastrarLocal = () => {
   );
 
   const handleEdit = (index: any) => {
+    setIsVisible(true);
+
     set_editing_index(index); // Atualiza o índice do item sendo editado
-    set_edited_nome_local(local_list[index].nomeLocal); // Preenche o campo de edição com o nome atual do item
-    set_edited_capacidade(local_list[index].capacidade);
-    set_edited_observacao(local_list[index].observacao);
-    set_edited_equipamentos_local(local_list[index].locaisEquipamentos);
+    setValue("id", local_list[index].id);
+    setValue("nomeLocal", local_list[index].nomeLocal);
+    setValue("capacidade", local_list[index].capacidade);
+    setValue("observacao", local_list[index].observacao);
+    setValue("locaisEquipamentos", local_list[index].locaisEquipamentos);
   };
 
   const handleDelete = (id: any) => {
@@ -102,39 +101,23 @@ const CadastrarLocal = () => {
       });
   };
 
-  const handleSaveEdit = (index: any) => {
-    if (edited_nome_local.trim() !== "") {
-      API.put("/locais/" + local_list[index].id, {
-        nomeLocal: edited_nome_local,
-        capacidade: edited_capacidade,
-        observacao: edited_observacao,
-        locaisEquipamentos: edited_equipamentos_local,
-      }).then(() => {
-        // Atualiza o campos do item na lista
-        local_list[index].nomeLocal = edited_nome_local;
-        local_list[index].capacidade = edited_capacidade;
-        local_list[index].observacao = edited_observacao;
-        local_list[index].locaisEquipamentos = edited_equipamentos_local;
-
-        set_editing_index(null); // Limpa o índice do item sendo editado
-        set_edited_nome_local("");
-        set_edited_capacidade("");
-        set_edited_observacao("");
-        set_edited_equipamentos_local([]);
-      });
-    } else {
-      // Handle empty equipment name
-      console.error("Equipment name cannot be empty.");
-    }
-  };
+  function onClose() {
+    set_editing_index(null); // Limpa o índice do item sendo editado
+    setValue("id", "");
+    setValue("nomeLocal", "");
+    setValue("capacidade", "");
+    setValue("observacao", "");
+    setValue("locaisEquipamentos", []);
+  }
 
   function LabelControleEquipamentos({
-    locaisList,
-    index,
+    item,
   }: {
-    locaisList: any[];
-    index: any;
+    item: any;
   }) {
+    API.get("/locais/equipamentos/" + item.id).then((response) => {
+      item.locaisEquipamentos = response.data;
+    });
     return (
       <>
         <ButtonVisibleModal
@@ -144,7 +127,7 @@ const CadastrarLocal = () => {
         <ControleEquipamentos
           isVisible={is_equipamentos_visible}
           setIsVisible={set_is_equipamentos_visible}
-          equipamentList={locaisList[index].locaisEquipamentos}
+          equipamentList={item.locaisEquipamentos}
           onClose={() => set_is_equipamentos_visible(!is_equipamentos_visible)}
         />
       </>
@@ -158,11 +141,14 @@ const CadastrarLocal = () => {
           <AdicionarLocal
             isVisible={isVisible}
             setIsVisible={setIsVisible}
-            onClose={() => setIsVisible(!isVisible)}
+            onClose={() => {
+              setIsVisible(!isVisible), onClose();
+            }}
             watch={watch}
             control={control}
             setValue={setValue}
-            localList={local_list}
+            local_list={local_list}
+            index={editing_index}
           />
           <ActivateModalButton
             set_modal_visible={setIsVisible}
@@ -178,77 +164,48 @@ const CadastrarLocal = () => {
           <Text style={[styles.text]}>Nome</Text>
           <Text style={[styles.text]}>Capacidade</Text>
           <Text style={[styles.text]}>Observação</Text>
-          <Text style={[styles.text, { width: "15%", marginRight: "6.25%" }]}>Equipamentos</Text>
-          <Text style={[styles.textActions, {marginRight: "6.25%"}]}>Ações</Text>
+          <Text style={[styles.text, { width: "15%", marginRight: "6.25%" }]}>
+            Equipamentos
+          </Text>
+          <View style={styles.box128}>
+            <Text style={[styles.textActions]}>Ações</Text>
+          </View>
         </View>
 
         <ScrollView style={styles.listBox}>
           {local_list.length > 0 ? (
-            local_list.map((item: any, index) => (
+            local_list.map((item: any, index: any) => (
               <View style={[styles.row]} key={index}>
                 <Image
                   source={require("../../../assets/salas.png")}
                   style={[styles.iconElement]}
                 />
-
-                {editing_index === index
-                  ? [
-                      <TextInput
-                        style={[styles.boxBorder, { width: "20%" }]}
-                        value={edited_nome_local}
-                        onChangeText={set_edited_nome_local}
-                      />,
-                      <TextInput
-                        style={[styles.boxBorder, { width: "20%" }]}
-                        value={edited_capacidade}
-                        onChangeText={set_edited_capacidade}
-                      />,
-                      <TextInput
-                        style={[styles.boxBorder, { width: "20%" }]}
-                        value={edited_observacao}
-                        onChangeText={set_edited_observacao}
-                      />,
-                    ]
-                  : [
-                      <Text style={styles.textLabel}>{item.nomeLocal}</Text>,
-                      <Text style={styles.textLabel}>{item.capacidade}</Text>,
-                      <Text style={styles.textLabel}>
-                        {item.observacao || "Sem observação"}
-                      </Text>,
-                      <LabelControleEquipamentos
-                        locaisList={local_list}
-                        index={index}
-                      />,
-                    ]}
-
-                {editing_index === index ? (
-                  <SaveEdit
-                    onCancel={() => set_editing_index(null)}
-                    onSave={() => handleSaveEdit(index)}
+                <Text style={styles.textLabel}>{item.nomeLocal}</Text>
+                <Text style={styles.textLabel}>{item.capacidade}</Text>
+                <Text style={styles.textLabel}>
+                  {item.observacao || "Sem observação"}
+                </Text>
+                <LabelControleEquipamentos
+                  item={local_list[index]}
+                />
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleEdit(index)}
+                >
+                  <Image
+                    source={require("../../../assets/edit.png")}
+                    style={styles.iconElement}
                   />
-                ) : (
-                  <>
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleEdit(index)}
-                    >
-                      <Image
-                        source={require("../../../assets/edit.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleDelete(item.id)}
-                    >
-                      <Image
-                        source={require("../../../assets/delete.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-                  </>
-                )}
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleDelete(item.id)}
+                >
+                  <Image
+                    source={require("../../../assets/delete.png")}
+                    style={styles.iconElement}
+                  />
+                </TouchableHighlight>
               </View>
             ))
           ) : (

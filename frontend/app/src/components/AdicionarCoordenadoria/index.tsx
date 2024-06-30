@@ -26,6 +26,7 @@ type Props = {
   setCordenadoriaSigla: React.Dispatch<React.SetStateAction<string>>;
   cordenadoriaList: any[];
   setCordenadoriaList: React.Dispatch<React.SetStateAction<any[]>>;
+  index: any;
 };
 
 const AdicionarCoordenadoria = ({
@@ -38,24 +39,30 @@ const AdicionarCoordenadoria = ({
   setCordenadoriaSigla,
   cordenadoriaList,
   setCordenadoriaList,
+  index,
 }: Props) => {
   const handleRegister = () => {
     // Check if the equipment name is not empty before registering
-    if (cordenadoriaNome.trim() !== "") {
+    if (index) {
+      API.put("/coordenadorias/" + cordenadoriaList[index].id, {
+        nome: cordenadoriaNome,
+        sigla: cordenadoriaSigla,
+      }).then(() => {
+        cordenadoriaList[index].nome = cordenadoriaNome; // Atualiza o nome do item na lista
+        cordenadoriaList[index].sigla = cordenadoriaSigla;
+
+        onClose();
+      });
+      setCordenadoriaNome("");
+    } else {
       API.post("/coordenadorias", {
         nome: cordenadoriaNome,
-        sigla: cordenadoriaSigla
+        sigla: cordenadoriaSigla,
       }).then((response: any) => {
-        setCordenadoriaNome("");
-        setCordenadoriaSigla("");
-        
-        setIsVisible(false);
+        onClose();
 
         cordenadoriaList.push(response.data);
       });
-    } else {
-      // Handle empty equipment name
-      Alert.alert("Campo vazio", "Nome do equipmento não pode estar vazio.");
     }
   };
 

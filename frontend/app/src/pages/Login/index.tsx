@@ -1,11 +1,5 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  Image,
-  Text,
-  TextInput,
-  TouchableHighlight,
-  View,
-} from "react-native";
+import { Image, Text, TextInput, TouchableHighlight, View } from "react-native";
 import styles from "../../styles";
 import { useForm } from "react-hook-form";
 import API from "../../services/API";
@@ -33,9 +27,7 @@ export default function Login() {
   const { authData, signIn } = useAuth();
 
   const handle = () => {
-
     signIn(control._formValues.login, control._formValues.senha);
-    
   };
 
   return (
@@ -97,7 +89,18 @@ export default function Login() {
 
         <View style={styles.loginBox}>
           <View style={[styles.spacedColumn]}>
-            <Text style={styles.loginText}>Realizar Login</Text>
+            <View
+              style={[
+                {
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                },
+              ]}
+            >
+              <Text style={[styles.loginText]}>Realizar Login</Text>
+            </View>
 
             <View style={styles.inputColumn}>
               <TextInput

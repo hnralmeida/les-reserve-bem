@@ -29,6 +29,7 @@ type Props = {
   setValue: UseFormSetValue<any>;
   professorList: any[];
   coordenadoriaList: any[];
+  index: any;
 };
 
 const AdicionarProfessor = ({
@@ -40,10 +41,31 @@ const AdicionarProfessor = ({
   setValue,
   professorList,
   coordenadoriaList,
+  index,
 }: Props) => {
   const handleRegister = () => {
     // Check if the equipment name is not empty before registering
-    if (control._formValues.nome.trim() !== "") {
+    if (control._formValues.id) {
+      API.put("/professores/" + professorList[index].id, {
+        nome: control._formValues.nome,
+        matricula: control._formValues.matricula,
+        coordenadoria: coordenadoriaList.filter(
+          (item) =>
+            Number(item.id) === Number(control._formValues.coordenadoria)
+        )[0],
+        email: control._formValues.email,
+      }).then(() => {
+        professorList[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
+        professorList[index].coordenadoria = coordenadoriaList.filter(
+          (item) =>
+            Number(item.id) === Number(control._formValues.coordenadoria)
+        )[0]; // Atualiza o nome do item na lista
+        professorList[index].matricula = control._formValues.matricula;
+        professorList[index].email = control._formValues.email;
+
+        onClose();
+      });
+    } else {
       API.post("/professores", {
         nome: control._formValues.nome,
         matricula: control._formValues.matricula,
@@ -54,17 +76,9 @@ const AdicionarProfessor = ({
         email: control._formValues.email,
         // matricula: control._formValues.matricula,
       }).then((response: any) => {
-        setValue("nome", "");
-        setValue("matricula", "");
-        setValue("email", "");
-        setValue("coordenadoria", 0);
-
         professorList.push(response.data);
         onClose();
       });
-    } else {
-      // Handle empty equipment name
-      Alert.alert("Campo vazio", "Nome do equipmento não pode estar vazio.");
     }
   };
 
@@ -107,6 +121,7 @@ const AdicionarProfessor = ({
         <Picker
           style={styles.boxBorder}
           placeholder="Coordenadoria"
+          selectedValue={watch("coordenadoria")}
           onValueChange={(itemValue: string) => {
             setValue("coordenadoria", itemValue);
           }}

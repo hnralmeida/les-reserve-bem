@@ -22,8 +22,8 @@ public class EquipamentoService{
         return equipamentoRepository.findAll();
     }
 
-    public Optional<Equipamento> encontrarEquipamentoPorId(Long id){
-        return equipamentoRepository.findById(id);
+    public Equipamento encontrarEquipamentoPorId(Long id){
+        return equipamentoRepository.findById(id).orElse(null);
     }
 
     public Equipamento editarEquipamento(Long id, Equipamento equipamento){

@@ -91,6 +91,7 @@ const ViewEquipamentEditting = ({
         isVisible={modalVisible}
         setIsVisible={setModalVisible}
         onClose={() => {setModalVisible(false), refreshPage()}}
+        equipmentList={equipamentos_list}
       />
       <TouchableHighlight onFocus={() => setModalVisible(true)}>
         <Image

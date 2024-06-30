@@ -70,7 +70,9 @@ export default function CadastrarPeriodo(options: any) {
   );
 
   const handleEdit = (index: any) => {
+    set_modal_visible(true);
     set_editing_index(index); // Atualiza o índice do item sendo editado
+    setValue("id", periodo_list[index].id); // Preenche o campo de edição com o nome atual do item
     setValue("nome", periodo_list[index].nome); // Preenche o campo de edição com o nome atual do item
     setValue("dataInicio", periodo_list[index].dataInicio);
     setValue("dataFim", periodo_list[index].dataFim);
@@ -82,27 +84,11 @@ export default function CadastrarPeriodo(options: any) {
     });
   };
 
-  const handleSaveEdit = (index: any) => {
-    if (control._formValues.nome.trim() !== "") {
-      API.put("/periodos/" + periodo_list[index].id, {
-        nome: control._formValues.nome,
-        dataInicio: control._formValues.dataInicio,
-        dataFim: control._formValues.dataFim,
-      }).then(() => {
-        periodo_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
-        periodo_list[index].dataInicio = control._formValues.dataInicio;
-        periodo_list[index].dataFim = control._formValues.dataFim;
-
-        set_editing_index(null); // Limpa o índice do item sendo editado
-        setValue("nome", "");
-        setValue("dataInicio", new Date());
-        setValue("dataFim", new Date());
-      });
-    } else {
-      // Handle empty equipment name
-      console.error("Equipment name cannot be empty.");
-    }
-  };
+  function onClose() {
+    setValue("nome", ""); // Limpa os campos de input
+    setValue("dataInicio", new Date()); // Limpa os campos de input
+    setValue("dataFim", new Date()); // Limpa os campos de input
+  }
 
   return (
     <View style={styles.container}>
@@ -111,11 +97,14 @@ export default function CadastrarPeriodo(options: any) {
           <AdicionarPeriodo
             isVisible={modal_visible}
             setIsVisible={set_modal_visible}
-            onClose={() => set_modal_visible(!modal_visible)}
+            onClose={() => {
+              set_modal_visible(!modal_visible), onClose();
+            }}
             control={control}
             watch={watch}
             setValue={setValue}
-            periodoList={periodo_list}
+            periodo_list={periodo_list}
+            index={editing_index}
           />
           <ActivateModalButton
             modal_visible={modal_visible}
@@ -132,7 +121,9 @@ export default function CadastrarPeriodo(options: any) {
           <Text style={[styles.text, styles.row6]}>Período</Text>
           <Text style={[styles.text, styles.row6]}>Início</Text>
           <Text style={[styles.text, styles.row6]}>Fim</Text>
-          <Text style={[styles.text, { width: 128, marginRight: "6.25%" }]}>Ações</Text>
+          <View style={styles.box128}>
+            <Text style={[styles.text]}>Ações</Text>
+          </View>
         </View>
         {/* Lista de periodos */}
         <ScrollView style={styles.listBox}>
@@ -143,63 +134,31 @@ export default function CadastrarPeriodo(options: any) {
                   source={require("../../../assets/semestres.png")}
                   style={styles.iconElement}
                 />
-
-                {editing_index === index
-                  ? [
-                      <TextInput
-                        style={styles.boxBorder}
-                        value={watch("nome")}
-                        onChangeText={(text) => setValue("nome", text)}
-                      />,
-                      <InputDate
-                        data_evento={watch("dataInicio")}
-                        label_value="dataInicio"
-                        set_data_evento={setValue}
-                      />,
-                      <InputDate
-                        data_evento={watch("dataFim")}
-                        label_value="dataFim"
-                        set_data_evento={setValue}
-                      />,
-                    ]
-                  : [
-                      <Text style={styles.textLabel}>{item.nome}</Text>,
-                      <Text style={styles.textLabel}>
-                        {utils.toReadableDate(item.dataInicio)}
-                      </Text>,
-                      <Text style={styles.textLabel}>
-                        {utils.toReadableDate(item.dataFim)}
-                      </Text>,
-                    ]}
-
-                {editing_index === index ? (
-                  <SaveEdit
-                    onCancel={() => set_editing_index(null)}
-                    onSave={() => handleSaveEdit(index)}
+                <Text style={styles.textLabel}>{item.nome}</Text>
+                <Text style={styles.textLabel}>
+                  {utils.toReadableDate(item.dataInicio)}
+                </Text>
+                <Text style={styles.textLabel}>
+                  {utils.toReadableDate(item.dataFim)}
+                </Text>
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleEdit(index)}
+                >
+                  <Image
+                    source={require("../../../assets/edit.png")}
+                    style={styles.iconElement}
                   />
-                ) : (
-                  <>
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleEdit(index)}
-                    >
-                      <Image
-                        source={require("../../../assets/edit.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleDelete(item.id)}
-                    >
-                      <Image
-                        source={require("../../../assets/delete.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-                  </>
-                )}
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleDelete(item.id)}
+                >
+                  <Image
+                    source={require("../../../assets/delete.png")}
+                    style={styles.iconElement}
+                  />
+                </TouchableHighlight>
               </View>
             ))
           ) : (

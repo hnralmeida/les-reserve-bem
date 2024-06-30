@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   Image,
+  SafeAreaView,
 } from "react-native";
 import styles from "../../styles";
 import React, { useState } from "react";
@@ -20,6 +21,7 @@ import { tipoDisciplinaList } from "../../types";
 import SaveEdit from "../../components/SaveEdit";
 
 type FormInputs = {
+  id: string;
   nome: string;
   cargaHoraria: string;
   tipoDisciplina: string;
@@ -37,6 +39,7 @@ export default function ConsultarDisciplinas(options: any) {
     formState: { errors },
   } = useForm<FormInputs>({
     defaultValues: {
+      id: "",
       nome: "",
       cargaHoraria: "",
       tipoDisciplina: "",
@@ -50,11 +53,6 @@ export default function ConsultarDisciplinas(options: any) {
   const [coordenadoria_list, set_coordenadoria_list] = useState<any[]>([]);
 
   const [editing_index, set_editing_index] = useState(null); // Estado para rastrear o índice do item sendo editado
-  const [edited_nome, set_edited_nome] = useState(""); // Estado para armazenar o nome editado
-  const [edited_sigla, set_edited_sigla] = useState(""); // Estado para armazenar o nome editado
-  const [edited_carga_Horaria, set_edited_carga_Horaria] = useState(""); // Estado para armazenar o nome editado
-  const [edited_tipo_disciplina, set_edited_tipo_disciplina] = useState(""); // Estado para armazenar o nome editado
-  const [edited_coordenadoria, set_edited_coordenadoria] = useState(0); // Estado para armazenar o nome editado
 
   useFocusEffect(
     React.useCallback(() => {
@@ -76,12 +74,15 @@ export default function ConsultarDisciplinas(options: any) {
   );
 
   const handleEdit = (index: any) => {
+    setIsVisible(true);
+
     set_editing_index(index); // Atualiza o índice do item sendo editado
-    set_edited_nome(disciplina_list[index].nome); // Preenche o campo de edição com o nome atual do item
-    set_edited_sigla(disciplina_list[index].sigla); // Preenche o campo de edição com o nome atual do item
-    set_edited_carga_Horaria(disciplina_list[index].cargaHoraria); // Preenche o campo de edição com o nome atual do item
-    set_edited_tipo_disciplina(disciplina_list[index].tipoDisciplina); // Preenche o campo de edição com o nome atual do item)
-    set_edited_coordenadoria(disciplina_list[index].coordenadoria.id); // Preenche o campo de edição com o nome atual do item
+    setValue("id", disciplina_list[index].id); // Preenche o campo de edição com o id atual do item
+    setValue("nome", disciplina_list[index].nome); // Preenche o campo de edição com o nome atual do item
+    setValue("sigla", disciplina_list[index].sigla); // Preenche o campo de edição com o nome atual do item
+    setValue("cargaHoraria", disciplina_list[index].cargaHoraria); // Preenche o campo de edição com o nome atual do item
+    setValue("tipoDisciplina", disciplina_list[index].tipoDisciplina); // Preenche o campo de edição com o nome atual do item)
+    setValue("coordenadoria", disciplina_list[index].coordenadoria.id); // Preenche o campo de edição com o nome atual do item
   };
 
   const handleDelete = (id: any) => {
@@ -94,51 +95,31 @@ export default function ConsultarDisciplinas(options: any) {
       });
   };
 
-  const handleSaveEdit = (index: any) => {
-    if (edited_nome.trim() !== "") {
-      API.put("/disciplinas/" + disciplina_list[index].id, {
-        nome: edited_nome,
-        sigla: edited_sigla,
-        cargaHoraria: edited_carga_Horaria,
-        tipoDisciplina: edited_tipo_disciplina,
-        coordenadoria: coordenadoria_list.filter(
-          (item) => item.id == edited_coordenadoria
-        )[0],
-      }).then(() => {
-        // Atualiza o item na lista
-        disciplina_list[index].nome = edited_nome;
-        disciplina_list[index].sigla = edited_sigla;
-        disciplina_list[index].cargaHoraria = edited_carga_Horaria;
-        disciplina_list[index].tipoDisciplina = edited_tipo_disciplina;
-        disciplina_list[index].coordenadoria = coordenadoria_list.filter(
-          (item) => item.id == edited_coordenadoria
-        )[0];
-
-        set_editing_index(null); // Limpa o índice do item sendo editado
-        set_edited_nome("");
-        set_edited_sigla("");
-        set_edited_carga_Horaria("");
-        set_edited_tipo_disciplina("");
-        set_edited_coordenadoria(0);
-      });
-    } else {
-      // Handle empty equipment name
-      console.error("Equipment name cannot be empty.");
-    }
-  };
+  function onClose() {
+    set_editing_index(null); // Limpa o índice do item sendo editado
+    setValue("nome", "");
+    setValue("sigla", "");
+    setValue("cargaHoraria", "");
+    setValue("tipoDisciplina", "");
+    setValue("coordenadoria", 0);
+  }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={[styles.rowFlexEnd, styles.marginTop]}>
           <AdicionarDisciplina
             isVisible={isVisible}
             setIsVisible={setIsVisible}
-            onClose={() => setIsVisible(!isVisible)}
+            onClose={() => {
+              setIsVisible(!isVisible), onClose();
+            }}
             watch={watch}
             control={control}
             setValue={setValue}
-            disciplinaList={disciplina_list}
+            disciplina_list={disciplina_list}
+            coordenadoria_list={coordenadoria_list}
+            index={editing_index}
           />
           <ActivateModalButton
             set_modal_visible={setIsVisible}
@@ -155,10 +136,12 @@ export default function ConsultarDisciplinas(options: any) {
           <Text style={[styles.text, styles.row6]}>Sigla</Text>
           <Text style={[styles.text, styles.row6]}>Currículo</Text>
           <Text style={[styles.text, styles.row6]}>Coordenadoria</Text>
-          <Text style={[styles.text, styles.row6]}>Ações</Text>
+          <View style={styles.box128}>
+            <Text style={[styles.text]}>Ações</Text>
+          </View>
         </View>
         {/* Lista de professores */}
-        <ScrollView style={styles.listBox}>
+        <ScrollView style={[styles.listBox]}>
           {disciplina_list.length > 0 ? (
             disciplina_list.map((item: any, index) => (
               <View style={styles.listLine} key={index}>
@@ -167,123 +150,35 @@ export default function ConsultarDisciplinas(options: any) {
                   style={styles.iconElement}
                 />
 
-                {editing_index === index ? (
-                  [
-                    <View style={[styles.column, styles.row6]}>
-                      <Text>Disciplina</Text>
-                      <TextInput
-                        style={[styles.input]}
-                        value={edited_nome}
-                        onChangeText={set_edited_nome}
-                      />
-                    </View>,
-                    <View style={[styles.column, styles.row6]}>
-                      <Text>Carga Horária</Text>
-                      <TextInput
-                        style={[styles.input]}
-                        value={edited_carga_Horaria}
-                        onChangeText={set_edited_carga_Horaria}
-                      />
-                    </View>,
-                  ]
-                ) : (
-                  <Text style={styles.textLabel}>
-                    {item.nome} ({item.cargaHoraria}H)
-                  </Text>
-                )}
+                <Text style={styles.textLabel}>
+                  {item.nome} ({item.cargaHoraria}H)
+                </Text>
 
-                {editing_index === index ? (
-                  <View style={[styles.column, styles.row6]}>
-                    <Text>Sigla</Text>
-                    <TextInput
-                      style={[styles.input]}
-                      value={edited_sigla}
-                      onChangeText={set_edited_sigla}
-                    />
-                  </View>
-                ) : (
-                  <Text style={styles.textLabel}>{item.sigla}</Text>
-                )}
+                <Text style={styles.textLabel}>{item.sigla}</Text>
 
-                {editing_index === index ? (
-                  <View style={[styles.column, styles.row6]}>
-                    <Text>Tipo</Text>
-                    <Picker
-                      style={[styles.input]}
-                      selectedValue={edited_tipo_disciplina}
-                      onValueChange={(itemValue) =>
-                        set_edited_tipo_disciplina(itemValue)
-                      }
-                    >
-                      {tipoDisciplinaList.map((item, index) => (
-                        <Picker.Item key={index} label={item} value={item} />
-                      ))}
-                    </Picker>
-                  </View>
-                ) : (
-                  <Text style={styles.textLabel}>{item.tipoDisciplina}</Text>
-                )}
+                <Text style={styles.textLabel}>{item.tipoDisciplina}</Text>
 
-                {editing_index === index ? (
-                  <View style={[styles.column, styles.row6]}>
-                    <Text>Coordenadoria</Text>
-                    <Picker
-                      style={[styles.input]}
-                      placeholder="Coordenadoria"
-                      selectedValue={edited_coordenadoria}
-                      onValueChange={(itemValue) =>
-                        set_edited_coordenadoria(itemValue)
-                      }
-                    >
-                      <Picker.Item
-                        key={"unselectable"}
-                        style={styles.boxBorder}
-                        label={"Selecione um tipo"}
-                        value={0}
-                      />
-                      {coordenadoria_list.map((item, index) => (
-                        <Picker.Item
-                          key={index}
-                          label={item.nome}
-                          value={item.id}
-                        />
-                      ))}
-                    </Picker>
-                  </View>
-                ) : (
-                  <Text style={styles.textLabel}>
-                    {item.coordenadoria.sigla}
-                  </Text>
-                )}
+                <Text style={styles.textLabel}>{item.coordenadoria.sigla}</Text>
 
-                {editing_index === index ? (
-                  <SaveEdit
-                    onCancel={() => set_editing_index(null)}
-                    onSave={() => handleSaveEdit(index)}
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleEdit(index)}
+                >
+                  <Image
+                    source={require("../../../assets/edit.png")}
+                    style={styles.iconElement}
                   />
-                ) : (
-                  <>
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleEdit(index)}
-                    >
-                      <Image
-                        source={require("../../../assets/edit.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
+                </TouchableHighlight>
 
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleDelete(item.id)}
-                    >
-                      <Image
-                        source={require("../../../assets/delete.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-                  </>
-                )}
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleDelete(item.id)}
+                >
+                  <Image
+                    source={require("../../../assets/delete.png")}
+                    style={styles.iconElement}
+                  />
+                </TouchableHighlight>
               </View>
             ))
           ) : (
@@ -295,6 +190,6 @@ export default function ConsultarDisciplinas(options: any) {
           )}
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

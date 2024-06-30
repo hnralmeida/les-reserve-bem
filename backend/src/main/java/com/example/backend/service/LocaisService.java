@@ -4,7 +4,10 @@ import com.example.backend.dominio.Equipamento;
 import com.example.backend.dominio.Locais;
 import com.example.backend.dominio.LocaisEquipamentos;
 import com.example.backend.repository.LocaisRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,17 +24,25 @@ public class LocaisService {
     @Autowired
     private LocaisEquipamentosService locaisEquipamentoService;
 
+    @Transactional
     public Locais cadastrarLocais(Locais locais) {
-        Locais novoLocal = locaisRepository.save(locais);
-        for (LocaisEquipamentos le : locais.getLocaisEquipamentos()) {
-            Optional<Equipamento> equipamentoOpt = equipamentoService
-                    .encontrarEquipamentoPorId(le.getEquipamento().getId());
-            if (equipamentoOpt.isPresent()) {
-                le.setLocais(novoLocal);
-                locaisEquipamentoService.cadastrarLocaisEquipamentos(le);
-            }
+        return locaisRepository.save(locais);
+    }
+
+    public ResponseEntity<?> cadastrarLocaisEquipamentos(LocaisEquipamentos le, Locais local) {
+        Equipamento equipamentoOpt = equipamentoService
+                .encontrarEquipamentoPorId(le.getEquipamento().getId());
+
+        if (equipamentoOpt != null) {
+            // local.setLocaisEquipamentos();
+            LocaisEquipamentos leq = new LocaisEquipamentos();
+            leq.setEquipamento(equipamentoOpt);
+            leq.setQuantidade(le.getQuantidade());
+            leq.setLocais(local);
+            locaisEquipamentoService.cadastrarLocaisEquipamentos(leq);
         }
-        return novoLocal;
+
+        return new ResponseEntity<>(le, HttpStatus.OK);
     }
 
     public List<Locais> listarLocais() {
@@ -42,25 +53,16 @@ public class LocaisService {
         return locaisRepository.findById(id);
     }
 
-    public Locais editarLocais(Long id, Locais locais) {
-        Optional<Locais> localOpt = locaisRepository.findById(id);
-        if (localOpt.isPresent()) {
-            Locais localExistente = localOpt.get();
+    public ResponseEntity<?> editarLocais(Long id, Locais locais) {
+        Locais localExistente = locaisRepository.findById(id).orElse(null);
+        if (localExistente != null) {
             localExistente.setNomeLocal(locais.getNomeLocal());
             localExistente.setCapacidade(locais.getCapacidade());
             localExistente.setObservacao(locais.getObservacao());
 
-            List<LocaisEquipamentos> locaisEquipamentos = new ArrayList<>();
-            for (LocaisEquipamentos le : locais.getLocaisEquipamentos()) {
-                Optional<Equipamento> equipamentoOpt = equipamentoService
-                        .encontrarEquipamentoPorId(le.getEquipamento().getId());
-                if (equipamentoOpt.isPresent()) {
-                    le.setEquipamento(equipamentoOpt.get());
-                    locaisEquipamentos.add(le);
-                }
-            }
-            localExistente.setLocaisEquipamentos(locaisEquipamentos);
-            return locaisRepository.save(localExistente);
+            locaisRepository.save(localExistente);
+
+            return new ResponseEntity<>(localExistente, HttpStatus.OK);
         }
         return null;
     }
@@ -78,5 +80,9 @@ public class LocaisService {
             }
         }
         return locais;
+    }
+
+    public List<LocaisEquipamentos> listarLocaisEquipamentos(Long id) {
+        return locaisEquipamentoService.listarLocaisEquipamentosPorLocal(id);
     }
 }

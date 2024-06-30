@@ -24,8 +24,6 @@ export default function CadastrarCoordenadoria(options: any) {
   const [cordenadoriaList, setCordenadoriaList] = useState<any[]>([]);
 
   const [editingIndex, setEditingIndex] = useState(null); // Estado para rastrear o índice do item sendo editado
-  const [editedName, setEditedName] = useState(""); // Estado para armazenar o nome editado
-  const [editedSigla, setEditedSigla] = useState(""); // Estado para armazenar a sigla editada
 
   useFocusEffect(
     React.useCallback(() => {
@@ -41,9 +39,11 @@ export default function CadastrarCoordenadoria(options: any) {
   );
 
   const handleEdit = (index: any) => {
+    set_modal_visible(true);
+
     setEditingIndex(index); // Atualiza o índice do item sendo editado
-    setEditedName(cordenadoriaList[index].nome); // Preenche o campo de edição com o nome atual do item
-    setEditedSigla(cordenadoriaList[index].sigla); // Preenche o campo de edição com o nome atual do item
+    setCordenadoriaNome(cordenadoriaList[index].nome); // Preenche o campo de edição com o nome atual do item
+    setCordenadoriaSigla(cordenadoriaList[index].sigla); // Preenche o campo de edição com o nome atual do item
   };
 
   const handleDelete = (id: any) => {
@@ -58,26 +58,12 @@ export default function CadastrarCoordenadoria(options: any) {
       });
   };
 
-  const handleSaveEdit = (index: any) => {
-    // Aqui você pode adicionar lógica para salvar as alterações feitas no nome da coorde
-    if (editedName.trim() !== "") {
-      API.put("/coordenadorias/" + cordenadoriaList[index].id, {
-        nome: editedName,
-        sigla: editedSigla,
-      }).then(() => {
-        cordenadoriaList[index].nome = editedName; // Atualiza o nome do item na lista
-        cordenadoriaList[index].sigla = editedSigla;
+  function onClose() {
+    setEditingIndex(null);
 
-        setEditingIndex(null); // Limpa o índice do item sendo editado
-        setEditedName(""); // Limpa o nome editado
-        setEditedSigla(""); // Limpa a sigla editada
-      });
-      setCordenadoriaNome("");
-    } else {
-      // Handle empty equipment name
-      console.error("cordenadoriaNome name cannot be empty.");
-    }
-  };
+    setCordenadoriaNome(""); // Limpa o nome editado
+    setCordenadoriaSigla(""); // Limpa a sigla editada
+  }
 
   return (
     <View style={styles.container}>
@@ -86,13 +72,16 @@ export default function CadastrarCoordenadoria(options: any) {
           <AdicionarCoordenadoria
             isVisible={modal_visible}
             setIsVisible={set_modal_visible}
-            onClose={() => set_modal_visible(!modal_visible)}
+            onClose={() => {
+              set_modal_visible(!modal_visible), onClose();
+            }}
             cordenadoriaNome={cordenadoriaNome}
             setCordenadoriaNome={setCordenadoriaNome}
             cordenadoriaSigla={cordenadoriaSigla}
             setCordenadoriaSigla={setCordenadoriaSigla}
             cordenadoriaList={cordenadoriaList}
             setCordenadoriaList={setCordenadoriaList}
+            index={editingIndex}
           />
           <ActivateModalButton
             modal_visible={modal_visible}
@@ -107,7 +96,9 @@ export default function CadastrarCoordenadoria(options: any) {
           />
           <Text style={[styles.text, styles.row6]}>Coordenadoria</Text>
           <Text style={[styles.text, styles.row6]}>Sigla</Text>
-          <Text style={[styles.text, {width: 128, marginRight: "6.25%"}]}>Ações</Text>
+          <View style={styles.box128}>
+            <Text style={[styles.text]}>Ações</Text>
+          </View>
         </View>
 
         <ScrollView style={styles.listBox}>
@@ -119,56 +110,29 @@ export default function CadastrarCoordenadoria(options: any) {
                   style={styles.iconElement}
                 />
 
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={editedName}
-                    onChangeText={(edited_text) => setEditedName(edited_text)}
+                <Text style={styles.textLabel}>{item.nome}</Text>
+
+                <Text style={styles.textLabel}>{item.sigla}</Text>
+
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleEdit(index)}
+                >
+                  <Image
+                    source={require("../../../assets/edit.png")}
+                    style={styles.iconElement}
                   />
-                ) : (
-                  <Text style={styles.textLabel}>{item.nome}</Text>
-                )}
+                </TouchableHighlight>
 
-                {editingIndex === index ? (
-                  <TextInput
-                    style={styles.input}
-                    value={editedSigla}
-                    onChangeText={(edited_text) => setEditedSigla(edited_text)}
+                <TouchableHighlight
+                  style={styles.textActions}
+                  onPress={() => handleDelete(item.id)}
+                >
+                  <Image
+                    source={require("../../../assets/delete.png")}
+                    style={styles.iconElement}
                   />
-                ) : (
-                  <Text style={styles.textLabel}>{item.sigla}</Text>
-                )}
-
-                {editingIndex === index ? (
-                  <TouchableHighlight
-                    style={styles.textFocus}
-                    onPress={() => handleSaveEdit(index)}
-                  >
-                    <Text>Salvar</Text>
-                  </TouchableHighlight>
-                ) : (
-                  <>
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleEdit(index)}
-                    >
-                      <Image
-                        source={require("../../../assets/edit.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-
-                    <TouchableHighlight
-                      style={styles.textActions}
-                      onPress={() => handleDelete(item.id)}
-                    >
-                      <Image
-                        source={require("../../../assets/delete.png")}
-                        style={styles.iconElement}
-                      />
-                    </TouchableHighlight>
-                  </>
-                )}
+                </TouchableHighlight>
               </View>
             ))
           ) : (

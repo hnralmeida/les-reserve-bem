@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.example.backend.dominio.Aluno;
 import com.example.backend.dominio.Professor;
+import com.example.backend.dominio.Usuario;
 import com.example.backend.service.AlunoService;
 import com.example.backend.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +65,19 @@ public class AulaController {
         }
     }
 
-    @GetMapping("/aluno/proxima/{alunoMatricula}")
-    public Aula proximaAulaPorAluno(@PathVariable Long alunoMatricula, @RequestParam Long periodoId) {
-        Aluno aluno = alunoService.encontrarAlunoPorMatricula(alunoMatricula);
-        return aulaService.proximaAulaPorAluno(aluno, periodoId);
+    @GetMapping("/proxima/{matricula}")
+    public ResponseEntity<?> proximaAulaPorAluno(@PathVariable Long matricula, @RequestParam Long periodoId) {
+        Usuario pessoa = alunoService.encontrarAlunoPorMatricula(matricula);
+        if (pessoa==null) {
+            pessoa = professorService.encontrarProfessorPorMatricula(String.valueOf(matricula));
+        }
+
+        if (pessoa!=null){
+            Aula prox = aulaService.proximaAulaPorAluno((Aluno) pessoa, periodoId);
+            if (prox!=null) return ResponseEntity.ok(prox);
+            else return ResponseEntity.status(HttpStatus.ACCEPTED).body("Não há mais aulas hoje");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhuma matricula foi encontrado");
     }
 
     @GetMapping("/professor/{professorMatricula}")

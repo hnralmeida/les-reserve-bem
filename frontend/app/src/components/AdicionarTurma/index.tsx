@@ -24,7 +24,8 @@ type Props = {
   watch: UseFormWatch<any>;
   control: Control<any>;
   setValue: UseFormSetValue<any>;
-  turmasList: any[];
+  turmas_list: any[];
+  index: any;
 };
 
 const AdicionarTurma = ({
@@ -34,24 +35,31 @@ const AdicionarTurma = ({
   watch,
   control,
   setValue,
-  turmasList,
+  turmas_list,
+  index,
 }: Props) => {
-  
   const handleRegister = () => {
     // Check if the equipment name is not empty before registering
-    if (control._formValues.nome.trim() !== "") {
+    if (control._formValues.id) {
+      API.put("/turmas/" + turmas_list[index].id, {
+        nome: control._formValues.nome,
+        anoInicio: control._formValues.anoInicio,
+      }).then(() => {
+        turmas_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
+        turmas_list[index].anoInicio = control._formValues.anoInicio; // Atualiza o nome do item na lista
+
+        onClose();
+      });
+    } else {
       API.post("/turmas", {
         nome: control._formValues.nome,
         anoInicio: control._formValues.anoInicio,
       }).then((response: any) => {
         setValue("nome", "");
-        turmasList.push(response.data);
-        console.log(turmasList);
+        turmas_list.push(response.data);
+        console.log(turmas_list);
         setIsVisible(false);
       });
-    } else {
-      // Handle empty equipment name
-      Alert.alert("Campo vazio", "Nome do equipmento não pode estar vazio.");
     }
   };
 
