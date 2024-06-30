@@ -24,6 +24,7 @@ type FormInputs = {
   matricula: string;
   coordenadoria: string;
   email: string;
+  rfid: string;
 };
 
 export default function CadastrarProfessor(options: any) {
@@ -41,6 +42,7 @@ export default function CadastrarProfessor(options: any) {
       matricula: "",
       coordenadoria: "",
       email: "",
+      rfid: "",
     },
   });
   const [isVisible, setIsVisible] = useState(false);
@@ -77,6 +79,7 @@ export default function CadastrarProfessor(options: any) {
     setValue("nome", professorList[index].nome);
     setValue("matricula", professorList[index].matricula);
     setValue("email", professorList[index].email);
+    setValue("rfid", professorList[index].rfid);
     setValue("coordenadoria", professorList[index].coordenadoria.id);
   };
 
@@ -92,6 +95,7 @@ export default function CadastrarProfessor(options: any) {
     setValue("nome", "");
     setValue("matricula", "");
     setValue("email", "");
+    setValue("rfid", "");
     setValue("coordenadoria", "");
   }
 

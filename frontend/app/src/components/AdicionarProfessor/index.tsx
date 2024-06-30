@@ -54,6 +54,7 @@ const AdicionarProfessor = ({
             Number(item.id) === Number(control._formValues.coordenadoria)
         )[0],
         email: control._formValues.email,
+        rfid: control._formValues.rfid,
       }).then(() => {
         professorList[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
         professorList[index].coordenadoria = coordenadoriaList.filter(
@@ -62,6 +63,7 @@ const AdicionarProfessor = ({
         )[0]; // Atualiza o nome do item na lista
         professorList[index].matricula = control._formValues.matricula;
         professorList[index].email = control._formValues.email;
+        professorList[index].rfid = control._formValues.rfid;
 
         onClose();
       });
@@ -74,6 +76,7 @@ const AdicionarProfessor = ({
             Number(item.id) === Number(control._formValues.coordenadoria)
         )[0],
         email: control._formValues.email,
+        rfid: control._formValues.rfid,
         // matricula: control._formValues.matricula,
       }).then((response: any) => {
         professorList.push(response.data);
@@ -115,6 +118,14 @@ const AdicionarProfessor = ({
           placeholder="Email"
           value={watch("email")}
           onChangeText={(text) => setValue("email", text)}
+        />
+
+        <Text style={styles.title}>RFID</Text>
+        <TextInput
+          style={styles.boxBorder}
+          placeholder="RFID"
+          value={watch("rfid")}
+          onChangeText={(text) => setValue("rfid", text)}
         />
 
         <Text style={styles.title}>Coordenadoria do Professor</Text>
