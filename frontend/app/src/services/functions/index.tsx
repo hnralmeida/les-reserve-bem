@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-
 class functionLib {
 
     // converte data gerada por Datejs para data em formato legível
