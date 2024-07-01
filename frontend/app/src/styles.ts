@@ -11,6 +11,7 @@ export const colors = {
   whiteColor: "#F0F0F0",
   blackColor: "#121212",
   background: "#E1E1E1",
+  accentRed: '#9B0F0F'
 };
 
 const styles = StyleSheet.create({
@@ -192,6 +193,18 @@ const styles = StyleSheet.create({
     height: 48,
     aspectRatio: 1,
     backgroundColor: colors.primaryColor,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: colors.neutralColor,
+  },
+  buttonAlert: {
+    display: "flex",
+    width: "50%",
+    height: 48,
+    aspectRatio: 1,
+    backgroundColor: colors.accentRed,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 8,

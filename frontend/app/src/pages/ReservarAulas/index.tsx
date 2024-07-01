@@ -55,7 +55,6 @@ export default function ReservarAulas(options: any) {
   const [professor_list, set_professor_list] = useState<any[]>([]);
   const [turma_list, set_turma_list] = useState<any[]>([]);
   const [modal_visible, set_modal_visible] = useState<boolean>(false);
-  const [file, setFile] = useState<any>(null);
 
   const {
     register,

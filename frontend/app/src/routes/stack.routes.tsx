@@ -28,7 +28,6 @@ import CadastrarPeriodo from "../pages/CadastrarPeriodo";
 import CadastrarProfessor from "../pages/CadastrarProfessor";
 import ReservarAulas from "../pages/ReservarAulas";
 import ReservarEventos from "../pages/ReservarEventos";
-import ImportarAulas from "../pages/ImportarAulas";
 import BackHeader from "../components/Header";
 
 const Stack = createStackNavigator();
@@ -161,11 +160,7 @@ export default function RootStack() {
         component={ReservarEventos}
         options={() => ({ title: "Reservar Eventos" })}
       />
-      <Stack.Screen
-        name="ImportarAulas"
-        component={ImportarAulas}
-        options={() => ({ title: "Importar Aulas" })}
-      />
+      
     </Stack.Navigator>
   );
 }

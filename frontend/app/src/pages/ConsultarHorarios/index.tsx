@@ -23,6 +23,18 @@ import DateTimePicker from "react-native-ui-datepicker";
 import InputDate from "../../components/InputDate";
 import { PesquisaHorarios } from "../../components/PesquisaHorarios";
 import { onPrint } from "../../components/PrintViewer";
+import VerAula from "../../components/VerAula";
+
+type aula = {
+  disciplina: any;
+  turma: any;
+  professor: any;
+  local: any;
+  periodo: any;
+  horaInicio: any;
+  horaFim: any;
+  diaDaSemana: string;
+};
 
 type FormInputs = {
   id: string;
@@ -31,6 +43,7 @@ type FormInputs = {
   inputAux1: string;
   modelo: string;
   horarios: string[];
+  aula: aula;
 };
 
 const diasSemana = [
@@ -42,14 +55,9 @@ const diasSemana = [
 ];
 
 export default function ConsultarHorarios(options: any) {
-  const select_horario = [
-    "Aluno",
-    "Professor",
-    //"Periodo",
-    "Local",
-    "Turma",
-    //"Data",
-  ];
+  const select_horario = ["Aluno", "Professor", "Local", "Turma"];
+  const [modal_visible, set_modal_visible] = useState<boolean>(false);
+  const [index, set_index] = useState(0);
 
   const {
     watch,
@@ -66,12 +74,9 @@ export default function ConsultarHorarios(options: any) {
   });
 
   const [list_aulas, set_list_aulas] = useState<any[]>([]);
-  const [list_alunos, set_list_alunos] = useState<any[]>([]);
   const [list_locais, set_list_locais] = useState<any[]>([]);
-  const [list_disciplinas, set_list_disciplinas] = useState<any[]>([]);
   const [list_turmas, set_list_turmas] = useState<any[]>([]);
   const [list_periodos, set_list_periodos] = useState<any[]>([]);
-  const [list_professores, set_list_professores] = useState<any[]>([]);
 
   const utils = new functionLib();
 
@@ -81,15 +86,11 @@ export default function ConsultarHorarios(options: any) {
       API.get("/locais").then((response) => {
         set_list_locais(response.data);
       });
-      API.get("/disciplinas").then((response) => {
-        set_list_disciplinas(response.data);
-      });
+
       API.get("/turmas").then((response) => {
         set_list_turmas(response.data);
       });
-      API.get("/professores").then((response) => {
-        set_list_professores(response.data);
-      });
+
       API.get("/periodos").then((response) => {
         set_list_periodos(response.data);
       });
@@ -135,6 +136,54 @@ export default function ConsultarHorarios(options: any) {
     </>
   );
 
+  function handlePress(dia: any, horario: any) {
+    const aula = list_aulas
+      ? list_aulas.find(
+          (aula) =>
+            aula.diaDaSemana == dia &&
+            aula.horaInicio == control._formValues.horarios[horario]
+        )
+      : null;
+
+    if (aula) {
+      const aulas = list_aulas.filter(
+        (item) =>
+          item.disciplina.nome === aula.disciplina.nome &&
+          item.professor.nome === aula.professor.nome &&
+          item.diaDaSemana === aula.diaDaSemana
+      );
+
+      const primeiraAula = aulas.reduce(
+        (min: aula, aula: aula, index: number) => {
+          set_index(index);
+          return aula.horaInicio < min.horaInicio ? aula : min;
+        },
+        aulas[0]
+      );
+
+      const ultimaAula =
+        aulas.length > 0
+          ? aulas.reduce(
+              (max: aula, aula: aula) =>
+                aula.horaFim > max.horaFim ? aula : max,
+              aulas[0]
+            )
+          : null;
+
+      setValue("aula", {
+        disciplina: primeiraAula.disciplina,
+        turma: primeiraAula.turma,
+        professor: primeiraAula.professor,
+        local: primeiraAula.local,
+        periodo: primeiraAula.periodo,
+        horaInicio: primeiraAula.horaInicio,
+        horaFim: ultimaAula.horaFim,
+        diaDaSemana: primeiraAula.diaDaSemana,
+      });
+      set_modal_visible(true);
+    }
+  }
+
   const GridRow = ({ dia, horarios }: any) => (
     <View style={[styles.row, { marginBottom: 0 }]}>
       <View style={[styles.cell, { height: 64 }]}>
@@ -142,7 +191,9 @@ export default function ConsultarHorarios(options: any) {
       </View>
       {horarios.map((_: any, index: any) => (
         <View key={index} style={[styles.cell, { height: 64, width: 48 }]}>
-          <Text style={styles.cellText}>{fillCell(dia, index)}</Text>
+          <TouchableHighlight onPress={() => handlePress(dia, index)}>
+            <Text style={styles.cellText}>{fillCell(dia, index)}</Text>
+          </TouchableHighlight>
         </View>
       ))}
     </View>
@@ -222,6 +273,18 @@ export default function ConsultarHorarios(options: any) {
           />
         </TouchableHighlight>
       ) : null}
+      <VerAula
+        isVisible={modal_visible}
+        setIsVisible={set_modal_visible}
+        onClose={() => {
+          set_modal_visible(false);
+        }}
+        watch={watch}
+        control={control}
+        setValue={setValue}
+        aulasList={list_aulas}
+        index={index}
+      />
       <View style={styles.content}>
         <View style={[styles.row, { justifyContent: "flex-start" }]}>
           <Picker

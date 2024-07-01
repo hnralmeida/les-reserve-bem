@@ -16,7 +16,13 @@ type Props = {
   onClose: () => void;
 };
 
-const UploadArquivo = ({ isVisible, setIsVisible, onClose, list, setList }: Props) => {
+const UploadArquivo = ({
+  isVisible,
+  setIsVisible,
+  onClose,
+  list,
+  setList,
+}: Props) => {
   const [loading, setLoading] = useState(false);
   const [fileInfo, setFileInfo] = useState<any>(null);
   const [uploadStatus, setUploadStatus] = useState("");
@@ -40,15 +46,16 @@ const UploadArquivo = ({ isVisible, setIsVisible, onClose, list, setList }: Prop
     setUploadStatus("");
 
     try {
-        var fdata = new FormData();
+      var fdata = new FormData();
 
-        fdata.append("file", fileInfo.assets[0].file, fileInfo.name);
+      fdata.append("file", fileInfo.assets[0].file, fileInfo.name);
 
-        API.post("alunos/importar", fdata, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }).then((response) => {
+      API.post("alunos/importar", fdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+        .then((response) => {
           alert("Arquivo importado com sucesso");
           for (let i = 0; i < response.data.length; i++) {
             setList((list) => [...list, response.data[i]]);
@@ -61,7 +68,6 @@ const UploadArquivo = ({ isVisible, setIsVisible, onClose, list, setList }: Prop
           setLoading(false);
           onClose();
         });
-
     } catch (error: any) {
       setUploadStatus("Aconteceu um erro ou o Matheus não fez a API ainda");
       alert(
@@ -105,11 +111,13 @@ const UploadArquivo = ({ isVisible, setIsVisible, onClose, list, setList }: Prop
 
           <View style={styles.spaced}>
             <TouchableHighlight
-              style={[styles.button, styles.marginRight]}
+              style={[styles.buttonAlert, styles.marginRight]}
               onPress={onClose}
               disabled={loading}
             >
-              <Text style={styles.buttonText}>Cancelar</Text>
+              <Text style={[styles.buttonText, styles.textColorWhite]}>
+                Cancelar
+              </Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.button}
