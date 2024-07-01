@@ -52,7 +52,7 @@ public class AulaService {
         Aula prooxima = new Aula();
         List<Aula> aulaDoDia = new ArrayList<Aula>();
         Calendar c = Calendar.getInstance();
-        Date data = c.getTime();
+        c.setTime(new Date());
 
         if (aluno.getTurma() != null) {
             List<Aula> la = aulaRepository.findByTurmaId(aluno.getTurma().getId(), periodoId);
@@ -62,11 +62,11 @@ public class AulaService {
                     .thenComparing(Aula::getHoraInicio));
             for (Aula aula : la) {
 
-                if (aula.getDiaDaSemanaInt() == Calendar.DAY_OF_WEEK) {
+                if (aula.getDiaDaSemanaInt() == (Calendar.MONDAY)) {
                     aulaDoDia.add(aula);
                 }
             }
-            System.out.println("Ver aulas do dia " + Calendar.DAY_OF_WEEK + " ");
+            System.out.println("Ver aulas do dia " + Calendar.MONDAY + " ");
 
             for (Aula aula : aulaDoDia) {
                 if (Calendar.HOUR > Integer.parseInt(aula.getHoraInicio().split(":")[0])) {
@@ -97,11 +97,11 @@ public class AulaService {
                 .thenComparing(Aula::getHoraInicio));
         for (Aula aula : la) {
 
-            if (aula.getDiaDaSemanaInt() == Calendar.DAY_OF_WEEK) {
+            if (aula.getDiaDaSemanaInt() == (Calendar.MONDAY)) {
                 aulaDoDia.add(aula);
             }
         }
-        System.out.println("Ver aulas do dia " + Calendar.DAY_OF_WEEK + " ");
+        System.out.println("Ver aulas do dia " + Calendar.MONDAY + " ");
 
         for (Aula aula : aulaDoDia) {
             if (Calendar.HOUR > Integer.parseInt(aula.getHoraInicio().split(":")[0])) {

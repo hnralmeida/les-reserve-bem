@@ -19,6 +19,7 @@ import styles from "../../styles";
 import API from "../../services/API";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { UseFormWatch, Control, UseFormSetValue } from "react-hook-form";
+import { useAuth } from "../../context/AuthProvider";
 
 type Props = {
   isVisible: boolean;
@@ -41,6 +42,8 @@ const VerAula = ({
   aulasList,
   index,
 }: Props) => {
+  const { authData } = useAuth();
+
   function handle() {
     const aulas = aulasList.filter(
       (aula) =>
@@ -140,13 +143,15 @@ const VerAula = ({
             </Text>
           </View>
 
-          <View style={styles.rowCenter}>
-            <TouchableHighlight style={styles.buttonAlert} onPress={handle}>
-              <Text style={[styles.buttonText, styles.textColorWhite]}>
-                Excluir Aula
-              </Text>
-            </TouchableHighlight>
-          </View>
+          {authData ? (
+            <View style={styles.rowCenter}>
+              <TouchableHighlight style={styles.buttonAlert} onPress={handle}>
+                <Text style={[styles.buttonText, styles.textColorWhite]}>
+                  Excluir Aula
+                </Text>
+              </TouchableHighlight>
+            </View>
+          ) : null}
         </View>
       </ModalComponent>
     );

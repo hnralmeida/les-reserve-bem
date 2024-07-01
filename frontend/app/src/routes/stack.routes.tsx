@@ -70,7 +70,7 @@ export default function RootStack() {
       <Stack.Screen
         component={Home}
         name="Home"
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: "Home" }}
       />
       <Stack.Screen
         component={Cadastrar}

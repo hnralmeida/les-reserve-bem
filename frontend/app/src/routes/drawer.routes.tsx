@@ -25,7 +25,14 @@ import { colors } from "../styles";
 import DrawerIndex from "./drawer.index";
 
 const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
+
+export type HomeStackParamList = {
+  Home: undefined;
+  Consultar: undefined;
+  Cadastrar: undefined;
+  Reservar: undefined;
+  Equipamento: undefined;
+};
 
 export default function DrawStack() {
   const navigation = useNavigation();
@@ -68,6 +75,7 @@ export default function DrawStack() {
               isVisible={modalVisible}
               setIsVisible={setModalVisible}
               onClose={closeModal}
+              equipmentList={[]}
               {...props}
             />
           </TouchableHighlight>

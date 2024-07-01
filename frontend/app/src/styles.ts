@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignContent: "center",
     width: "100%",
-    maxHeight: "75%",
+    maxHeight: "60%",
     borderTopWidth: 2,
     borderTopColor: colors.primaryColor,
   },
