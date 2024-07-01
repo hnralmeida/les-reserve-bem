@@ -32,4 +32,10 @@ public class Locais {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy="locais")
     private List<LocaisEquipamentos> locaisEquipamentos = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return this.getNomeLocal() + "/" + this.getObservacao() + "/" +
+                this.getCapacidade();
+    }
+
 }

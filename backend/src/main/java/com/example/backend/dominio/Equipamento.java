@@ -26,4 +26,8 @@ public class Equipamento {
 //    @OneToMany(mappedBy = "equipamento", fetch = FetchType.LAZY)
 //    private Set<LocaisEquipamentos> locaisEquipamentos;
 
+    @Override
+    public String toString() {
+        return this.getNomeEquipamento();
+    }
 }

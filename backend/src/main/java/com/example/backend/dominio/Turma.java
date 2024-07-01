@@ -21,4 +21,9 @@ public class Turma {
 
     @Column(name = "ano_inicio")
     private int anoInicio;
+
+    @Override
+    public String toString() {
+        return this.getNome() + "/" + this.getAnoInicio();
+    }
 }

@@ -31,4 +31,10 @@ public class Disciplina {
     @JoinColumn(name = "coordenadoria_id")
     private Coordenadoria coordenadoria;
 
+    @Override
+    public String toString() {
+        return this.getNome() + "/" + this.getSigla() + "/" +
+                this.getTipoDisciplina() + "/" + this.getCargaHoraria() +
+                this.getCoordenadoria();
+    }
 }

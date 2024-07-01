@@ -36,4 +36,11 @@ public class Evento {
     @Column(name = "data_fim")
     private Date dataFim;
 
+    @Override
+    public String toString() {
+        return this.getNome() + "/" + this.getDescricao() + "/" +
+                this.getDataInicio() + "/" + this.getDataFim() +
+                this.getLocal();
+    }
+
 }

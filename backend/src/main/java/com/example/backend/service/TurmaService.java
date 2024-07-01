@@ -3,6 +3,9 @@ package com.example.backend.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.backend.dominio.Audit;
+import com.example.backend.dominio.Coordenador;
+import com.example.backend.repository.AuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +18,13 @@ public class TurmaService {
     @Autowired
     private TurmaRepository turmaRepository;
 
-    public Turma caadstrarTurma(Turma turma) {
+    @Autowired
+    private AuditRepository auditRepository;
+
+    public Turma cadastrarTurma(Turma turma) {
+        Audit audit = new Audit();
+        audit.onPrePersist(turma.toString());
+        auditRepository.save(audit);
         return turmaRepository.save(turma);
     }
 
@@ -30,10 +39,19 @@ public class TurmaService {
 
     public Turma editarTurma(Long id, Turma turma) {
         turma.setId(id);
+        Turma pre = turmaRepository.getReferenceById(id);
+        Audit audit = new Audit();
+        audit.onPreUpdate(pre.toString(), turma.toString());
+        auditRepository.save(audit);
         return turmaRepository.save(turma);
     }
 
     public void excluirTurma(Long id) {
+
+        Turma pre = turmaRepository.getReferenceById(id);
+        Audit audit = new Audit();
+        audit.onPreRemove(pre.toString());
+        auditRepository.save(audit);
         turmaRepository.deleteById(id);
     }
 }

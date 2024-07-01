@@ -24,7 +24,7 @@ public class TurmaController {
 
     @PostMapping
     public Turma cadastrarTurma(@RequestBody Turma turma){
-        return turmaService.caadstrarTurma(turma);
+        return turmaService.cadastrarTurma(turma);
     }
 
     @GetMapping

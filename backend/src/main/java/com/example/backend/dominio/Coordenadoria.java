@@ -20,4 +20,9 @@ public class Coordenadoria {
 
     @Column(name = "sigla")
     private String sigla;
+
+    @Override
+    public String toString() {
+        return this.getNome() + "/" + this.getSigla();
+    }
 }
