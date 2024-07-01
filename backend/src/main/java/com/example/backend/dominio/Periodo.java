@@ -26,4 +26,10 @@ public class Periodo {
 
     @Column(name = "nome")
     private String nome;
+
+    @Override
+    public String toString() {
+        return this.getNome() + "/" + this.getDataFim() + "/" +
+                this.getDataInicio();
+    }
 }

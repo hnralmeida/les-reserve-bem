@@ -29,7 +29,7 @@ public class ProfessoresController {
     public ResponseEntity<?> cadastrarProfessor(@RequestBody Professor professor) {
         if (professorService.encontrarProfessorPorMatricula(professor.getMatricula()) != null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um professor cadastrado com essa matrícula");
-        if (professorService.encontrarProfessorPorRFID(professor.getRfid()) == null)
+        if (professor.getRfid().isEmpty() ||professorService.encontrarProfessorPorRFID(professor.getRfid()) == null)
             return ResponseEntity.ok(professorService.cadastrarProfessor(professor));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um professor cadastrado com esse cartão");
     }
@@ -41,7 +41,7 @@ public class ProfessoresController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editarProfessor(@PathVariable Long id, @RequestBody Professor professor) {
-        if (professorService.encontrarProfessorPorRFID(professor.getRfid()) == null)
+        if (professor.getRfid().isEmpty() ||professorService.encontrarProfessorPorRFID(professor.getRfid()) == null)
             return ResponseEntity.ok(professorService.editarProfessor(id, professor));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um professor cadastrado com esse cartão");
 

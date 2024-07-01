@@ -23,4 +23,10 @@ public class Curso {
     @ManyToOne
     @JoinColumn(name = "coordenadoria_id")
     private Coordenadoria coordenadoria;
+
+    @Override
+    public String toString() {
+        return this.getCoordenadoria() + "/" + this.getInicio() + "/" +
+                this.getFim();
+    }
 }

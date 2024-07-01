@@ -1,8 +1,7 @@
 package com.example.backend.service;
 
-import com.example.backend.dominio.Equipamento;
-import com.example.backend.dominio.Locais;
-import com.example.backend.dominio.LocaisEquipamentos;
+import com.example.backend.dominio.*;
+import com.example.backend.repository.AuditRepository;
 import com.example.backend.repository.LocaisRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,14 @@ public class LocaisService {
     @Autowired
     private LocaisEquipamentosService locaisEquipamentoService;
 
+    @Autowired
+    private AuditRepository auditRepository;
+
     @Transactional
     public Locais cadastrarLocais(Locais locais) {
+        Audit audit = new Audit();
+        audit.onPrePersist(locais.toString());
+        auditRepository.save(audit);
         return locaisRepository.save(locais);
     }
 
@@ -61,6 +66,10 @@ public class LocaisService {
             localExistente.setObservacao(locais.getObservacao());
 
             locaisRepository.save(localExistente);
+            Locais pre = locaisRepository.getReferenceById(id);
+            Audit audit = new Audit();
+            audit.onPreUpdate(pre.toString(), locais.toString());
+            auditRepository.save(audit);
 
             return new ResponseEntity<>(localExistente, HttpStatus.OK);
         }
@@ -68,6 +77,10 @@ public class LocaisService {
     }
 
     public void excluirLocais(Long id) {
+        Locais pre = locaisRepository.getReferenceById(id);
+        Audit audit = new Audit();
+        audit.onPreRemove(pre.toString());
+        auditRepository.save(audit);
         locaisRepository.deleteById(id);
     }
 

@@ -2,14 +2,12 @@ package com.example.backend.service;
 
 import java.util.*;
 
-import com.example.backend.dominio.Aluno;
-import com.example.backend.dominio.AulaAluno;
-import com.example.backend.dominio.Professor;
+import com.example.backend.dominio.*;
+import com.example.backend.repository.AuditRepository;
 import com.example.backend.repository.AulaAlunoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.backend.dominio.Aula;
 import com.example.backend.repository.AulaRepository;
 
 @Service
@@ -20,8 +18,17 @@ public class AulaService {
     @Autowired
     private AulaAlunoRepository aulaAlunoRepository;
 
+    @Autowired
+    private AuditRepository auditRepository;
+
     public Aula cadastrarAula(Aula aula) {
-        return aulaRepository.save(aula);
+        Aula a = aulaRepository.save(aula);
+        if (a != null) {
+            Audit audit = new Audit();
+            audit.onPrePersist(aula.toString());
+            auditRepository.save(audit);
+        }
+        return a;
     }
 
     public List<Aula> listarAula() {
@@ -113,7 +120,14 @@ public class AulaService {
 
     public Aula editarAula(Long id, Aula aula) {
         aula.setId(id);
-        return aulaRepository.save(aula);
+        Aula pre = aulaRepository.getReferenceById(aula.getId());
+        Aula a = aulaRepository.save(aula);
+        if (a != null) {
+            Audit audit = new Audit();
+            audit.onPreUpdate(pre.toString(), aula.toString());
+            auditRepository.save(audit);
+        }
+        return a;
     }
 
     public void cadastrarAulaAluno(Optional<Aluno> aluno, Aula aula) {
@@ -126,5 +140,9 @@ public class AulaService {
 
     public void excluirAula(Long id) {
         aulaRepository.deleteById(id);
+        Aula a = aulaRepository.getReferenceById(id);
+        Audit audit = new Audit();
+        audit.onPreRemove(a.toString());
+        auditRepository.save(audit);
     }
 }

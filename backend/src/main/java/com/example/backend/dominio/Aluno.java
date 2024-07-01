@@ -23,4 +23,11 @@ public class Aluno extends Usuario {
     @ManyToOne
     @JoinColumn(name = "turma_id")
     private Turma turma;
+
+    @Override
+    public String toString() {
+        return this.getNome() + "/" + this.getMatricula() + "/" +
+                this.getEmail() + "/" + this.getCoordenadoria() +
+                "/" + this.getTurma();
+    }
 }

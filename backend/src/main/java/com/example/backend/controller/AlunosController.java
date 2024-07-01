@@ -99,7 +99,8 @@ public class AlunosController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editarAluno(@PathVariable Long id, @RequestBody Aluno aluno) {
-        if (alunoService.encontrarAlunoPorMatricula(Long.valueOf(aluno.getMatricula())) == null)
+        Aluno validar = alunoService.encontrarAlunoPorMatricula(Long.valueOf(aluno.getMatricula()));
+        if ( validar == null || validar.getNome().equals(aluno.getNome()) || validar.getEmail().equals(aluno.getEmail()))
             return ResponseEntity.ok(alunoService.editarAluno(id, aluno));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um aluno com essa matrícula");
 

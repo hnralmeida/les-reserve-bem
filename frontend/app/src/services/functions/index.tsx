@@ -24,7 +24,8 @@ class functionLib {
     toReadableHour(data: any) {
         const date = new Date(data);
         console.log(date);
-        return `${date.getHours()}:${date.getMinutes()}`;
+        var minutes = date.getMinutes();
+        return `${date.getHours()}:${minutes < 10 ? '0' + minutes : minutes}`;
     }
 
     // converte o objeto hora personalizado para string

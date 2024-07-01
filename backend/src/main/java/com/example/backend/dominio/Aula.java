@@ -71,4 +71,12 @@ public class Aula {
                 throw new IllegalArgumentException("Dia da semana inválido: " + this.diaDaSemana);
         }
     }
+
+    @Override
+    public String toString() {
+        return this.getDisciplina() + "/" + this.getTurma() + "/" +
+                this.getProfessor() + "/" + this.getDiaDaSemana() +
+                this.getLocal() + "/" + this.getPeriodo() + "/" +
+                this.getHoraInicio() + "/" + this.getHoraFim();
+    }
 }

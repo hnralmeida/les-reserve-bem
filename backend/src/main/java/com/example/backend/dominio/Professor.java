@@ -1,5 +1,6 @@
 package com.example.backend.dominio;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,6 +8,7 @@ import lombok.*;
 @Table(name = "professores")
 @PrimaryKeyJoinColumn(name = "id")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Professor extends Usuario{
     @ManyToOne
     @JoinColumn(name = "coordenadoria_id")
@@ -14,4 +16,10 @@ public class Professor extends Usuario{
 
     @JoinColumn(name= "RFID", nullable = true)
     private String rfid;
+
+    @Override
+    public String toString() {
+        return this.getNome() + "/" + this.getEmail() + "/" +
+                this.getMatricula() + "/" + this.getCoordenadoria();
+    }
 }
