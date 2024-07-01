@@ -1,14 +1,21 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Image, Text, TextInput, TouchableHighlight, View } from "react-native";
+import { Image, Linking, Text, TextInput, TouchableHighlight, View } from "react-native";
 import styles from "../../styles";
 import { useForm } from "react-hook-form";
 import API from "../../services/API";
 import { useAuth } from "../../context/AuthProvider";
+import { RootStackParamList } from "../../routes/auth.routes";
+import { useNavigation } from "@react-navigation/native";
 
 type FormInputs = {
   login: string;
   senha: string;
 };
+
+type HomeScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Login"
+>;
 
 export default function Login() {
   const {
@@ -25,6 +32,8 @@ export default function Login() {
     },
   });
   const { authData, signIn } = useAuth();
+
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
   const handle = () => {
     signIn(control._formValues.login, control._formValues.senha);
@@ -56,6 +65,7 @@ export default function Login() {
         >
           <TouchableHighlight
             style={[styles.buttonWhite, { width: 256, flexDirection: "row" }]}
+            onPress= {() => {Linking.openURL('https://academico.ifes.edu.br/')}}
           >
             <>
               <Image
@@ -70,6 +80,9 @@ export default function Login() {
 
           <TouchableHighlight
             style={[styles.button, { width: 256, flexDirection: "row" }]}
+            onPress={() => {
+              navigation.navigate("ConsultarHorario");
+            }}
           >
             <>
               <Image

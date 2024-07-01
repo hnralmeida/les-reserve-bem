@@ -8,11 +8,13 @@ import { useNavigation } from "@react-navigation/native";
 
 //MainPages
 import Login from "../pages/Login";
+import ConsultarHorarios from "../pages/ConsultarHorarios";
 
 const Stack = createStackNavigator();
 
 export type RootStackParamList = {
-  Home: undefined;
+  Login: undefined;
+  ConsultarHorario: undefined;
 };
 
 export function StackAuth() {
@@ -25,6 +27,11 @@ export function StackAuth() {
       <Stack.Screen
         name="Login"
         component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ConsultarHorario"
+        component={ConsultarHorarios}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
