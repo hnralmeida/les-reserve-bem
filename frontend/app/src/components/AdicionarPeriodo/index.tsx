@@ -40,9 +40,8 @@ const AdicionarPeriodo = ({
   control,
   setValue,
   periodo_list,
-  index
+  index,
 }: Props) => {
-
   const handleRegister = () => {
     // Check if the equipment name is not empty before registering
     if (control._formValues.id) {
@@ -50,25 +49,32 @@ const AdicionarPeriodo = ({
         nome: control._formValues.nome,
         dataInicio: control._formValues.dataInicio,
         dataFim: control._formValues.dataFim,
-      }).then(() => {
-        periodo_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
-        periodo_list[index].dataInicio = control._formValues.dataInicio;
-        periodo_list[index].dataFim = control._formValues.dataFim;
-        console.log(control._formValues.id)
-        onClose();
-      });
+      })
+        .then(() => {
+          periodo_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
+          periodo_list[index].dataInicio = control._formValues.dataInicio;
+          periodo_list[index].dataFim = control._formValues.dataFim;
+          console.log(control._formValues.id);
+          onClose();
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
     } else {
       API.post("/periodos", {
         nome: control._formValues.nome,
         dataInicio: control._formValues.dataInicio.toISOString(),
         dataFim: control._formValues.dataFim.toISOString(),
-      }).then((response: any) => {
+      })
+        .then((response: any) => {
+          console.log(response.data);
+          periodo_list.push(response.data);
 
-        console.log(response.data);
-        periodo_list.push(response.data);
-
-        onClose();
-      });
+          onClose();
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
     }
   };
   const handleImport = () => {
@@ -82,7 +88,7 @@ const AdicionarPeriodo = ({
       onClose={onClose}
     >
       <>
-      <Text style={styles.label}>Período (Ano/Semestre) </Text>
+        <Text style={styles.label}>Período (Ano/Semestre) </Text>
         <TextInput
           style={styles.boxBorder}
           placeholder="Período (Ano/Semestre) "

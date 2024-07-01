@@ -188,7 +188,7 @@ export function onPrint({ modelo, local, turma, horarioIndividual }: props) {
             `;
 
   diasSemanaOrdenados.forEach((dia) => {
-    const aulasDoDia = horarioIndividual.map(
+    const aulasDoDia = horarioIndividual.filter(
       (item: any) => item.diaDaSemana === dia
     );
     console.log(aulasDoDia);

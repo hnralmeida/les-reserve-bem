@@ -23,7 +23,6 @@ import styles from "../../styles";
 // Firmulario
 import { set, useForm } from "react-hook-form";
 import ActivateModalButton from "../../components/ButtonAddModal";
-import ImportarAulas from "../ImportarAulas";
 import ImportarArquivo from "../../components/ImportarArquivo";
 import { RootStackParamList } from "../../routes/stack.routes";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -150,11 +149,15 @@ export default function ReservarAulas(options: any) {
           diaDaSemana: control._formValues.diaDaSemana,
           horaInicio: utils.toHours(item),
           horaFim: utils.toHours(utils.arrayAulas()[index + 1]),
-        }).then((data: any) => {
-          console.log(data.data);
-        });
-
-        navigation.navigate("Consultar");
+        })
+          .then((data: any) => {
+            console.log(data.data);
+            navigation.navigate("Consultar");
+          })
+          .catch((error: any) => {
+            alert(error.response.data);
+            return;
+          });
       }
     });
   };

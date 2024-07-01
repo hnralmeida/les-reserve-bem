@@ -11,7 +11,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
 import InputDate from "../../components/InputDate";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 // Funções
 import functionLib from "../../services/functions";
@@ -22,6 +22,8 @@ import styles from "../../styles";
 
 // Firmulario
 import { useForm } from "react-hook-form";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../routes/stack.routes";
 
 type FormInputs = {
   local: string;
@@ -32,8 +34,14 @@ type FormInputs = {
   descricao: string;
 };
 
+type ScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "ReservarEventos"
+>;
+
 export default function ReservarEventos(options: any) {
   const utils = new functionLib();
+  const navigator = useNavigation<ScreenNavigationProp>();
 
   const [local_list, set_local_list] = useState<any[]>([]);
 
@@ -64,40 +72,44 @@ export default function ReservarEventos(options: any) {
   );
 
   const onSubmit = () => {
-    // Aqui você pode adicionar lógica para salvar as alterações feitas no nome da coorde
-    const data_inicio = utils.concatenaDataHora(
-      control._formValues.data,
-      control._formValues.inicio
-    );
-    const data_fim = utils.concatenaDataHora(
-      control._formValues.data,
-      control._formValues.fim
-    );
+    const aulashorarios = utils.arrayAulas();
+    aulashorarios.map((item, index) => {
+      if (
+        utils.comparaHorario(
+          control._formValues.inicio,
+          utils.toHours(item)
+        ) <= 0 &&
+        utils.comparaHorario(control._formValues.fim, utils.toHours(item)) >
+          0
+      ) {
+        const data_inicio = utils.concatenaDataHora(
+          control._formValues.data,
+          utils.toHours(item)
+        );
+        const data_fim = utils.concatenaDataHora(
+          control._formValues.data,
+          utils.toHours(utils.arrayAulas()[index + 1])
+        );
 
-    console.log(data_inicio, {
-      nome: control._formValues.nome,
-      local: control._formValues.local
-        ? local_list.filter(
-            (item) => Number(item.id) === Number(control._formValues.local)
-          )[0]
-        : null,
-      dataInicio: new Date(data_inicio),
-      dataFim: new Date(data_fim),
-      descricao: control._formValues.descricao,
-    });
-
-    API.post("/eventos", {
-      nome: control._formValues.nome,
-      local: control._formValues.local
-        ? local_list.filter(
-            (item) => Number(item.id) === Number(control._formValues.local)
-          )[0]
-        : null,
-      dataInicio: new Date(data_inicio),
-      dataFim: new Date(data_fim),
-      descricao: control._formValues.descricao,
-    }).then(() => {
-      control._reset();
+        API.post("/eventos", {
+          nome: control._formValues.nome,
+          local: control._formValues.local
+            ? local_list.filter(
+                (item) => Number(item.id) === Number(control._formValues.local)
+              )[0]
+            : null,
+          dataInicio: new Date(data_inicio),
+          dataFim: new Date(data_fim),
+          descricao: control._formValues.descricao,
+        })
+          .then(() => {
+            control._reset();
+            navigator.navigate("Consultar");
+          })
+          .catch((error) => {
+            alert(error.response.data);
+          });
+      }
     });
   };
 
@@ -105,7 +117,9 @@ export default function ReservarEventos(options: any) {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <ScrollView style={styles.expand}>
-          <View style={[styles.contentReservar, styles.listBox, styles.marginTop]}>
+          <View
+            style={[styles.contentReservar, styles.listBox, styles.marginTop]}
+          >
             <form onSubmit={handleSubmit(onSubmit)}>
               <View style={styles.row}>
                 <View style={styles.column}>

@@ -1,5 +1,6 @@
 package com.example.backend.dominio;
 
+import java.util.Calendar;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -53,19 +54,19 @@ public class Aula {
     public Integer getDiaDaSemanaInt() {
         switch (this.diaDaSemana) {
             case "Segunda-Feira":
-                return 7;
+                return Calendar.MONDAY;
             case "Terça-Feira":
-                return 2;
+                return Calendar.TUESDAY;
             case "Quarta-Feira":
-                return 3;
+                return Calendar.WEDNESDAY;
             case "Quinta-Feira":
-                return 4;
+                return Calendar.THURSDAY;
             case "Sexta-Feira":
-                return 5;
+                return Calendar.FRIDAY;
             case "Sábado":
-                return 6;
+                return Calendar.SATURDAY;
             case "Domingo":
-                return 0;
+                return Calendar.SUNDAY;
             default:
                 throw new IllegalArgumentException("Dia da semana inválido: " + this.diaDaSemana);
         }
