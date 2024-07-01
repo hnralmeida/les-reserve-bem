@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.backend.service.CoordenadoriaService;
+import com.example.backend.service.EpsonTermicaService;
 import com.example.backend.service.TurmaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,9 @@ public class AlunosController {
     @Autowired
     private TurmaService turmaService;
 
+    @Autowired
+    private EpsonTermicaService epsonTermicaService;
+
     @PostMapping
     public Aluno cadastrarAluno(@RequestBody Aluno aluno) {
         return alunoService.cadastrarAluno(aluno);
@@ -45,8 +49,10 @@ public class AlunosController {
 
         if (TYPE.equals(file.getContentType())) {
             try {
-                BufferedReader fileReader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
-                CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
+                BufferedReader fileReader = new BufferedReader(
+                        new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
+                CSVParser csvParser = new CSVParser(fileReader,
+                        CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
 
                 List<Aluno> alunos = new ArrayList<Aluno>();
 
@@ -59,7 +65,8 @@ public class AlunosController {
                     aluno.setEmail(csvRecord.get("Email"));
                     aluno.setSenha(csvRecord.get("Senha"));
                     aluno.setTurma(turmaService.encontrarTurmaPorId(Long.parseLong(csvRecord.get("Turma"))));
-                    aluno.setCoordenadoria(coordenadoriaService.encontrarCoordenadoriaPorId(Long.parseLong(csvRecord.get("Coordenadoria"))));
+                    aluno.setCoordenadoria(coordenadoriaService
+                            .encontrarCoordenadoriaPorId(Long.parseLong(csvRecord.get("Coordenadoria"))));
 
                     try {
                         alunoService.cadastrarAluno(aluno);
@@ -84,6 +91,7 @@ public class AlunosController {
 
     @PutMapping("/{id}")
     public Aluno editarAluno(@PathVariable Long id, @RequestBody Aluno aluno) {
+
         return alunoService.editarAluno(id, aluno);
     }
 
