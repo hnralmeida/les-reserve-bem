@@ -8,7 +8,6 @@ import javax.print.PrintService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.example.backend.dominio.Aula;
 import com.example.backend.dominio.DTOPrinter.AulaPrinter;
 import com.github.anastaciocintra.escpos.EscPos;
 import com.github.anastaciocintra.output.PrinterOutputStream;
@@ -16,7 +15,7 @@ import com.github.anastaciocintra.output.PrinterOutputStream;
 @Service
 public class EpsonTermicaService {
 
-    @Value("${printer.name}")
+    @Value("${printerTermic.name}")
     private String printerName;
 
     public void print(String texto) throws IOException {
