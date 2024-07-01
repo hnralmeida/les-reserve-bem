@@ -41,7 +41,7 @@ public class DLEtiquetaService {
         int barcodeHeight = barcode.getHeight();
         int x = (width - barcodeWidth) / 2;
         int y = (height - barcodeHeight) / 2;
-        barcode.draw(2d, x, y);
+        barcode.draw(g2d, x, y);
         g2d.dispose();
 
         // Converter Barcode para BufferedImage
