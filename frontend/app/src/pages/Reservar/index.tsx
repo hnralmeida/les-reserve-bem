@@ -23,7 +23,7 @@ export default function Reservar({ navigation }: Props) {
                             source={require('../../../assets/aulas.png')}
                             style={styles.buttonImageHome}
                         />
-                        <Text style={styles.buttonText}>Disciplinas</Text>
+                        <Text style={styles.buttonText}>Aulas</Text>
                     </>
                 </TouchableHighlight>
 

@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.example.backend.dominio.Aluno;
@@ -30,8 +31,19 @@ public class AulaController {
     private ProfessorService professorService;
 
     @PostMapping
-    public Aula cadastrarAula(@RequestBody Aula aula) {
-        return aulaService.cadastrarAula(aula);
+    public ResponseEntity<?> cadastrarAula(@RequestBody Aula aula) {
+        List<Aula> validator = aulaService.listarAulaPorLocal(aula.getLocal().getId(), aula.getPeriodo().getId());
+        if (validator != null) {
+            for (Aula aulaValidator : validator) {
+                if (Objects.equals(aulaValidator.getDiaDaSemanaInt(), aula.getDiaDaSemanaInt()))
+                    if (aulaValidator.getHoraInicio().equals(aula.getHoraInicio()))
+                        return ResponseEntity.status(HttpStatus.CONFLICT).body("Local em uso às " +
+                                aula.getHoraInicio() + " de " + aula.getDiaDaSemana() + " disciplina de " +
+                                aulaValidator.getDisciplina().getNome() + " do Professor " +
+                                aulaValidator.getProfessor().getNome());
+            }
+        }
+        return ResponseEntity.ok(aulaService.cadastrarAula(aula));
     }
 
     @GetMapping

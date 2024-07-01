@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,9 @@ public class PeriodoService {
         return periodoRepository.findById(id);
     }
 
+    public Periodo encontrarPeriodoAbrangente(Date date) {
+        return periodoRepository.findByIntervalo(date);
+    }
     public Periodo editarPeriodo(Long id, Periodo periodo){
         periodo.setId(id);
         return periodoRepository.save(periodo);
