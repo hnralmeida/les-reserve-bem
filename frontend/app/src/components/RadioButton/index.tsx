@@ -16,7 +16,7 @@ type Props = {
 
 export function RadioButton(props: Props) {
   return (
-    <TouchableHighlight onPress={() => props.onSelect(!props.selected)}>
+    <TouchableHighlight onPress={props.onSelect}>
       <View
         style={[
           {

@@ -13,4 +13,7 @@ public interface ProfessoresRepository extends JpaRepository<Professor, Long> {
     @Query("SELECT p FROM Professor p WHERE p.matricula = :professorMatricula")
     Professor findByMatricula(@Param("professorMatricula") String professorMatricula);
 
+    @Query("SELECT p FROM Professor p WHERE p.rfid = :rfid")
+    Professor findByRFID(@Param("rfid") String rfid);
+
 }

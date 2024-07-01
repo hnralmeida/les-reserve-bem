@@ -26,6 +26,10 @@ public class ProfessorService {
         return professorRepository.findByMatricula(matricula);
     }
 
+    public Professor encontrarProfessorPorRFID(String RFID) {
+        return professorRepository.findByRFID(RFID);
+    }
+
     public Professor editarProfessor(Long id, Professor professor) {
         professor.setId(id);
         return professorRepository.save(professor);

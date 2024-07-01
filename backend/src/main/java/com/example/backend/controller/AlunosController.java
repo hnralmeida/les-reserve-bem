@@ -11,6 +11,7 @@ import com.example.backend.service.CoordenadoriaService;
 import com.example.backend.service.TurmaService;
 import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,10 +38,10 @@ public class AlunosController {
     private TurmaService turmaService;
 
     @PostMapping
-    public Aluno cadastrarAluno(@RequestBody Aluno aluno) {
+    public ResponseEntity<?> cadastrarAluno(@RequestBody Aluno aluno) {
         if (alunoService.encontrarAlunoPorMatricula(Long.valueOf(aluno.getMatricula())) == null)
-            return alunoService.cadastrarAluno(aluno);
-        return null;
+            return ResponseEntity.ok(alunoService.cadastrarAluno(aluno));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um aluno com essa matrícula");
     }
 
     @PostMapping("/importar")
@@ -97,8 +98,11 @@ public class AlunosController {
     }
 
     @PutMapping("/{id}")
-    public Aluno editarAluno(@PathVariable Long id, @RequestBody Aluno aluno) {
-        return alunoService.editarAluno(id, aluno);
+    public ResponseEntity<?> editarAluno(@PathVariable Long id, @RequestBody Aluno aluno) {
+        if (alunoService.encontrarAlunoPorMatricula(Long.valueOf(aluno.getMatricula())) == null)
+            return ResponseEntity.ok(alunoService.editarAluno(id, aluno));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um aluno com essa matrícula");
+
     }
 
     @DeleteMapping("/{id}")

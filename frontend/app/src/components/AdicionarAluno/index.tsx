@@ -58,20 +58,24 @@ const AdicionarAluno = ({
           (item) => Number(item.id) === Number(control._formValues.turma)
         )[0],
         email: control._formValues.email,
-      }).then(() => {
-        aluno_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
-        aluno_list[index].coordenadoria = coordenadoria_list.filter(
-          (item) =>
-            Number(item.id) === Number(control._formValues.coordenadoria)
-        )[0];
-        aluno_list[index].turma = turma_list.filter(
-          (item) => Number(item.id) === Number(control._formValues.turma)
-        )[0];
-        aluno_list[index].matricula = control._formValues.matricula;
-        aluno_list[index].email = control._formValues.email;
+      })
+        .then(() => {
+          aluno_list[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
+          aluno_list[index].coordenadoria = coordenadoria_list.filter(
+            (item) =>
+              Number(item.id) === Number(control._formValues.coordenadoria)
+          )[0];
+          aluno_list[index].turma = turma_list.filter(
+            (item) => Number(item.id) === Number(control._formValues.turma)
+          )[0];
+          aluno_list[index].matricula = control._formValues.matricula;
+          aluno_list[index].email = control._formValues.email;
 
-        onClose();
-      });
+          onClose();
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
     } else {
       API.post("/alunos", {
         nome: control._formValues.nome,
@@ -84,11 +88,15 @@ const AdicionarAluno = ({
           (item) =>
             Number(item.id) === Number(control._formValues.coordenadoria)
         )[0],
-      }).then((response: any) => {
-        aluno_list.push(response.data);
-
-        onClose();
-      });
+      })
+        .then((response: any) => {
+          aluno_list.push(response.data);
+          console.log(response.data);
+          onClose();
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
     }
   };
 

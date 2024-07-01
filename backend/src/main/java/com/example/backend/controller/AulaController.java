@@ -56,11 +56,11 @@ public class AulaController {
 
         // Esse trecho existe por que para o retorno anterior funcionar é necessário criar
         // os controladores que relacionam aula-aluno no AulaController
-        if(aluno.getTurma()!=null){
+        if (aluno.getTurma() != null) {
             System.out.println(aluno.getNome());
             return aulaService.listarAulaPorTurma(aluno.getTurma().getId(), periodoId);
-        }else {
-            System.out.println(aluno.getTurma()!=null);
+        } else {
+            System.out.println(aluno.getTurma() != null);
             return null;
         }
     }
@@ -68,13 +68,17 @@ public class AulaController {
     @GetMapping("/proxima/{matricula}")
     public ResponseEntity<?> proximaAulaPorAluno(@PathVariable Long matricula, @RequestParam Long periodoId) {
         Usuario pessoa = alunoService.encontrarAlunoPorMatricula(matricula);
-        if (pessoa==null) {
-            pessoa = professorService.encontrarProfessorPorMatricula(String.valueOf(matricula));
+        if (pessoa != null) {
+            Aula prox = aulaService.proximaAulaPorAluno((Aluno) pessoa, periodoId);
+            if (prox != null) return ResponseEntity.ok(prox);
+            else return ResponseEntity.status(HttpStatus.ACCEPTED).body("Não há mais aulas hoje");
         }
 
-        if (pessoa!=null){
-            Aula prox = aulaService.proximaAulaPorAluno((Aluno) pessoa, periodoId);
-            if (prox!=null) return ResponseEntity.ok(prox);
+        pessoa = professorService.encontrarProfessorPorMatricula(String.valueOf(matricula));
+
+        if (pessoa != null) {
+            Aula prox = aulaService.proximaAulaPorProfessor((Professor) pessoa, periodoId);
+            if (prox != null) return ResponseEntity.ok(prox);
             else return ResponseEntity.status(HttpStatus.ACCEPTED).body("Não há mais aulas hoje");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhuma matricula foi encontrado");
@@ -94,9 +98,9 @@ public class AulaController {
     }
 
     @GetMapping("/professor/proxima/{professorMatricula}")
-    public Aula proximaAulaPorProfessor(@PathVariable Long professorMatricula, @RequestParam Long periodoId) {
-        Professor professor = professorService.encontrarProfessorPorMatricula(String.valueOf(professorMatricula));
-        if (professor!=null)
+    public Aula proximaAulaPorProfessor(@PathVariable String professorMatricula, @RequestParam Long periodoId) {
+        Professor professor = professorService.encontrarProfessorPorRFID(professorMatricula);
+        if (professor != null)
             return aulaService.proximaAulaPorProfessor(professor, periodoId);
         else return null;
     }

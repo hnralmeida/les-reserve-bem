@@ -17,7 +17,7 @@ export default function ConsultarProxAula(options: any) {
   const [matricula, setMatricula] = useState("");
   const [aula, setAula] = useState<any>(null);
   const [picker, setPicker] = useState(false);
-  const [touched, setTouched] = useState(false);
+  const [touched, setTouched] = useState(true);
 
   const [list_periodos, set_list_periodos] = useState<any[]>([]);
   const [periodo, setPeriodo] = useState<any>(null);
@@ -36,12 +36,12 @@ export default function ConsultarProxAula(options: any) {
     }
 
     if (picker) {
-      API.get(`/aulas/aluno/proxima/${matricula}`, {
+      API.get(`/aulas/proxima/${matricula}`, {
         params: {
           periodoId: periodo,
         },
       }).then((response) => {
-        console.log(response.data);
+        console.log(response.data)
         setTouched(true);
         setAula(response.data);
       });
@@ -58,18 +58,68 @@ export default function ConsultarProxAula(options: any) {
     }
   }
 
+  function RenderScreen() {
+    if (aula && aula.disciplina) {
+      return (
+        <View style={styles.row}>
+          <View style={styles.column}>
+            <Text style={styles.label}>Aula</Text>
+            <Text style={styles.textLabel}>
+              {aula.disciplina ? aula.disciplina.nome : "Sem Disciplina"}
+            </Text>
+          </View>
+
+          <View style={styles.column}>
+            <Text style={styles.label}>Professor</Text>
+            <Text style={styles.textLabel}>
+              {aula.professor ? aula.professor.nome : "Sem Professor"}
+            </Text>
+          </View>
+
+          <View style={styles.column}>
+            <Text style={styles.label}>Horário</Text>
+            <Text style={styles.textLabel}>
+              {aula.horaInicio && aula.horaFim
+                ? aula.horaInicio + " às " + aula.horaFim
+                : "Sem horario definido"}
+            </Text>
+          </View>
+
+          <View style={styles.column}>
+            <Text style={styles.label}>Local</Text>
+            <Text style={styles.textLabel}>
+              {aula.local ? aula.local.nomeLocal : "Sem local"}
+            </Text>
+          </View>
+        </View>
+      );
+    } else if (touched) {
+      return (
+        <View style={styles.row}>
+          <Text style={styles.label}>Nenhuma aula encontrada</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.row}>
+          <Text style={styles.label}>{aula}</Text>
+        </View>
+      );
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Consultar Próxima Aula</Text>
         <View style={styles.row}>
           <View style={styles.row}>
-            <RadioButton selected={picker} onSelect={setPicker} />
+            <RadioButton selected={picker} onSelect={() => setPicker(true)} />
             <Text style={styles.textLabel}>Aluno</Text>
           </View>
 
           <View style={[styles.row, { marginLeft: 8 }]}>
-            <RadioButton selected={!picker} onSelect={setPicker} />
+            <RadioButton selected={!picker} onSelect={() => setPicker(false)} />
             <Text style={styles.textLabel}>Professor</Text>
           </View>
 
@@ -125,41 +175,7 @@ export default function ConsultarProxAula(options: any) {
           </View>
         </View>
 
-        {aula ? (
-          <View style={styles.row}>
-            <View style={styles.column}>
-              <Text style={styles.label}>Aula</Text>
-              <Text style={styles.label}>
-                {aula.disciplina ? aula.disciplina.nome : "Sem Disciplina"}
-              </Text>
-            </View>
-
-            <View style={styles.column}>
-              <Text style={styles.label}>Professor</Text>
-              <Text style={styles.label}>
-                {aula.professor ? aula.professor.nome : "Sem Professor"}
-              </Text>
-            </View>
-
-            <View style={styles.column}>
-              <Text style={styles.label}>Horário</Text>
-              <Text style={styles.label}>
-                {aula.horaInicio && aula.horaFim
-                  ? aula.horaInicio + " às " + aula.horaFim
-                  : "Sem horario definido"}
-              </Text>
-            </View>
-
-            <View style={styles.column}>
-              <Text style={styles.label}>Local</Text>
-              <Text style={styles.label}>
-                {aula.local ? aula.local.nomeLocal : "Sem local"}
-              </Text>
-            </View>
-          </View>
-        ) : touched ? (
-          <Text style={styles.label}>Nenhuma aula por hoje</Text>
-        ) : null}
+        <RenderScreen />
       </View>
     </SafeAreaView>
   );

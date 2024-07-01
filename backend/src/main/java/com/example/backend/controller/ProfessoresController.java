@@ -3,6 +3,9 @@ package com.example.backend.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +26,12 @@ public class ProfessoresController {
     private ProfessorService professorService;
 
     @PostMapping
-    public Professor cadastrarProfessor(@RequestBody Professor professor) {
-        return professorService.cadastrarProfessor(professor);
+    public ResponseEntity<?> cadastrarProfessor(@RequestBody Professor professor) {
+        if (professorService.encontrarProfessorPorMatricula(professor.getMatricula()) != null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um professor cadastrado com essa matrícula");
+        if (professorService.encontrarProfessorPorRFID(professor.getRfid()) == null)
+            return ResponseEntity.ok(professorService.cadastrarProfessor(professor));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um professor cadastrado com esse cartão");
     }
 
     @GetMapping
@@ -33,8 +40,11 @@ public class ProfessoresController {
     }
 
     @PutMapping("/{id}")
-    public Professor editarProfessor(@PathVariable Long id, @RequestBody Professor professor) {
-        return professorService.editarProfessor(id, professor);
+    public ResponseEntity<?> editarProfessor(@PathVariable Long id, @RequestBody Professor professor) {
+        if (professorService.encontrarProfessorPorRFID(professor.getRfid()) == null)
+            return ResponseEntity.ok(professorService.editarProfessor(id, professor));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um professor cadastrado com esse cartão");
+
     }
 
     @DeleteMapping("/{id}")

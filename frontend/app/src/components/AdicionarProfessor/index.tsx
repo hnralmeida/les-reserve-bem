@@ -55,18 +55,22 @@ const AdicionarProfessor = ({
         )[0],
         email: control._formValues.email,
         rfid: control._formValues.rfid,
-      }).then(() => {
-        professorList[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
-        professorList[index].coordenadoria = coordenadoriaList.filter(
-          (item) =>
-            Number(item.id) === Number(control._formValues.coordenadoria)
-        )[0]; // Atualiza o nome do item na lista
-        professorList[index].matricula = control._formValues.matricula;
-        professorList[index].email = control._formValues.email;
-        professorList[index].rfid = control._formValues.rfid;
+      })
+        .then(() => {
+          professorList[index].nome = control._formValues.nome; // Atualiza o nome do item na lista
+          professorList[index].coordenadoria = coordenadoriaList.filter(
+            (item) =>
+              Number(item.id) === Number(control._formValues.coordenadoria)
+          )[0]; // Atualiza o nome do item na lista
+          professorList[index].matricula = control._formValues.matricula;
+          professorList[index].email = control._formValues.email;
+          professorList[index].rfid = control._formValues.rfid;
 
-        onClose();
-      });
+          onClose();
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
     } else {
       API.post("/professores", {
         nome: control._formValues.nome,
@@ -78,10 +82,14 @@ const AdicionarProfessor = ({
         email: control._formValues.email,
         rfid: control._formValues.rfid,
         // matricula: control._formValues.matricula,
-      }).then((response: any) => {
-        professorList.push(response.data);
-        onClose();
-      });
+      })
+        .then((response: any) => {
+          professorList.push(response.data);
+          onClose();
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
     }
   };
 
